@@ -20,7 +20,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
-import com.example.malpicasoft.Dialog;
+import com.example.malpicasoft.Dialogs;
 import com.example.malpicasoft.R;
 
 import org.json.JSONArray;
@@ -46,7 +46,7 @@ public class UsuarioFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
 
-        progressBar();
+        dialogProcesando();
 
         requestQueue = Volley.newRequestQueue(getContext());
 
@@ -60,11 +60,11 @@ public class UsuarioFragment extends Fragment {
         return root;
     }
 
-    // PROGRESSBAR - DIALOG MIENTRAS REALIZA LAS CONSULTAS A LAS TABLAS
-    public void progressBar(){
+    // DIALOG CON PROGRESS BAR MIENTRAS REALIZA LAS CONSULTAS A LAS TABLAS
+    public void dialogProcesando(){
 
-        final Dialog dialog = new Dialog(getActivity());
-        dialog.startDialog();
+        final Dialogs dialogs = new Dialogs(getActivity());
+        dialogs.startProcesando();
 
         final Timer timer = new Timer();
         TimerTask timerTask = new TimerTask() {
@@ -74,7 +74,8 @@ public class UsuarioFragment extends Fragment {
 
                 if(counter == 30) {
                     timer.cancel();
-                    dialog.endDialog();
+                    dialogs.endProcesando();
+                    counter = 0;
                 }
             }
         };

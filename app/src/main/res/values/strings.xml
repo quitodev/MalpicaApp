@@ -2,7 +2,10 @@
 
     <!-- GENERALES -->
     <string name="app_name">Malpica Soft</string>
-    <string name="progress_cargando">Procesando datos…</string>
+    <string name="dialog_procesando">Procesando datos…</string>
+    <string name="dialog_ok">Operación realizada!</string>
+    <string name="dialog_error">Revise los datos ingresados!</string>
+    <string name="dialog_button">Continuar</string>
     <string name="open">Open</string>
     <string name="close">Close</string>
     <string name="vacio"> </string>

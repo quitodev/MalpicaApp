@@ -39,7 +39,7 @@ public class Compras extends AppCompatActivity implements NavigationView.OnNavig
     ActionBarDrawerToggle toggle;
     ViewPager viewPager;
     PagerAdapter pagerAdapter;
-    String user, hour;
+    String user, hour, datoDia, datoMes, datoAno, datoFecha, fechaActual;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
