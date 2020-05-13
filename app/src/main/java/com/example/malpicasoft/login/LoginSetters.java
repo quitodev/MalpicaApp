@@ -1,23 +1,23 @@
 package com.example.malpicasoft.login;
 
-public class LoginSetters {
+class LoginSetters {
 
-    String user;
-    String pass;
+    private String user;
+    private String pass;
 
-    public String getUser() {
+    String getUser() {
         return user;
     }
 
-    public void setUser(String user) {
+    void setUser(String user) {
         this.user = user;
     }
 
-    public String getPass() {
+    String getPass() {
         return pass;
     }
 
-    public void setPass(String pass) {
+    void setPass(String pass) {
         this.pass = pass;
     }
 }

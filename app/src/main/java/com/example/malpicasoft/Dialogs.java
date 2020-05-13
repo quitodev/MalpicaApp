@@ -9,9 +9,9 @@ import java.util.TimerTask;
 
 public class Dialogs {
 
-    Activity activity;
-    AlertDialog alertDialog;
-    int counter;
+    private Activity activity;
+    private AlertDialog alertDialog;
+    private int counter;
 
     public Dialogs(Activity act){
         activity = act;
@@ -92,6 +92,37 @@ public class Dialogs {
     }
 
     public void endError() {
+        alertDialog.dismiss();
+    }
+
+    public void startErrorFactura() {
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(activity);
+
+        LayoutInflater inflater = activity.getLayoutInflater();
+        builder.setView(inflater.inflate(R.layout.dialog_error_factura, null));
+        builder.setCancelable(true);
+
+        alertDialog = builder.create();
+        alertDialog.show();
+
+        final Timer timer = new Timer();
+        TimerTask timerTask = new TimerTask() {
+            @Override
+            public void run() {
+                counter++;
+
+                if(counter == 20) {
+                    timer.cancel();
+                    alertDialog.dismiss();
+                    counter = 0;
+                }
+            }
+        };
+        timer.schedule(timerTask,0,100);
+    }
+
+    public void endErrorFactura() {
         alertDialog.dismiss();
     }
 }

@@ -10,13 +10,12 @@ import com.example.malpicasoft.login.Login;
 
 public class MainActivity extends AppCompatActivity {
 
-    private static int SPLASH_TIME_OUT = 4000;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        int counter = 4000;
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
@@ -24,6 +23,6 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
                 finish();
             }
-        }, SPLASH_TIME_OUT);
+        }, counter);
     }
 }

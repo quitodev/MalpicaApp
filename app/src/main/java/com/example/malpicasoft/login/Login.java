@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -30,25 +31,34 @@ import org.json.JSONObject;
 import java.util.Calendar;
 import java.util.Date;
 
-public class Login extends AppCompatActivity implements Response.Listener<JSONObject>, Response.ErrorListener {
+public class Login extends AppCompatActivity {
 
-    Button buttonLogin;
-    EditText editUser, editPass;
-    RequestQueue requestQueue;
-    JsonObjectRequest jsonObjectRequest;
+    private RequestQueue requestQueue;
+    private EditText editUser, editPass;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        // BUTTON, EDIT TEXT, VOLLEY Y EVENTO BOTÓN INICIAR SESIÓN
-        buttonLogin = findViewById(R.id.buttonLogin);
+        // LIBRERÍA VOLLEY PARA CONSULTAS A BASE DE DATOS
+        requestQueue = Volley.newRequestQueue(this);
+
+        // COMPONENTES DE LA VISTA
+        Button buttonLogin = findViewById(R.id.buttonLogin);
+        TextView textHelp = findViewById(R.id.textHelp);
         editUser = findViewById(R.id.editUser);
         editPass = findViewById(R.id.editPass);
 
-        requestQueue = Volley.newRequestQueue(this);
+        // EVENTOS DEL BOTÓN LOGIN
+        textHelp.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mensajeAyuda();
+            }
+        });
 
+        // EVENTOS DEL BOTÓN LOGIN
         buttonLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -57,15 +67,16 @@ public class Login extends AppCompatActivity implements Response.Listener<JSONOb
         });
     }
 
-    // TOAST DE AYUDA PARA INICIAR SESIÓN
-    public void mensajeAyuda(View view) {
+    private void mensajeAyuda() {
+
+        // TOAST DE AYUDA PARA INICIAR SESIÓN
         Toast.makeText(this,"Por favor, envíenos un correo electrónico a malpica-soft@outlook.com y le " +
                 "responderemos a la brevedad!", Toast.LENGTH_LONG).show();
     }
 
-    // CONSULTA Y ACTUALIZA HORA DE CONEXIÓN PARA ALMACENAR EN BASE SQLITE
-    public void iniciarSesion(){
+    private void iniciarSesion(){
 
+        // CONSULTA Y ACTUALIZA HORA DE CONEXIÓN PARA ALMACENAR EN BASE SQLITE
         Date date = Calendar.getInstance().getTime();
         String hour = date.toString();
         String horaActual = "" + hour.charAt(11) + hour.charAt(12) + hour.charAt(13) + hour.charAt(14) + hour.charAt(15);
@@ -94,48 +105,54 @@ public class Login extends AppCompatActivity implements Response.Listener<JSONOb
             db.close();
         }
 
-        // SE EJECUTA LA CONSULTA A LA BASE DE MYSQL
-        String URL = "http://malpica.atwebpages.com/ejemplo/login_consulta.php?usuario="+editUser.getText().toString()
+        // CONSULTA EL USUARIO Y LA CLAVE OBTENIDA EN LA BASE DE DATOS
+        String URL = "http://malpicas.heliohost.org/malpica/login/login_consulta.php?usuario="+editUser.getText().toString()
                 +"&clave="+editPass.getText().toString();
-        jsonObjectRequest = new JsonObjectRequest(Request.Method.GET,URL,null, (Response.Listener<JSONObject>) this,this);
-        requestQueue.add(jsonObjectRequest);
-    }
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET,URL,null,
+                new Response.Listener<JSONObject>() {
 
-    // REQUEST PARA LA BASE MYSQL MEDIANTE UN OBJETO JSON
-    @Override
-    public void onResponse(JSONObject response) {
+                    @Override
+                    public void onResponse(JSONObject response) {
 
-        LoginSetters loginSetters = new LoginSetters();
+                        try {
+                            JSONArray jsonArray = response.getJSONArray("datos");
 
-        JSONArray json = response.optJSONArray("datos");
-        JSONObject jsonObject = null;
+                            // RECORRE EL ARRAY DE JSON CON LA CONSULTA Y CON UN SETTER & GETTER MUESTRA LOS RESULTADOS
+                            for (int i = 0; i < jsonArray.length(); i++) {
 
-        try {
-            jsonObject = json.getJSONObject(0);
-            loginSetters.setUser(jsonObject.optString("usuario"));
-            loginSetters.setPass(jsonObject.optString("clave"));
+                                JSONObject jsonObject = jsonArray.getJSONObject(i);
+                                LoginSetters loginSetters = new LoginSetters();
 
-            if(loginSetters.getUser().contentEquals(editUser.getText()) && loginSetters.getPass().contentEquals(editPass.getText())) {
+                                loginSetters.setUser(jsonObject.optString("usuario"));
+                                loginSetters.setPass(jsonObject.optString("clave"));
 
-                // SI COINCIDE EL USUARIO Y LA CLAVE INGRESADA CON LA BASE MYSQL, PASA A SIGUIENTE ACTIVITY
-                Intent intent = new Intent(Login.this, Usuario.class);
-                intent.putExtra("user", editUser.getText().toString());
-                startActivity(intent);
-                finish();
+                                if(loginSetters.getUser().contentEquals(editUser.getText()) &&
+                                        loginSetters.getPass().contentEquals(editPass.getText())) {
 
-            } else {
+                                    // SI COINCIDE EL USUARIO Y LA CLAVE INGRESADA, PASA A LA SIGUIENTE ACTIVITY
+                                    Intent intent = new Intent(Login.this, Usuario.class);
+                                    intent.putExtra("user", editUser.getText().toString());
+                                    startActivity(intent);
+                                    finish();
 
-                // SI NO COINCIDEN LOS DATOS DE LA CUENTA, MUESTRA UN TOAST DE ADVERTENCIA
-                Toast.makeText(this,"Por favor, revise los datos ingresados!", Toast.LENGTH_SHORT).show();
+                                } else {
+
+                                    // SI NO COINCIDE EL USUARIO Y LA CLAVE INGRESADA, MUESTRA UN TOAST DE ADVERTENCIA
+                                    Toast.makeText(getApplicationContext(),"Por favor, revise los datos ingresados!",
+                                            Toast.LENGTH_SHORT).show();
+                                }
+                            }
+
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }, new Response.ErrorListener() {
+
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(getApplicationContext(), "Por favor, revise su conexión!", Toast.LENGTH_LONG).show();
             }
-
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-    }
-
-    @Override
-    public void onErrorResponse(VolleyError error) {
-        Toast.makeText(getApplicationContext(),"Por favor, revise su conexión!", Toast.LENGTH_LONG).show();
+        });
+        requestQueue.add(jsonObjectRequest);
     }
 }

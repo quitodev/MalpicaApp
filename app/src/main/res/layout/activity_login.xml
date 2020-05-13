@@ -101,7 +101,6 @@
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="100dp"
         android:fontFamily="sans-serif-condensed-light"
-        android:onClick="mensajeAyuda"
         android:text="@string/login_ayuda"
         android:textColor="@color/colorAccent"
         android:textSize="18sp"

@@ -34,12 +34,9 @@ import java.util.List;
 
 public class Clientes extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
-    DrawerLayout drawerLayout;
-    NavigationView navigationView;
-    ActionBarDrawerToggle toggle;
-    ViewPager viewPager;
-    PagerAdapter pagerAdapter;
-    String user, hour;
+    private DrawerLayout drawerLayout;
+    private NavigationView navigationView;
+    private String user;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,7 +52,7 @@ public class Clientes extends AppCompatActivity implements NavigationView.OnNavi
         navigationView.setItemIconTintList(null);
         navigationView.setNavigationItemSelectedListener(this);
 
-        toggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.open, R.string.close);
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.open, R.string.close);
         drawerLayout.addDrawerListener(toggle);
         toggle.setDrawerIndicatorEnabled(true);
         toggle.syncState();
@@ -68,9 +65,9 @@ public class Clientes extends AppCompatActivity implements NavigationView.OnNavi
         slideFragments();
     }
 
-    // CONSULTA HORA A TRAVÉS DEL USUARIO RECIBIDO PARA MOSTRAR EN HEADER
-    public void userDate(){
+    private void userDate(){
 
+        // CONSULTA HORA EN BASE SQLITE A TRAVÉS DEL USUARIO RECIBIDO PARA MOSTRARLA EN EL HEADER
         String usuarioActual = getIntent().getStringExtra("user");
 
         AdminSQLiteOpenHelper admin = new AdminSQLiteOpenHelper(this, "admin", null, 1);
@@ -79,8 +76,9 @@ public class Clientes extends AppCompatActivity implements NavigationView.OnNavi
 
         if(cursor.moveToFirst()){
 
+            // BUSCA AL USUARIO PARA ESTABLECER LA ÚLTIMA CONEXIÓN
             user = cursor.getString(0);
-            hour = cursor.getString(1);
+            String hour = cursor.getString(1);
 
             String usuario = "Hola " + user + "!";
             String hora = "Última conexión: Hoy, " + hour + ".";
@@ -99,9 +97,9 @@ public class Clientes extends AppCompatActivity implements NavigationView.OnNavi
         }
     }
 
-    // VIEW PAGER
-    public void slideFragments(){
+    private void slideFragments(){
 
+        // VIEW PAGER CON LOS FRAGMENTS
         List<Fragment> list = new ArrayList<>();
 
         list.add(new IngresarClientes());
@@ -109,15 +107,15 @@ public class Clientes extends AppCompatActivity implements NavigationView.OnNavi
         list.add(new ModificarClientes());
         list.add(new EliminarClientes());
 
-        viewPager = findViewById(R.id.view_pager);
-        pagerAdapter = new SlidePagerAdapter(getSupportFragmentManager(),list);
+        ViewPager viewPager = findViewById(R.id.view_pager);
+        PagerAdapter pagerAdapter = new SlidePagerAdapter(getSupportFragmentManager(), list);
         viewPager.setAdapter(pagerAdapter);
     }
 
-    // EVENTOS DEL MENÚ
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
 
+        // EVENTOS DEL MENÚ
         if(item.getItemId() == R.id.itemInicio) {
 
             Intent intent = new Intent(Clientes.this, Usuario.class);

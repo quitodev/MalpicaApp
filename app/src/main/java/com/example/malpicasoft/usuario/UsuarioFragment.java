@@ -101,7 +101,7 @@ public class UsuarioFragment extends Fragment {
     public void obtenerVentas(){
 
         // OBTIENE EL TOTAL DE VENTAS REGISTRADAS EN EL MES ACTUAL
-        String URL = "http://malpica.atwebpages.com/ejemplo/inicio_consulta_ventas.php?mes=" + datoMes;
+        String URL = "http://malpicas.heliohost.org/malpica/usuario/inicio_consulta_ventas.php?mes=" + datoMes;
         jsonObjectRequest = new JsonObjectRequest(Request.Method.GET,URL,null,
                 new Response.Listener<JSONObject>() {
 
@@ -146,7 +146,7 @@ public class UsuarioFragment extends Fragment {
     public void obtenerCompras(){
 
         // OBTIENE EL TOTAL DE COMPRAS REGISTRADAS EN EL MES ACTUAL
-        String URL = "http://malpica.atwebpages.com/ejemplo/inicio_consulta_compras.php?mes=" + datoMes;
+        String URL = "http://malpicas.heliohost.org/malpica/usuario/inicio_consulta_compras.php?mes=" + datoMes;
         jsonObjectRequest = new JsonObjectRequest(Request.Method.GET,URL,null,
                 new Response.Listener<JSONObject>() {
 
@@ -191,7 +191,7 @@ public class UsuarioFragment extends Fragment {
     public void obtenerGastos(){
 
         // OBTIENE EL TOTAL DE GASTOS REGISTRADAS EN EL MES ACTUAL
-        String URL = "http://malpica.atwebpages.com/ejemplo/inicio_consulta_gastos.php?mes=" + datoMes;
+        String URL = "http://malpicas.heliohost.org/malpica/usuario/inicio_consulta_gastos.php?mes=" + datoMes;
         jsonObjectRequest = new JsonObjectRequest(Request.Method.GET,URL,null,
                 new Response.Listener<JSONObject>() {
 
@@ -238,7 +238,7 @@ public class UsuarioFragment extends Fragment {
         // RECIBE EL USUARIO Y LO UTILIZA PARA CONSULTAR LOS DATOS DEL CLIENTE
         datoUsuario = getActivity().getIntent().getStringExtra("user");
 
-        String URL = "http://malpica.atwebpages.com/ejemplo/inicio_consulta_datos.php?usuario=" + datoUsuario;
+        String URL = "http://malpicas.heliohost.org/malpica/usuario/inicio_consulta_datos.php?usuario=" + datoUsuario;
         jsonObjectRequest = new JsonObjectRequest(Request.Method.GET,URL,null,
                 new Response.Listener<JSONObject>() {
 
@@ -361,7 +361,7 @@ public class UsuarioFragment extends Fragment {
         final EditText editEmail = getActivity().findViewById(R.id.editEmail);
         final EditText editTelefono = getActivity().findViewById(R.id.editTelefono);
 
-        String URL = "http://malpica.atwebpages.com/ejemplo/inicio_update_datos.php?usuario=" + datoUsuario;
+        String URL = "http://malpicas.heliohost.org/malpica/usuario/inicio_update_datos.php?usuario=" + datoUsuario;
         StringRequest stringRequest = new StringRequest(Request.Method.POST, URL, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {

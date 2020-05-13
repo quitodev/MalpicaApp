@@ -1,102 +1,103 @@
 package com.example.malpicasoft.usuario;
 
-public class UsuarioSetters {
+class UsuarioSetters {
 
-    String totalVentas, totalCompras, totalGastos, local, direccion, localidad, cuit, condicion, email, telefono, estado, fechaAlta;
+    private String totalVentas, totalCompras, totalGastos, estado, fechaAlta, local, direccion,
+            localidad, cuit, condicion, email, telefono;
 
-    public String getTotalVentas() {
+    String getTotalVentas() {
         return totalVentas;
     }
 
-    public void setTotalVentas(String totalVentas) {
+    void setTotalVentas(String totalVentas) {
         this.totalVentas = totalVentas;
     }
 
-    public String getTotalCompras() {
+    String getTotalCompras() {
         return totalCompras;
     }
 
-    public void setTotalCompras(String totalCompras) {
+    void setTotalCompras(String totalCompras) {
         this.totalCompras = totalCompras;
     }
 
-    public String getTotalGastos() {
+    String getTotalGastos() {
         return totalGastos;
     }
 
-    public void setTotalGastos(String totalGastos) {
+    void setTotalGastos(String totalGastos) {
         this.totalGastos = totalGastos;
     }
 
-    public String getLocal() {
+    String getLocal() {
         return local;
     }
 
-    public void setLocal(String local) {
+    void setLocal(String local) {
         this.local = local;
     }
 
-    public String getDireccion() {
+    String getDireccion() {
         return direccion;
     }
 
-    public void setDireccion(String direccion) {
+    void setDireccion(String direccion) {
         this.direccion = direccion;
     }
 
-    public String getLocalidad() {
+    String getLocalidad() {
         return localidad;
     }
 
-    public void setLocalidad(String localidad) {
+    void setLocalidad(String localidad) {
         this.localidad = localidad;
     }
 
-    public String getCuit() {
+    String getCuit() {
         return cuit;
     }
 
-    public void setCuit(String cuit) {
+    void setCuit(String cuit) {
         this.cuit = cuit;
     }
 
-    public String getCondicion() {
+    String getCondicion() {
         return condicion;
     }
 
-    public void setCondicion(String condicion) {
+    void setCondicion(String condicion) {
         this.condicion = condicion;
     }
 
-    public String getEmail() {
+    String getEmail() {
         return email;
     }
 
-    public void setEmail(String email) {
+    void setEmail(String email) {
         this.email = email;
     }
 
-    public String getTelefono() {
+    String getTelefono() {
         return telefono;
     }
 
-    public void setTelefono(String telefono) {
+    void setTelefono(String telefono) {
         this.telefono = telefono;
     }
 
-    public String getEstado() {
+    String getEstado() {
         return estado;
     }
 
-    public void setEstado(String estado) {
+    void setEstado(String estado) {
         this.estado = estado;
     }
 
-    public String getFechaAlta() {
+    String getFechaAlta() {
         return fechaAlta;
     }
 
-    public void setFechaAlta(String fechaAlta) {
+    void setFechaAlta(String fechaAlta) {
         this.fechaAlta = fechaAlta;
     }
 }
