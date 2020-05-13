@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -44,7 +45,7 @@
                 android:gravity="center_horizontal"
                 android:text="@string/compras_ingresar"
                 android:textColor="@color/colorAccent"
-                android:textSize="24sp"/>
+                android:textSize="24sp" />
 
             <TextView
                 android:id="@+id/textFechaCompra"
@@ -601,9 +602,9 @@
             <EditText
                 android:id="@+id/editVacio"
                 android:layout_width="match_parent"
-                android:layout_height="5dp"
+                android:layout_height="1dp"
                 android:layout_below="@+id/buttonGuardar"
-                android:layout_marginTop="30dp"
+                android:layout_marginTop="35dp"
                 android:background="#00000000"
                 android:focusable="false"
                 android:text=""
