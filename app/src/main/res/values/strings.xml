@@ -6,8 +6,13 @@
     <string name="dialog_ok">Operación realizada!</string>
     <string name="dialog_error">Revise los datos ingresados!</string>
     <string name="dialog_error_factura">La factura ya existe!</string>
-    <string name="dialog_eliminar">¿Desea eliminar la factura?</string>
+    <string name="dialog_error_cliente">El cliente ya existe!</string>
+    <string name="dialog_error_proveedor">El proveedor ya existe!</string>
+    <string name="dialog_error_producto">El producto ya existe!</string>
+    <string name="dialog_eliminar">¿Confirma la eliminación?</string>
     <string name="dialog_eliminar1">Se eliminará para siempre!</string>
+    <string name="dialog_operaciones">No se pudo eliminar :(</string>
+    <string name="dialog_operaciones1">Registra operaciones!</string>
     <string name="dialog_button">Continuar</string>
     <string name="open">Open</string>
     <string name="close">Close</string>

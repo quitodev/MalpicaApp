@@ -129,6 +129,8 @@ public class UsuarioFragment extends Fragment {
                                 String totalVentas3 = "$ " + decimalFormat.format(totalVentas2).replace(".",",");
                                 TextView textVentas = getActivity().findViewById(R.id.textVentas1);
                                 textVentas.setText(totalVentas3);
+
+
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();

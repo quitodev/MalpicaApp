@@ -2,8 +2,7 @@ package com.example.malpicasoft.login;
 
 class LoginSetters {
 
-    private String user;
-    private String pass;
+    private String user, pass;
 
     String getUser() {
         return user;
