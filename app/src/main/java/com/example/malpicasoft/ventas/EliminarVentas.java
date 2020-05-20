@@ -31,6 +31,7 @@ import org.json.JSONObject;
 import java.text.DateFormat;
 import java.text.DecimalFormat;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Timer;
@@ -39,7 +40,7 @@ import java.util.TimerTask;
 public class EliminarVentas extends Fragment {
 
     private RequestQueue requestQueue;
-    private String datoBuscarFactura, datoCodigo, datoFechaActual, datoDia, datoMes, datoAno, nuevoPrecioTotal;
+    private String datoFechaActual, datoHoraActual, datoBuscarFactura, datoCodigoStock, datoDia, datoMes, datoAno, nuevoPrecioTotal;
     private int counter, cantidadFactura, nuevaCantidad;
     
     public EliminarVentas() { }
@@ -55,20 +56,22 @@ public class EliminarVentas extends Fragment {
 
         // COMPONENTES DE LA VISTA
         final EditText editBuscarFactura = root.findViewById(R.id.editBuscarFactura);
-        final EditText editFechaVenta = root.findViewById(R.id.editFechaVenta);
-        final EditText editFechaIngresada = root.findViewById(R.id.editFechaIngresada);
-        final EditText editCodigoCliente = root.findViewById(R.id.editCodigoCliente);
-        final EditText editRazonSocialCliente = root.findViewById(R.id.editRazonSocialCliente);
-        final EditText editCondicionCliente = root.findViewById(R.id.editCondicionCliente);
-        final EditText editCodigoProd = root.findViewById(R.id.editCodigoProd);
-        final EditText editDescripcionProd = root.findViewById(R.id.editDescripcionProd);
+        final EditText editFechaFactura = root.findViewById(R.id.editFechaFactura);
+        final EditText editFechaIngreso = root.findViewById(R.id.editFechaIngreso);
+        final EditText editFechaModif = root.findViewById(R.id.editFechaModif);
+        final EditText editNroFactura = root.findViewById(R.id.editNroFactura);
+        final EditText editCodigo = root.findViewById(R.id.editCodigo);
+        final EditText editRazonSocial = root.findViewById(R.id.editRazonSocial);
+        final EditText editCondicion = root.findViewById(R.id.editCondicion);
+        final EditText editCodigoStock = root.findViewById(R.id.editCodigoStock);
+        final EditText editDescripcionStock = root.findViewById(R.id.editDescripcionStock);
         final EditText editCantidad = root.findViewById(R.id.editCantidad);
         final EditText editPrecioUnit = root.findViewById(R.id.editPrecioUnit);
         final EditText editImpuestos = root.findViewById(R.id.editImpuestos);
         final EditText editPrecioTotal = root.findViewById(R.id.editPrecioTotal);
 
-        Button buttonConsultar = root.findViewById(R.id.buttonConsultar);
-        Button buttonEliminar = root.findViewById(R.id.buttonEliminar);
+        final Button buttonConsultar = root.findViewById(R.id.buttonConsultar);
+        final Button buttonEliminar = root.findViewById(R.id.buttonEliminar);
 
         dateFragments();
 
@@ -78,7 +81,6 @@ public class EliminarVentas extends Fragment {
             public void onClick(View v) {
 
                 datoBuscarFactura = editBuscarFactura.getText().toString();
-                editBuscarFactura.clearFocus();
 
                 if(!datoBuscarFactura.isEmpty()){
 
@@ -89,13 +91,15 @@ public class EliminarVentas extends Fragment {
                 } else {
 
                     // SI NO SE INGRESÓ UNA FACTURA, LIMPIA CAMPOS Y MUESTRA UN ERROR
-                    editFechaVenta.setText("");
-                    editFechaIngresada.setText("");
-                    editCodigoCliente.setText("");
-                    editRazonSocialCliente.setText("");
-                    editCondicionCliente.setText("");
-                    editCodigoProd.setText("");
-                    editDescripcionProd.setText("");
+                    editFechaFactura.setText("");
+                    editFechaIngreso.setText("");
+                    editFechaModif.setText("");
+                    editNroFactura.setText("");
+                    editCodigo.setText("");
+                    editRazonSocial.setText("");
+                    editCondicion.setText("");
+                    editCodigoStock.setText("");
+                    editDescripcionStock.setText("");
                     editCantidad.setText("");
                     editPrecioUnit.setText("");
                     editImpuestos.setText("");
@@ -113,7 +117,6 @@ public class EliminarVentas extends Fragment {
             public void onClick(View v) {
 
                 datoBuscarFactura = editBuscarFactura.getText().toString();
-                editBuscarFactura.clearFocus();
 
                 if(!datoBuscarFactura.isEmpty()){
 
@@ -128,7 +131,11 @@ public class EliminarVentas extends Fragment {
 
     private void dateFragments() {
 
-        // MÉTODO PARA OBTENER EL DÍA ACTUAL
+        // OBTIENE LA FECHA Y HORA ACTUAL
+        Date date = Calendar.getInstance().getTime();
+        String hour = date.toString();
+        datoHoraActual = "" + hour.charAt(11) + hour.charAt(12) + hour.charAt(13) + hour.charAt(14) + hour.charAt(15);
+
         Calendar calendar = Calendar.getInstance();
         String fechaActual = DateFormat.getDateInstance(DateFormat.SHORT).format(calendar.getTime());
 
@@ -177,27 +184,32 @@ public class EliminarVentas extends Fragment {
             @Override
             public void run() {
                 Dialogs dialogs = new Dialogs(getActivity());
-                dialogs.startError();
+                int layout = R.layout.dialog_error;
+                dialogs.startResultado(layout);
 
-                EditText editFechaVenta = getView().findViewById(R.id.editFechaVenta);
-                EditText editFechaIngresada = getView().findViewById(R.id.editFechaIngresada);
-                EditText editCodigoCliente = getView().findViewById(R.id.editCodigoCliente);
-                EditText editRazonSocialCliente = getView().findViewById(R.id.editRazonSocialCliente);
-                EditText editCondicionCliente = getView().findViewById(R.id.editCondicionCliente);
-                EditText editCodigoProd = getView().findViewById(R.id.editCodigoProd);
-                EditText editDescripcionProd = getView().findViewById(R.id.editDescripcionProd);
+                EditText editFechaFactura = getView().findViewById(R.id.editFechaFactura);
+                EditText editFechaIngreso = getView().findViewById(R.id.editFechaIngreso);
+                EditText editFechaModif = getView().findViewById(R.id.editFechaModif);
+                EditText editNroFactura = getView().findViewById(R.id.editNroFactura);
+                EditText editCodigo = getView().findViewById(R.id.editCodigo);
+                EditText editRazonSocial = getView().findViewById(R.id.editRazonSocial);
+                EditText editCondicion = getView().findViewById(R.id.editCondicion);
+                EditText editCodigoStock = getView().findViewById(R.id.editCodigoStock);
+                EditText editDescripcionStock = getView().findViewById(R.id.editDescripcionStock);
                 EditText editCantidad = getView().findViewById(R.id.editCantidad);
                 EditText editPrecioUnit = getView().findViewById(R.id.editPrecioUnit);
                 EditText editImpuestos = getView().findViewById(R.id.editImpuestos);
                 EditText editPrecioTotal = getView().findViewById(R.id.editPrecioTotal);
 
-                editFechaVenta.setText("");
-                editFechaIngresada.setText("");
-                editCodigoCliente.setText("");
-                editRazonSocialCliente.setText("");
-                editCondicionCliente.setText("");
-                editCodigoProd.setText("");
-                editDescripcionProd.setText("");
+                editFechaFactura.setText("");
+                editFechaIngreso.setText("");
+                editFechaModif.setText("");
+                editNroFactura.setText("");
+                editCodigo.setText("");
+                editRazonSocial.setText("");
+                editCondicion.setText("");
+                editCodigoStock.setText("");
+                editDescripcionStock.setText("");
                 editCantidad.setText("");
                 editPrecioUnit.setText("");
                 editImpuestos.setText("");
@@ -242,27 +254,32 @@ public class EliminarVentas extends Fragment {
             @Override
             public void run() {
                 Dialogs dialogs = new Dialogs(getActivity());
-                dialogs.startOk();
+                int layout = R.layout.dialog_ok;
+                dialogs.startResultado(layout);
 
-                EditText editFechaVenta = getView().findViewById(R.id.editFechaVenta);
-                EditText editFechaIngresada = getView().findViewById(R.id.editFechaIngresada);
-                EditText editCodigoCliente = getView().findViewById(R.id.editCodigoCliente);
-                EditText editRazonSocialCliente = getView().findViewById(R.id.editRazonSocialCliente);
-                EditText editCondicionCliente = getView().findViewById(R.id.editCondicionCliente);
-                EditText editCodigoProd = getView().findViewById(R.id.editCodigoProd);
-                EditText editDescripcionProd = getView().findViewById(R.id.editDescripcionProd);
+                EditText editFechaFactura = getView().findViewById(R.id.editFechaFactura);
+                EditText editFechaIngreso = getView().findViewById(R.id.editFechaIngreso);
+                EditText editFechaModif = getView().findViewById(R.id.editFechaModif);
+                EditText editNroFactura = getView().findViewById(R.id.editNroFactura);
+                EditText editCodigo = getView().findViewById(R.id.editCodigo);
+                EditText editRazonSocial = getView().findViewById(R.id.editRazonSocial);
+                EditText editCondicion = getView().findViewById(R.id.editCondicion);
+                EditText editCodigoStock = getView().findViewById(R.id.editCodigoStock);
+                EditText editDescripcionStock = getView().findViewById(R.id.editDescripcionStock);
                 EditText editCantidad = getView().findViewById(R.id.editCantidad);
                 EditText editPrecioUnit = getView().findViewById(R.id.editPrecioUnit);
                 EditText editImpuestos = getView().findViewById(R.id.editImpuestos);
                 EditText editPrecioTotal = getView().findViewById(R.id.editPrecioTotal);
 
-                editFechaVenta.setText("");
-                editFechaIngresada.setText("");
-                editCodigoCliente.setText("");
-                editRazonSocialCliente.setText("");
-                editCondicionCliente.setText("");
-                editCodigoProd.setText("");
-                editDescripcionProd.setText("");
+                editFechaFactura.setText("");
+                editFechaIngreso.setText("");
+                editFechaModif.setText("");
+                editNroFactura.setText("");
+                editCodigo.setText("");
+                editRazonSocial.setText("");
+                editCondicion.setText("");
+                editCodigoStock.setText("");
+                editDescripcionStock.setText("");
                 editCantidad.setText("");
                 editPrecioUnit.setText("");
                 editImpuestos.setText("");
@@ -277,7 +294,7 @@ public class EliminarVentas extends Fragment {
     private void consultarFactura() {
 
         // CONSULTA LA FACTURA INGRESADA EN LA BASE DE DATOS
-        String URL = "http://malpicas.heliohost.org/malpica/ventas/ventas_buscar_factura.php?factura=" + datoBuscarFactura;
+        String URL = "http://malpicas.heliohost.org/malpica/ventas/ventas_buscar_factura.php?parameter=" + datoBuscarFactura;
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, URL, null,
                 new Response.Listener<JSONObject>() {
 
@@ -285,76 +302,87 @@ public class EliminarVentas extends Fragment {
                     public void onResponse(JSONObject response) {
 
                         try {
-                            JSONArray jsonArray = response.getJSONArray("factura");
+                            JSONArray jsonArray = response.getJSONArray("data");
 
                             // RECORRE EL ARRAY DE JSON CON LA CONSULTA Y CON UN SETTER & GETTER MUESTRA LOS RESULTADOS
                             for (int i = 0; i < jsonArray.length(); i++) {
 
                                 JSONObject jsonObject = jsonArray.getJSONObject(i);
-                                VentasSetters ventasSetters = new VentasSetters();
+                                VentasSetters setters = new VentasSetters();
 
-                                ventasSetters.setFechaVenta(jsonObject.getString("fecha_venta"));
-                                ventasSetters.setFechaIngreso(jsonObject.getString("fecha_ingreso"));
-                                ventasSetters.setCodigoCliente(jsonObject.getString("codigo_cliente"));
-                                ventasSetters.setNombreCliente(jsonObject.getString("nombre_cliente"));
-                                ventasSetters.setCondicionCliente(jsonObject.getString("condicion_cliente"));
-                                ventasSetters.setCodigoProd(jsonObject.getString("codigo"));
-                                ventasSetters.setDescripcionProd(jsonObject.getString("descripcion"));
-                                ventasSetters.setCantidadProd(jsonObject.getString("cantidad"));
-                                ventasSetters.setPrecioUnitProd(jsonObject.getString("precio_unit"));
-                                ventasSetters.setImpuestos(jsonObject.getString("impuestos"));
-                                ventasSetters.setPrecioTotalProd(jsonObject.getString("precio_final"));
+                                setters.setFechaFactura(jsonObject.getString("fecha_factura"));
+                                setters.setFechaIngreso(jsonObject.getString("fecha_ingreso"));
+                                setters.setFechaModif(jsonObject.getString("fecha_modif"));
+                                setters.setHoraModif(jsonObject.getString("hora_modif"));
+                                setters.setNroFactura(jsonObject.getString("nro_factura"));
+                                setters.setCodigo(jsonObject.getString("codigo"));
+                                setters.setRazonSocial(jsonObject.getString("razon_social"));
+                                setters.setCondicion(jsonObject.getString("condicion"));
+                                setters.setCodigoStock(jsonObject.getString("codigo_stock"));
+                                setters.setDescripcionStock(jsonObject.getString("descripcion_stock"));
+                                setters.setCantidad(jsonObject.getString("cantidad"));
+                                setters.setPrecioUnit(jsonObject.getString("precio_unit"));
+                                setters.setImpuestos(jsonObject.getString("impuestos"));
+                                setters.setPrecioTotal(jsonObject.getString("precio_total"));
 
-                                String fechaVenta = ventasSetters.getFechaVenta();
-                                String fechaIngreso = ventasSetters.getFechaIngreso();
-                                String codigoCliente = ventasSetters.getCodigoCliente();
-                                String nombreCliente = ventasSetters.getNombreCliente();
-                                String condicionCliente = ventasSetters.getCondicionCliente();
-                                String codigoProd = ventasSetters.getCodigoProd();
-                                String descripcionProd = ventasSetters.getDescripcionProd();
-                                String cantidadProd = ventasSetters.getCantidadProd();
-                                String precioUnitProd = ventasSetters.getPrecioUnitProd();
-                                String impuestos = ventasSetters.getImpuestos();
-                                String precioTotalProd = ventasSetters.getPrecioTotalProd();
+                                String fechaFactura = setters.getFechaFactura();
+                                String fechaIngreso = setters.getFechaIngreso();
+                                String fechaModif = setters.getFechaModif() + " " + setters.getHoraModif();
+                                String nroFactura = setters.getNroFactura();
+                                String codigo = setters.getCodigo();
+                                String razonSocial = setters.getRazonSocial();
+                                String condicion = setters.getCondicion();
+                                String codigoStock = setters.getCodigoStock();
+                                String descripcionStock = setters.getDescripcionStock();
+                                String cantidad = setters.getCantidad();
+                                String precioUnit = setters.getPrecioUnit();
+                                String impuestos = setters.getImpuestos();
+                                String precioTotal = setters.getPrecioTotal();
 
-                                if (!fechaVenta.equals("No existe")) {
+                                if (!fechaFactura.equals("No existe")) {
 
                                     // SI DEVUELVE UNA FACTURA MUESTRA LOS DATOS EN LOS CAMPOS
-                                    EditText editFechaVenta = getView().findViewById(R.id.editFechaVenta);
-                                    EditText editFechaIngresada = getView().findViewById(R.id.editFechaIngresada);
-                                    EditText editCodigoCliente = getView().findViewById(R.id.editCodigoCliente);
-                                    EditText editRazonSocialCliente = getView().findViewById(R.id.editRazonSocialCliente);
-                                    EditText editCondicionCliente = getView().findViewById(R.id.editCondicionCliente);
-                                    EditText editCodigoProd = getView().findViewById(R.id.editCodigoProd);
-                                    EditText editDescripcionProd = getView().findViewById(R.id.editDescripcionProd);
+                                    EditText editFechaFactura = getView().findViewById(R.id.editFechaFactura);
+                                    EditText editFechaIngreso = getView().findViewById(R.id.editFechaIngreso);
+                                    EditText editFechaModif = getView().findViewById(R.id.editFechaModif);
+                                    EditText editNroFactura = getView().findViewById(R.id.editNroFactura);
+                                    EditText editCodigo = getView().findViewById(R.id.editCodigo);
+                                    EditText editRazonSocial = getView().findViewById(R.id.editRazonSocial);
+                                    EditText editCondicion = getView().findViewById(R.id.editCondicion);
+                                    EditText editCodigoStock = getView().findViewById(R.id.editCodigoStock);
+                                    EditText editDescripcionStock = getView().findViewById(R.id.editDescripcionStock);
                                     EditText editCantidad = getView().findViewById(R.id.editCantidad);
                                     EditText editPrecioUnit = getView().findViewById(R.id.editPrecioUnit);
                                     EditText editImpuestos = getView().findViewById(R.id.editImpuestos);
                                     EditText editPrecioTotal = getView().findViewById(R.id.editPrecioTotal);
 
-                                    editFechaVenta.setText(fechaVenta);
-                                    editFechaIngresada.setText(fechaIngreso);
-                                    editCodigoCliente.setText(codigoCliente);
-                                    editRazonSocialCliente.setText(nombreCliente);
-                                    editCondicionCliente.setText(condicionCliente);
-                                    editCodigoProd.setText(codigoProd);
-                                    editDescripcionProd.setText(descripcionProd);
-                                    editCantidad.setText(cantidadProd);
-                                    editPrecioUnit.setText(precioUnitProd);
+                                    editFechaFactura.setText(fechaFactura);
+                                    editFechaIngreso.setText(fechaIngreso);
+                                    editFechaModif.setText(fechaModif);
+                                    editNroFactura.setText(nroFactura);
+                                    editCodigo.setText(codigo);
+                                    editRazonSocial.setText(razonSocial);
+                                    editCondicion.setText(condicion);
+                                    editCodigoStock.setText(codigoStock);
+                                    editDescripcionStock.setText(descripcionStock);
+                                    editCantidad.setText(cantidad);
+                                    editPrecioUnit.setText(precioUnit);
                                     editImpuestos.setText(impuestos);
-                                    editPrecioTotal.setText(precioTotalProd);
+                                    editPrecioTotal.setText(precioTotal);
 
-                                    datoCodigo = codigoProd + "";
-                                    cantidadFactura = Integer.parseInt(cantidadProd);
+                                    datoCodigoStock = codigo + "";
+                                    cantidadFactura = Integer.parseInt(cantidad);
 
-                                    if (fechaVenta.contains("/2") && fechaIngreso.contains("/2")) {
+                                    if (fechaFactura.contains("/2") && fechaIngreso.contains("/2") && fechaModif.contains("/2")) {
 
                                         // REEMPLAZO DE FORMATO DE FECHA
-                                        String fechaVenta1 = fechaVenta.replace("/2","/202");
+                                        String fechaFactura1 = fechaFactura.replace("/2","/202");
                                         String fechaIngreso1 = fechaIngreso.replace("/2","/202");
+                                        String fechaModif1 = fechaModif.replace("/2","/202");
 
-                                        editFechaVenta.setText(fechaVenta1);
-                                        editFechaIngresada.setText(fechaIngreso1);
+                                        editFechaFactura.setText(fechaFactura1);
+                                        editFechaIngreso.setText(fechaIngreso1);
+                                        editFechaModif.setText(fechaModif1);
                                     }
 
                                 } else {
@@ -370,7 +398,7 @@ public class EliminarVentas extends Fragment {
                 }, new Response.ErrorListener() {
 
             public void onErrorResponse(VolleyError error) {
-                Toast.makeText(getContext(), "Por favor, revise su conexión!", Toast.LENGTH_LONG).show();
+                Toast.makeText(getContext(), "Por favor, revise su conexión!", Toast.LENGTH_SHORT).show();
             }
         });
         requestQueue.add(jsonObjectRequest);
@@ -379,7 +407,7 @@ public class EliminarVentas extends Fragment {
     private void consultarProducto() {
 
         // CONSULTA EL PRODUCTO EN LA BASE DE DATOS
-        String URL = "http://malpicas.heliohost.org/malpica/ventas/ventas_consultar_producto.php?codigo=" + datoCodigo;
+        String URL = "http://malpicas.heliohost.org/malpica/ventas/ventas_consultar_producto.php?parameter=" + datoCodigoStock;
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, URL, null,
                 new Response.Listener<JSONObject>() {
 
@@ -387,27 +415,27 @@ public class EliminarVentas extends Fragment {
                     public void onResponse(JSONObject response) {
 
                         try {
-                            JSONArray jsonArray = response.getJSONArray("stock");
+                            JSONArray jsonArray = response.getJSONArray("data");
 
                             // RECORRE EL ARRAY DE JSON CON LA CONSULTA Y ACTUALIZA EL STOCK
                             for (int i = 0; i < jsonArray.length(); i++) {
 
                                 JSONObject jsonObject = jsonArray.getJSONObject(i);
-                                VentasSetters ventasSetters = new VentasSetters();
+                                VentasSetters setters = new VentasSetters();
 
-                                ventasSetters.setCodigoProd(jsonObject.getString("codigo"));
-                                ventasSetters.setDescripcionProd(jsonObject.getString("descripcion"));
-                                ventasSetters.setCantidadProd(jsonObject.getString("cantidad"));
-                                ventasSetters.setMonedaProd(jsonObject.getString("moneda"));
-                                ventasSetters.setPrecioUnitProd(jsonObject.getString("precio_unit"));
-                                ventasSetters.setPrecioTotalProd(jsonObject.getString("precio_total"));
+                                setters.setCodigoStock(jsonObject.getString("codigo_stock"));
+                                setters.setDescripcionStock(jsonObject.getString("descripcion_stock"));
+                                setters.setCantidad(jsonObject.getString("cantidad"));
+                                setters.setMoneda(jsonObject.getString("moneda"));
+                                setters.setPrecioUnit(jsonObject.getString("precio_unit"));
+                                setters.setPrecioTotal(jsonObject.getString("precio_total"));
 
-                                String cantidadProd = ventasSetters.getCantidadProd();
-                                String precioUnitProd = ventasSetters.getPrecioUnitProd();
+                                String cantidadStock = setters.getCantidad();
+                                String precioUnitStock = setters.getPrecioUnit();
 
-                                int cantidadGetter = Integer.parseInt(cantidadProd);
-                                double precioUnit = Double.parseDouble(precioUnitProd);
-                                nuevaCantidad = cantidadGetter - cantidadFactura;
+                                int cantidadGetter = Integer.parseInt(cantidadStock);
+                                double precioUnit = Double.parseDouble(precioUnitStock);
+                                nuevaCantidad = cantidadGetter + cantidadFactura;
                                 double preciototal = nuevaCantidad * precioUnit;
 
                                 DecimalFormat decimalFormat = new DecimalFormat("#.00");
@@ -427,7 +455,7 @@ public class EliminarVentas extends Fragment {
                 }, new Response.ErrorListener() {
 
             public void onErrorResponse(VolleyError error) {
-                Toast.makeText(getContext(), "Por favor, revise su conexión!", Toast.LENGTH_LONG).show();
+                Toast.makeText(getContext(), "Por favor, revise su conexión!", Toast.LENGTH_SHORT).show();
             }
         });
         requestQueue.add(jsonObjectRequest);
@@ -453,17 +481,18 @@ public class EliminarVentas extends Fragment {
         }) {
             @Override
             protected Map<String, String> getParams() {
-                Map<String, String> datosStock = new HashMap<>();
+                Map<String, String> parameter = new HashMap<>();
 
-                datosStock.put("codigo",datoCodigo);
-                datosStock.put("cantidad",datoCantidad);
-                datosStock.put("precio_total",datoPrecioTotal);
-                datosStock.put("fecha_modif",datoFechaActual);
-                datosStock.put("dia_modif",datoDia);
-                datosStock.put("mes_modif",datoMes);
-                datosStock.put("ano_modif",datoAno);
+                parameter.put("codigo_stock",datoCodigoStock);
+                parameter.put("cantidad",datoCantidad);
+                parameter.put("precio_total",datoPrecioTotal);
+                parameter.put("fecha_modif",datoFechaActual);
+                parameter.put("hora_modif",datoHoraActual);
+                parameter.put("dia_modif",datoDia);
+                parameter.put("mes_modif",datoMes);
+                parameter.put("ano_modif",datoAno);
 
-                return datosStock;
+                return parameter;
             }
         };
         requestQueue.add(stringRequest);
@@ -481,16 +510,16 @@ public class EliminarVentas extends Fragment {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                dialogError();
+                Toast.makeText(getContext(),error.toString(), Toast.LENGTH_LONG).show();
             }
         }) {
             @Override
             protected Map<String, String> getParams() {
-                Map<String, String> datosFactura = new HashMap<>();
+                Map<String, String> parameter = new HashMap<>();
 
-                datosFactura.put("factura",datoBuscarFactura);
+                parameter.put("parameter",datoBuscarFactura);
 
-                return datosFactura;
+                return parameter;
             }
         };
         requestQueue.add(stringRequest1);

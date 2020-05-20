@@ -54,6 +54,8 @@ public class EliminarProveedores extends Fragment {
         final EditText editBuscarCodigo = root.findViewById(R.id.editBuscarCodigo);
         final EditText editBuscarRazon = root.findViewById(R.id.editBuscarRazon);
         final EditText editBuscarCuit = root.findViewById(R.id.editBuscarCuit);
+        final EditText editFechaAlta = root.findViewById(R.id.editFechaAlta);
+        final EditText editFechaModif = root.findViewById(R.id.editFechaModif);
         final EditText editCodigo = root.findViewById(R.id.editCodigo);
         final EditText editRazonSocial = root.findViewById(R.id.editRazonSocial);
         final EditText editCondicion = root.findViewById(R.id.editCondicion);
@@ -64,8 +66,8 @@ public class EliminarProveedores extends Fragment {
         final EditText editContacto = root.findViewById(R.id.editContacto);
         final EditText editTipo = root.findViewById(R.id.editTipo);
 
-        Button buttonConsultar = root.findViewById(R.id.buttonConsultar);
-        Button buttonEliminar = root.findViewById(R.id.buttonEliminar);
+        final Button buttonConsultar = root.findViewById(R.id.buttonConsultar);
+        final Button buttonEliminar = root.findViewById(R.id.buttonEliminar);
 
         // EVENTOS DEL BOTÓN CONSULTAR
         buttonConsultar.setOnClickListener(new View.OnClickListener() {
@@ -75,10 +77,6 @@ public class EliminarProveedores extends Fragment {
                 datoBuscarCodigo = editBuscarCodigo.getText().toString();
                 datoBuscarRazon = editBuscarRazon.getText().toString();
                 datoBuscarCuit = editBuscarCuit.getText().toString();
-
-                editBuscarCodigo.clearFocus();
-                editBuscarRazon.clearFocus();
-                editBuscarCuit.clearFocus();
 
                 // SI LOS CAMPOS NO ESTÁN VACÍOS, REALIZA LA CONSULTA CORRESPONDIENTE
                 if (!datoBuscarCodigo.isEmpty()) {
@@ -102,6 +100,8 @@ public class EliminarProveedores extends Fragment {
                 if (datoBuscarCodigo.isEmpty() && datoBuscarRazon.isEmpty() && datoBuscarCuit.isEmpty()) {
 
                     // SI LOS CAMPOS ESTÁN VACÍOS, SE LIMPIAN LOS RESULTADOS ANTERIORES Y MUESTRA UN ERROR
+                    editFechaAlta.setText("");
+                    editFechaModif.setText("");
                     editCodigo.setText("");
                     editRazonSocial.setText("");
                     editCondicion.setText("");
@@ -176,8 +176,11 @@ public class EliminarProveedores extends Fragment {
             @Override
             public void run() {
                 Dialogs dialogs = new Dialogs(getActivity());
-                dialogs.startError();
+                int layout = R.layout.dialog_error;
+                dialogs.startResultado(layout);
 
+                EditText editFechaAlta = getView().findViewById(R.id.editFechaAlta);
+                EditText editFechaModif = getView().findViewById(R.id.editFechaModif);
                 EditText editCodigo = getView().findViewById(R.id.editCodigo);
                 EditText editRazonSocial = getView().findViewById(R.id.editRazonSocial);
                 EditText editCondicion = getView().findViewById(R.id.editCondicion);
@@ -188,6 +191,8 @@ public class EliminarProveedores extends Fragment {
                 EditText editContacto = getView().findViewById(R.id.editContacto);
                 EditText editTipo = getView().findViewById(R.id.editTipo);
 
+                editFechaAlta.setText("");
+                editFechaModif.setText("");
                 editCodigo.setText("");
                 editRazonSocial.setText("");
                 editCondicion.setText("");
@@ -206,13 +211,16 @@ public class EliminarProveedores extends Fragment {
 
     private void dialogErrorOps(){
 
-        // DIALOG CON MENSAJE DE ERROR
+        // DIALOG CON MENSAJE DE ERROR POR TENER OPERACIONES VINCULADAS REGISTRADAS
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
                 Dialogs dialogs = new Dialogs(getActivity());
-                dialogs.startErrorOps();
+                int layout = R.layout.dialog_error_operaciones;
+                dialogs.startResultado(layout);
 
+                EditText editFechaAlta = getView().findViewById(R.id.editFechaAlta);
+                EditText editFechaModif = getView().findViewById(R.id.editFechaModif);
                 EditText editCodigo = getView().findViewById(R.id.editCodigo);
                 EditText editRazonSocial = getView().findViewById(R.id.editRazonSocial);
                 EditText editCondicion = getView().findViewById(R.id.editCondicion);
@@ -223,6 +231,8 @@ public class EliminarProveedores extends Fragment {
                 EditText editContacto = getView().findViewById(R.id.editContacto);
                 EditText editTipo = getView().findViewById(R.id.editTipo);
 
+                editFechaAlta.setText("");
+                editFechaModif.setText("");
                 editCodigo.setText("");
                 editRazonSocial.setText("");
                 editCondicion.setText("");
@@ -271,8 +281,11 @@ public class EliminarProveedores extends Fragment {
             @Override
             public void run() {
                 Dialogs dialogs = new Dialogs(getActivity());
-                dialogs.startOk();
+                int layout = R.layout.dialog_ok;
+                dialogs.startResultado(layout);
 
+                EditText editFechaAlta = getView().findViewById(R.id.editFechaAlta);
+                EditText editFechaModif = getView().findViewById(R.id.editFechaModif);
                 EditText editCodigo = getView().findViewById(R.id.editCodigo);
                 EditText editRazonSocial = getView().findViewById(R.id.editRazonSocial);
                 EditText editCondicion = getView().findViewById(R.id.editCondicion);
@@ -283,6 +296,8 @@ public class EliminarProveedores extends Fragment {
                 EditText editContacto = getView().findViewById(R.id.editContacto);
                 EditText editTipo = getView().findViewById(R.id.editTipo);
 
+                editFechaAlta.setText("");
+                editFechaModif.setText("");
                 editCodigo.setText("");
                 editRazonSocial.setText("");
                 editCondicion.setText("");
@@ -302,7 +317,7 @@ public class EliminarProveedores extends Fragment {
     private void consultarCodigo() {
 
         // CONSULTA POR CÓDIGO SI YA FUE INGRESADO ANTERIORMENTE A LA BASE
-        String URL = "http://malpicas.heliohost.org/malpica/proveedores/proveedores_consultar_codigo.php?codigo=" + datoBuscarCodigo;
+        String URL = "http://malpicas.heliohost.org/malpica/proveedores/proveedores_consultar_codigo.php?parameter=" + datoBuscarCodigo;
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, URL, null,
                 new Response.Listener<JSONObject>() {
 
@@ -310,37 +325,45 @@ public class EliminarProveedores extends Fragment {
                     public void onResponse(JSONObject response) {
 
                         try {
-                            JSONArray jsonArray = response.getJSONArray("datos");
+                            JSONArray jsonArray = response.getJSONArray("data");
 
                             // RECORRE EL ARRAY DE JSON CON LA CONSULTA Y CON UN SETTER & GETTER MUESTRA LOS RESULTADOS
                             for (int i = 0; i < jsonArray.length(); i++) {
 
                                 JSONObject jsonObject = jsonArray.getJSONObject(i);
-                                ProveedoresSetters proveedoresSetters = new ProveedoresSetters();
+                                ProveedoresSetters setters = new ProveedoresSetters();
 
-                                proveedoresSetters.setCodigo(jsonObject.getString("codigo_prov"));
-                                proveedoresSetters.setRazonSocial(jsonObject.getString("nombre_prov"));
-                                proveedoresSetters.setCondicion(jsonObject.getString("condicion_prov"));
-                                proveedoresSetters.setDescripcion(jsonObject.getString("descripcion"));
-                                proveedoresSetters.setCuit(jsonObject.getString("cuit_cuil"));
-                                proveedoresSetters.setDireccion(jsonObject.getString("direccion"));
-                                proveedoresSetters.setLocalidad(jsonObject.getString("localidad"));
-                                proveedoresSetters.setContacto(jsonObject.getString("contacto"));
-                                proveedoresSetters.setTipo(jsonObject.getString("tipo_prov"));
+                                setters.setFechaAlta(jsonObject.getString("fecha_alta"));
+                                setters.setHoraAlta(jsonObject.getString("hora_alta"));
+                                setters.setFechaModif(jsonObject.getString("fecha_modif"));
+                                setters.setHoraModif(jsonObject.getString("hora_modif"));
+                                setters.setCodigo(jsonObject.getString("codigo"));
+                                setters.setRazonSocial(jsonObject.getString("razon_social"));
+                                setters.setCondicion(jsonObject.getString("condicion"));
+                                setters.setDescripcion(jsonObject.getString("descripcion"));
+                                setters.setCuit(jsonObject.getString("cuit"));
+                                setters.setDireccion(jsonObject.getString("direccion"));
+                                setters.setLocalidad(jsonObject.getString("localidad"));
+                                setters.setContacto(jsonObject.getString("contacto"));
+                                setters.setTipo(jsonObject.getString("tipo"));
 
-                                String codigo = proveedoresSetters.getCodigo();
-                                String nombre = proveedoresSetters.getRazonSocial();
-                                String condicion = proveedoresSetters.getCondicion();
-                                String descripcion = proveedoresSetters.getDescripcion();
-                                String cuit = proveedoresSetters.getCuit();
-                                String direccion = proveedoresSetters.getDireccion();
-                                String localidad = proveedoresSetters.getLocalidad();
-                                String contacto = proveedoresSetters.getContacto();
-                                String tipo = proveedoresSetters.getTipo();
+                                String fechaAlta = setters.getFechaAlta() + " " + setters.getHoraAlta();
+                                String fechaModif = setters.getFechaModif() + " " + setters.getHoraModif();
+                                String codigo = setters.getCodigo();
+                                String razonSocial = setters.getRazonSocial();
+                                String condicion = setters.getCondicion();
+                                String descripcion = setters.getDescripcion();
+                                String cuit = setters.getCuit();
+                                String direccion = setters.getDireccion();
+                                String localidad = setters.getLocalidad();
+                                String contacto = setters.getContacto();
+                                String tipo = setters.getTipo();
 
-                                if (!codigo.equals("No existe")) {
+                                if (!fechaAlta.equals("No existe")) {
 
                                     // SI DEVUELVE VALORES LOS MUESTRA EN LOS CAMPOS
+                                    EditText editFechaAlta = getView().findViewById(R.id.editFechaAlta);
+                                    EditText editFechaModif = getView().findViewById(R.id.editFechaModif);
                                     EditText editCodigo = getView().findViewById(R.id.editCodigo);
                                     EditText editRazonSocial = getView().findViewById(R.id.editRazonSocial);
                                     EditText editCondicion = getView().findViewById(R.id.editCondicion);
@@ -351,8 +374,10 @@ public class EliminarProveedores extends Fragment {
                                     EditText editContacto = getView().findViewById(R.id.editContacto);
                                     EditText editTipo = getView().findViewById(R.id.editTipo);
 
+                                    editFechaAlta.setText(fechaAlta);
+                                    editFechaModif.setText(fechaModif);
                                     editCodigo.setText(codigo);
-                                    editRazonSocial.setText(nombre);
+                                    editRazonSocial.setText(razonSocial);
                                     editCondicion.setText(condicion);
                                     editDescripcion.setText(descripcion);
                                     editCuit.setText(cuit);
@@ -362,6 +387,16 @@ public class EliminarProveedores extends Fragment {
                                     editTipo.setText(tipo);
 
                                     datoCodigo = codigo + "";
+
+                                    if (fechaAlta.contains("/2") && fechaModif.contains("/2")) {
+
+                                        // REEMPLAZO DE FORMATO DE FECHA
+                                        String fechaAlta1 = fechaAlta.replace("/2","/202");
+                                        String fechaModif1 = fechaModif.replace("/2","/202");
+
+                                        editFechaAlta.setText(fechaAlta1);
+                                        editFechaModif.setText(fechaModif1);
+                                    }
 
                                 } else {
 
@@ -376,7 +411,7 @@ public class EliminarProveedores extends Fragment {
                 }, new Response.ErrorListener() {
 
             public void onErrorResponse(VolleyError error) {
-                Toast.makeText(getContext(), "Por favor, revise su conexión!", Toast.LENGTH_LONG).show();
+                Toast.makeText(getContext(), "Por favor, revise su conexión!", Toast.LENGTH_SHORT).show();
             }
         });
         requestQueue.add(jsonObjectRequest);
@@ -387,7 +422,7 @@ public class EliminarProveedores extends Fragment {
         // CONSULTA POR RAZÓN SOCIAL SI YA FUE INGRESADO ANTERIORMENTE A LA BASE
         String razonSocial = datoBuscarRazon.replace(" ", "%20");
 
-        String URL = "http://malpicas.heliohost.org/malpica/proveedores/proveedores_consultar_nombre.php?nombre=" + razonSocial;
+        String URL = "http://malpicas.heliohost.org/malpica/proveedores/proveedores_consultar_nombre.php?parameter=" + razonSocial;
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, URL, null,
                 new Response.Listener<JSONObject>() {
 
@@ -395,37 +430,45 @@ public class EliminarProveedores extends Fragment {
                     public void onResponse(JSONObject response) {
 
                         try {
-                            JSONArray jsonArray = response.getJSONArray("datos");
+                            JSONArray jsonArray = response.getJSONArray("data");
 
                             // RECORRE EL ARRAY DE JSON CON LA CONSULTA Y CON UN SETTER & GETTER MUESTRA LOS RESULTADOS
                             for (int i = 0; i < jsonArray.length(); i++) {
 
                                 JSONObject jsonObject = jsonArray.getJSONObject(i);
-                                ProveedoresSetters proveedoresSetters = new ProveedoresSetters();
+                                ProveedoresSetters setters = new ProveedoresSetters();
 
-                                proveedoresSetters.setCodigo(jsonObject.getString("codigo_prov"));
-                                proveedoresSetters.setRazonSocial(jsonObject.getString("nombre_prov"));
-                                proveedoresSetters.setCondicion(jsonObject.getString("condicion_prov"));
-                                proveedoresSetters.setDescripcion(jsonObject.getString("descripcion"));
-                                proveedoresSetters.setCuit(jsonObject.getString("cuit_cuil"));
-                                proveedoresSetters.setDireccion(jsonObject.getString("direccion"));
-                                proveedoresSetters.setLocalidad(jsonObject.getString("localidad"));
-                                proveedoresSetters.setContacto(jsonObject.getString("contacto"));
-                                proveedoresSetters.setTipo(jsonObject.getString("tipo_prov"));
+                                setters.setFechaAlta(jsonObject.getString("fecha_alta"));
+                                setters.setHoraAlta(jsonObject.getString("hora_alta"));
+                                setters.setFechaModif(jsonObject.getString("fecha_modif"));
+                                setters.setHoraModif(jsonObject.getString("hora_modif"));
+                                setters.setCodigo(jsonObject.getString("codigo"));
+                                setters.setRazonSocial(jsonObject.getString("razon_social"));
+                                setters.setCondicion(jsonObject.getString("condicion"));
+                                setters.setDescripcion(jsonObject.getString("descripcion"));
+                                setters.setCuit(jsonObject.getString("cuit"));
+                                setters.setDireccion(jsonObject.getString("direccion"));
+                                setters.setLocalidad(jsonObject.getString("localidad"));
+                                setters.setContacto(jsonObject.getString("contacto"));
+                                setters.setTipo(jsonObject.getString("tipo"));
 
-                                String codigo = proveedoresSetters.getCodigo();
-                                String nombre = proveedoresSetters.getRazonSocial();
-                                String condicion = proveedoresSetters.getCondicion();
-                                String descripcion = proveedoresSetters.getDescripcion();
-                                String cuit = proveedoresSetters.getCuit();
-                                String direccion = proveedoresSetters.getDireccion();
-                                String localidad = proveedoresSetters.getLocalidad();
-                                String contacto = proveedoresSetters.getContacto();
-                                String tipo = proveedoresSetters.getTipo();
+                                String fechaAlta = setters.getFechaAlta() + " " + setters.getHoraAlta();
+                                String fechaModif = setters.getFechaModif() + " " + setters.getHoraModif();
+                                String codigo = setters.getCodigo();
+                                String razonSocial = setters.getRazonSocial();
+                                String condicion = setters.getCondicion();
+                                String descripcion = setters.getDescripcion();
+                                String cuit = setters.getCuit();
+                                String direccion = setters.getDireccion();
+                                String localidad = setters.getLocalidad();
+                                String contacto = setters.getContacto();
+                                String tipo = setters.getTipo();
 
-                                if (!nombre.equals("No existe")) {
+                                if (!fechaAlta.equals("No existe")) {
 
                                     // SI DEVUELVE VALORES LOS MUESTRA EN LOS CAMPOS
+                                    EditText editFechaAlta = getView().findViewById(R.id.editFechaAlta);
+                                    EditText editFechaModif = getView().findViewById(R.id.editFechaModif);
                                     EditText editCodigo = getView().findViewById(R.id.editCodigo);
                                     EditText editRazonSocial = getView().findViewById(R.id.editRazonSocial);
                                     EditText editCondicion = getView().findViewById(R.id.editCondicion);
@@ -436,8 +479,10 @@ public class EliminarProveedores extends Fragment {
                                     EditText editContacto = getView().findViewById(R.id.editContacto);
                                     EditText editTipo = getView().findViewById(R.id.editTipo);
 
+                                    editFechaAlta.setText(fechaAlta);
+                                    editFechaModif.setText(fechaModif);
                                     editCodigo.setText(codigo);
-                                    editRazonSocial.setText(nombre);
+                                    editRazonSocial.setText(razonSocial);
                                     editCondicion.setText(condicion);
                                     editDescripcion.setText(descripcion);
                                     editCuit.setText(cuit);
@@ -447,6 +492,16 @@ public class EliminarProveedores extends Fragment {
                                     editTipo.setText(tipo);
 
                                     datoCodigo = codigo + "";
+
+                                    if (fechaAlta.contains("/2") && fechaModif.contains("/2")) {
+
+                                        // REEMPLAZO DE FORMATO DE FECHA
+                                        String fechaAlta1 = fechaAlta.replace("/2","/202");
+                                        String fechaModif1 = fechaModif.replace("/2","/202");
+
+                                        editFechaAlta.setText(fechaAlta1);
+                                        editFechaModif.setText(fechaModif1);
+                                    }
 
                                 } else {
 
@@ -461,7 +516,7 @@ public class EliminarProveedores extends Fragment {
                 }, new Response.ErrorListener() {
 
             public void onErrorResponse(VolleyError error) {
-                Toast.makeText(getContext(), "Por favor, revise su conexión!", Toast.LENGTH_LONG).show();
+                Toast.makeText(getContext(), "Por favor, revise su conexión!", Toast.LENGTH_SHORT).show();
             }
         });
         requestQueue.add(jsonObjectRequest);
@@ -470,7 +525,7 @@ public class EliminarProveedores extends Fragment {
     private void consultarCuit() {
 
         // CONSULTA POR CUIT SI YA FUE INGRESADO ANTERIORMENTE A LA BASE
-        String URL = "http://malpicas.heliohost.org/malpica/proveedores/proveedores_consultar_cuit.php?cuit=" + datoBuscarCuit;
+        String URL = "http://malpicas.heliohost.org/malpica/proveedores/proveedores_consultar_cuit.php?parameter=" + datoBuscarCuit;
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, URL, null,
                 new Response.Listener<JSONObject>() {
 
@@ -478,37 +533,45 @@ public class EliminarProveedores extends Fragment {
                     public void onResponse(JSONObject response) {
 
                         try {
-                            JSONArray jsonArray = response.getJSONArray("datos");
+                            JSONArray jsonArray = response.getJSONArray("data");
 
                             // RECORRE EL ARRAY DE JSON CON LA CONSULTA Y CON UN SETTER & GETTER MUESTRA LOS RESULTADOS
                             for (int i = 0; i < jsonArray.length(); i++) {
 
                                 JSONObject jsonObject = jsonArray.getJSONObject(i);
-                                ProveedoresSetters proveedoresSetters = new ProveedoresSetters();
+                                ProveedoresSetters setters = new ProveedoresSetters();
 
-                                proveedoresSetters.setCodigo(jsonObject.getString("codigo_prov"));
-                                proveedoresSetters.setRazonSocial(jsonObject.getString("nombre_prov"));
-                                proveedoresSetters.setCondicion(jsonObject.getString("condicion_prov"));
-                                proveedoresSetters.setDescripcion(jsonObject.getString("descripcion"));
-                                proveedoresSetters.setCuit(jsonObject.getString("cuit_cuil"));
-                                proveedoresSetters.setDireccion(jsonObject.getString("direccion"));
-                                proveedoresSetters.setLocalidad(jsonObject.getString("localidad"));
-                                proveedoresSetters.setContacto(jsonObject.getString("contacto"));
-                                proveedoresSetters.setTipo(jsonObject.getString("tipo_prov"));
+                                setters.setFechaAlta(jsonObject.getString("fecha_alta"));
+                                setters.setHoraAlta(jsonObject.getString("hora_alta"));
+                                setters.setFechaModif(jsonObject.getString("fecha_modif"));
+                                setters.setHoraModif(jsonObject.getString("hora_modif"));
+                                setters.setCodigo(jsonObject.getString("codigo"));
+                                setters.setRazonSocial(jsonObject.getString("razon_social"));
+                                setters.setCondicion(jsonObject.getString("condicion"));
+                                setters.setDescripcion(jsonObject.getString("descripcion"));
+                                setters.setCuit(jsonObject.getString("cuit"));
+                                setters.setDireccion(jsonObject.getString("direccion"));
+                                setters.setLocalidad(jsonObject.getString("localidad"));
+                                setters.setContacto(jsonObject.getString("contacto"));
+                                setters.setTipo(jsonObject.getString("tipo"));
 
-                                String codigo = proveedoresSetters.getCodigo();
-                                String nombre = proveedoresSetters.getRazonSocial();
-                                String condicion = proveedoresSetters.getCondicion();
-                                String descripcion = proveedoresSetters.getDescripcion();
-                                String cuit = proveedoresSetters.getCuit();
-                                String direccion = proveedoresSetters.getDireccion();
-                                String localidad = proveedoresSetters.getLocalidad();
-                                String contacto = proveedoresSetters.getContacto();
-                                String tipo = proveedoresSetters.getTipo();
+                                String fechaAlta = setters.getFechaAlta() + " " + setters.getHoraAlta();
+                                String fechaModif = setters.getFechaModif() + " " + setters.getHoraModif();
+                                String codigo = setters.getCodigo();
+                                String razonSocial = setters.getRazonSocial();
+                                String condicion = setters.getCondicion();
+                                String descripcion = setters.getDescripcion();
+                                String cuit = setters.getCuit();
+                                String direccion = setters.getDireccion();
+                                String localidad = setters.getLocalidad();
+                                String contacto = setters.getContacto();
+                                String tipo = setters.getTipo();
 
-                                if (!cuit.equals("No existe")) {
+                                if (!fechaAlta.equals("No existe")) {
 
                                     // SI DEVUELVE VALORES LOS MUESTRA EN LOS CAMPOS
+                                    EditText editFechaAlta = getView().findViewById(R.id.editFechaAlta);
+                                    EditText editFechaModif = getView().findViewById(R.id.editFechaModif);
                                     EditText editCodigo = getView().findViewById(R.id.editCodigo);
                                     EditText editRazonSocial = getView().findViewById(R.id.editRazonSocial);
                                     EditText editCondicion = getView().findViewById(R.id.editCondicion);
@@ -519,8 +582,10 @@ public class EliminarProveedores extends Fragment {
                                     EditText editContacto = getView().findViewById(R.id.editContacto);
                                     EditText editTipo = getView().findViewById(R.id.editTipo);
 
+                                    editFechaAlta.setText(fechaAlta);
+                                    editFechaModif.setText(fechaModif);
                                     editCodigo.setText(codigo);
-                                    editRazonSocial.setText(nombre);
+                                    editRazonSocial.setText(razonSocial);
                                     editCondicion.setText(condicion);
                                     editDescripcion.setText(descripcion);
                                     editCuit.setText(cuit);
@@ -530,6 +595,16 @@ public class EliminarProveedores extends Fragment {
                                     editTipo.setText(tipo);
 
                                     datoCodigo = codigo + "";
+
+                                    if (fechaAlta.contains("/2") && fechaModif.contains("/2")) {
+
+                                        // REEMPLAZO DE FORMATO DE FECHA
+                                        String fechaAlta1 = fechaAlta.replace("/2","/202");
+                                        String fechaModif1 = fechaModif.replace("/2","/202");
+
+                                        editFechaAlta.setText(fechaAlta1);
+                                        editFechaModif.setText(fechaModif1);
+                                    }
 
                                 } else {
 
@@ -544,7 +619,7 @@ public class EliminarProveedores extends Fragment {
                 }, new Response.ErrorListener() {
 
             public void onErrorResponse(VolleyError error) {
-                Toast.makeText(getContext(), "Por favor, revise su conexión!", Toast.LENGTH_LONG).show();
+                Toast.makeText(getContext(), "Por favor, revise su conexión!", Toast.LENGTH_SHORT).show();
             }
         });
         requestQueue.add(jsonObjectRequest);
@@ -553,7 +628,7 @@ public class EliminarProveedores extends Fragment {
     private void consultarCompras() {
 
         // CONSULTA EL PROVEEDOR EN LA BASE DE COMPRAS POR SU CÓDIGO
-        String URL = "http://malpicas.heliohost.org/malpica/proveedores/proveedores_consultar_factura.php?codigo=" + datoCodigo;
+        String URL = "http://malpicas.heliohost.org/malpica/proveedores/proveedores_consultar_factura.php?parameter=" + datoCodigo;
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, URL, null,
                 new Response.Listener<JSONObject>() {
 
@@ -561,17 +636,17 @@ public class EliminarProveedores extends Fragment {
                     public void onResponse(JSONObject response) {
 
                         try {
-                            JSONArray jsonArray = response.getJSONArray("codigo");
+                            JSONArray jsonArray = response.getJSONArray("data");
 
                             // RECORRE EL ARRAY DE JSON CON LA CONSULTA Y DEVUELVE LOS RESULTADOS
                             for (int i = 0; i < jsonArray.length(); i++) {
 
                                 JSONObject jsonObject = jsonArray.getJSONObject(i);
-                                ProveedoresSetters proveedoresSetters = new ProveedoresSetters();
+                                ProveedoresSetters setters = new ProveedoresSetters();
 
-                                proveedoresSetters.setCodigo(jsonObject.getString("codigo_prov"));
+                                setters.setCodigo(jsonObject.getString("codigo"));
 
-                                String codigo = proveedoresSetters.getCodigo();
+                                String codigo = setters.getCodigo();
 
                                 if (!codigo.equals("No existe")){
 
@@ -592,7 +667,7 @@ public class EliminarProveedores extends Fragment {
                 }, new Response.ErrorListener() {
 
             public void onErrorResponse(VolleyError error) {
-                Toast.makeText(getContext(), "Por favor, revise su conexión!", Toast.LENGTH_LONG).show();
+                Toast.makeText(getContext(), "Por favor, revise su conexión!", Toast.LENGTH_SHORT).show();
             }
         });
         requestQueue.add(jsonObjectRequest);
@@ -610,16 +685,16 @@ public class EliminarProveedores extends Fragment {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                dialogError();
+                Toast.makeText(getContext(),error.toString(), Toast.LENGTH_LONG).show();
             }
         }) {
             @Override
             protected Map<String, String> getParams() {
-                Map<String, String> parametros = new HashMap<>();
+                Map<String, String> parameter = new HashMap<>();
 
-                parametros.put("codigo",datoCodigo);
+                parameter.put("parameter",datoCodigo);
 
-                return parametros;
+                return parameter;
             }
         };
         requestQueue.add(stringRequest);

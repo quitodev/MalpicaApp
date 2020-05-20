@@ -146,7 +146,7 @@
                 android:textSize="20sp" />
 
             <TextView
-                android:id="@+id/textFechaVenta"
+                android:id="@+id/textFechaFactura"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/textResultados"
@@ -160,15 +160,15 @@
                 android:layout_marginEnd="0dp"
                 android:layout_marginRight="0dp"
                 android:fontFamily="sans-serif-light"
-                android:text="@string/fecha_venta"
+                android:text="@string/fecha_factura"
                 android:textColor="@color/colorAccent"
                 android:textSize="16sp" />
 
             <EditText
-                android:id="@+id/editFechaVenta"
+                android:id="@+id/editFechaFactura"
                 android:layout_width="310dp"
                 android:layout_height="35dp"
-                android:layout_below="@+id/textFechaVenta"
+                android:layout_below="@+id/textFechaFactura"
                 android:layout_alignParentStart="true"
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentEnd="true"
@@ -182,7 +182,7 @@
                 android:ems="10"
                 android:focusable="false"
                 android:fontFamily="sans-serif-light"
-                android:hint="@string/muestra_fecha_venta"
+                android:hint="@string/muestra_fecha_factura"
                 android:inputType="textPersonName"
                 android:text=""
                 android:textColor="@color/colorText"
@@ -192,10 +192,10 @@
                 tools:ignore="Autofill" />
 
             <TextView
-                android:id="@+id/textFechaIngresada"
+                android:id="@+id/textFechaIngreso"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/editFechaVenta"
+                android:layout_below="@+id/editFechaFactura"
                 android:layout_alignParentStart="true"
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentEnd="true"
@@ -206,15 +206,15 @@
                 android:layout_marginEnd="0dp"
                 android:layout_marginRight="0dp"
                 android:fontFamily="sans-serif-light"
-                android:text="@string/fecha_ingresada"
+                android:text="@string/fecha_ingreso"
                 android:textColor="@color/colorAccent"
                 android:textSize="16sp" />
 
             <EditText
-                android:id="@+id/editFechaIngresada"
+                android:id="@+id/editFechaIngreso"
                 android:layout_width="310dp"
                 android:layout_height="35dp"
-                android:layout_below="@+id/textFechaIngresada"
+                android:layout_below="@+id/textFechaIngreso"
                 android:layout_alignParentStart="true"
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentEnd="true"
@@ -228,7 +228,99 @@
                 android:ems="10"
                 android:focusable="false"
                 android:fontFamily="sans-serif-light"
-                android:hint="@string/muestra_fecha_ingresada"
+                android:hint="@string/muestra_fecha_ingreso"
+                android:inputType="textPersonName"
+                android:text=""
+                android:textColor="@color/colorText"
+                android:textColorHint="#919191"
+                android:textColorLink="@color/colorAccent"
+                android:textSize="18sp"
+                tools:ignore="Autofill" />
+
+            <TextView
+                android:id="@+id/textFechaModif"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/editFechaIngreso"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:layout_marginStart="50dp"
+                android:layout_marginLeft="50dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="0dp"
+                android:layout_marginRight="0dp"
+                android:fontFamily="sans-serif-light"
+                android:text="@string/fecha_modif"
+                android:textColor="@color/colorAccent"
+                android:textSize="16sp" />
+
+            <EditText
+                android:id="@+id/editFechaModif"
+                android:layout_width="310dp"
+                android:layout_height="35dp"
+                android:layout_below="@+id/textFechaModif"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:layout_marginStart="50dp"
+                android:layout_marginLeft="50dp"
+                android:layout_marginTop="0dp"
+                android:layout_marginEnd="51dp"
+                android:layout_marginRight="51dp"
+                android:background="#00000000"
+                android:ems="10"
+                android:focusable="false"
+                android:fontFamily="sans-serif-light"
+                android:hint="@string/muestra_fecha_modif"
+                android:inputType="textPersonName"
+                android:text=""
+                android:textColor="@color/colorText"
+                android:textColorHint="#919191"
+                android:textColorLink="@color/colorAccent"
+                android:textSize="18sp"
+                tools:ignore="Autofill" />
+
+            <TextView
+                android:id="@+id/textNroFactura"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/editFechaModif"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:layout_marginStart="50dp"
+                android:layout_marginLeft="50dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="0dp"
+                android:layout_marginRight="0dp"
+                android:fontFamily="sans-serif-light"
+                android:text="@string/nro_factura"
+                android:textColor="@color/colorAccent"
+                android:textSize="16sp" />
+
+            <EditText
+                android:id="@+id/editNroFactura"
+                android:layout_width="310dp"
+                android:layout_height="35dp"
+                android:layout_below="@+id/textNroFactura"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:layout_marginStart="50dp"
+                android:layout_marginLeft="50dp"
+                android:layout_marginTop="0dp"
+                android:layout_marginEnd="51dp"
+                android:layout_marginRight="51dp"
+                android:background="#00000000"
+                android:ems="10"
+                android:focusable="false"
+                android:fontFamily="sans-serif-light"
+                android:hint="@string/muestra_nro_factura"
                 android:inputType="textPersonName"
                 android:text=""
                 android:textColor="@color/colorText"
@@ -241,7 +333,7 @@
                 android:id="@+id/textDatosCliente"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/editFechaIngresada"
+                android:layout_below="@+id/editNroFactura"
                 android:layout_alignParentStart="true"
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentEnd="true"
@@ -258,7 +350,7 @@
                 android:textSize="18sp" />
 
             <TextView
-                android:id="@+id/textCodigoCliente"
+                android:id="@+id/textCodigo"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/textDatosCliente"
@@ -277,10 +369,10 @@
                 android:textSize="16sp" />
 
             <EditText
-                android:id="@+id/editCodigoCliente"
+                android:id="@+id/editCodigo"
                 android:layout_width="310dp"
                 android:layout_height="35dp"
-                android:layout_below="@+id/textCodigoCliente"
+                android:layout_below="@+id/textCodigo"
                 android:layout_alignParentStart="true"
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentEnd="true"
@@ -303,10 +395,10 @@
                 tools:ignore="Autofill" />
 
             <TextView
-                android:id="@+id/textRazonSocialCliente"
+                android:id="@+id/textRazonSocial"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/editCodigoCliente"
+                android:layout_below="@+id/editCodigo"
                 android:layout_alignParentStart="true"
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentEnd="true"
@@ -322,10 +414,10 @@
                 android:textSize="16sp" />
 
             <EditText
-                android:id="@+id/editRazonSocialCliente"
+                android:id="@+id/editRazonSocial"
                 android:layout_width="310dp"
                 android:layout_height="35dp"
-                android:layout_below="@+id/textRazonSocialCliente"
+                android:layout_below="@+id/textRazonSocial"
                 android:layout_alignParentStart="true"
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentEnd="true"
@@ -348,10 +440,10 @@
                 tools:ignore="Autofill" />
 
             <TextView
-                android:id="@+id/textCondicionCliente"
+                android:id="@+id/textCondicion"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/editRazonSocialCliente"
+                android:layout_below="@+id/editRazonSocial"
                 android:layout_alignParentStart="true"
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentEnd="true"
@@ -367,10 +459,10 @@
                 android:textSize="16sp" />
 
             <EditText
-                android:id="@+id/editCondicionCliente"
+                android:id="@+id/editCondicion"
                 android:layout_width="310dp"
                 android:layout_height="35dp"
-                android:layout_below="@+id/textCondicionCliente"
+                android:layout_below="@+id/textCondicion"
                 android:layout_alignParentStart="true"
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentEnd="true"
@@ -396,7 +488,7 @@
                 android:id="@+id/textDatosProducto"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/editCondicionCliente"
+                android:layout_below="@+id/editCondicion"
                 android:layout_alignParentStart="true"
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentEnd="true"
@@ -413,7 +505,7 @@
                 android:textSize="18sp" />
 
             <TextView
-                android:id="@+id/textCodigoProd"
+                android:id="@+id/textCodigoStock"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/textDatosProducto"
@@ -432,10 +524,10 @@
                 android:textSize="16sp" />
 
             <EditText
-                android:id="@+id/editCodigoProd"
+                android:id="@+id/editCodigoStock"
                 android:layout_width="310dp"
                 android:layout_height="35dp"
-                android:layout_below="@+id/textCodigoProd"
+                android:layout_below="@+id/textCodigoStock"
                 android:layout_alignParentStart="true"
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentEnd="true"
@@ -458,10 +550,10 @@
                 tools:ignore="Autofill" />
 
             <TextView
-                android:id="@+id/textDescripcionProd"
+                android:id="@+id/textDescripcionStock"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/editCodigoProd"
+                android:layout_below="@+id/editCodigoStock"
                 android:layout_alignParentStart="true"
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentEnd="true"
@@ -477,10 +569,10 @@
                 android:textSize="16sp" />
 
             <EditText
-                android:id="@+id/editDescripcionProd"
+                android:id="@+id/editDescripcionStock"
                 android:layout_width="310dp"
                 android:layout_height="35dp"
-                android:layout_below="@+id/textDescripcionProd"
+                android:layout_below="@+id/textDescripcionStock"
                 android:layout_alignParentStart="true"
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentEnd="true"
@@ -506,7 +598,7 @@
                 android:id="@+id/textCantidad"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/editDescripcionProd"
+                android:layout_below="@+id/editDescripcionStock"
                 android:layout_alignParentStart="true"
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentEnd="true"

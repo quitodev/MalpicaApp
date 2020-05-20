@@ -31,6 +31,7 @@ import org.json.JSONObject;
 
 import java.text.DateFormat;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Timer;
@@ -40,7 +41,7 @@ public class ModificarProveedores extends Fragment {
 
     private RequestQueue requestQueue;
     private JsonObjectRequest jsonObjectRequest;
-    private String datoFechaActual, datoBuscarCodigo, datoBuscarRazon, datoBuscarCuit, datoCodigo, datoRazonSocial,
+    private String datoFechaActual, datoHoraActual, datoBuscarCodigo, datoBuscarRazon, datoBuscarCuit, datoCodigo, datoRazonSocial,
             datoCondicion, datoDescripcion, datoCuit, datoDireccion, datoLocalidad, datoContacto, datoTipo,
             datoDia, datoMes, datoAno;
     private int counter;
@@ -72,16 +73,15 @@ public class ModificarProveedores extends Fragment {
         final EditText editContacto = root.findViewById(R.id.editContacto);
         final EditText editTipo = root.findViewById(R.id.editTipo);
 
-        Button buttonConsultar = root.findViewById(R.id.buttonConsultar);
-        Button buttonModificar = root.findViewById(R.id.buttonModificar);
-        Button buttonGuardar = root.findViewById(R.id.buttonGuardar);
+        final Button buttonConsultar = root.findViewById(R.id.buttonConsultar);
+        final Button buttonModificar = root.findViewById(R.id.buttonModificar);
+        final Button buttonGuardar = root.findViewById(R.id.buttonGuardar);
 
         // EVENTOS DEL BOTÓN CONSULTAR
         buttonConsultar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                Button buttonModificar = getView().findViewById(R.id.buttonModificar);
+                
                 buttonModificar.setVisibility(View.VISIBLE);
 
                 editCodigo.setFocusable(false);
@@ -156,7 +156,6 @@ public class ModificarProveedores extends Fragment {
                 if(!datoCodigo.isEmpty()){
 
                     // SI DEVUELVE UNA FACTURA, HABILITA LOS CAMPOS PARA HACER MODIFICACIONES
-                    Button buttonModificar = getView().findViewById(R.id.buttonModificar);
                     buttonModificar.setVisibility(View.INVISIBLE);
 
                     Drawable drawable = getResources().getDrawable(R.drawable.ic_check_green);
@@ -267,8 +266,19 @@ public class ModificarProveedores extends Fragment {
 
                     if (!datoCodigo.isEmpty()) {
 
-                        dialogProcesando();
-                        consultarCodigoBis();
+                        if(!datoCodigo.equals(datoBuscarCodigo)) {
+
+                            // SI HUBO CAMBIOS, CONSULTA PARA VER SI YA EXISTE EN LA BASE
+                            dialogProcesando();
+                            consultarCodigoBis();
+
+                        } else {
+
+                            // SI NO HUBO CAMBIOS, VALIDA EL CAMPO
+                            Drawable drawable = getResources().getDrawable(R.drawable.ic_check_green);
+                            drawable.setBounds(0, 0, drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight());
+                            editCodigo.setError("Datos correctos!", drawable);
+                        }
 
                     } else {
 
@@ -294,8 +304,19 @@ public class ModificarProveedores extends Fragment {
 
                     if (!datoRazonSocial.isEmpty()) {
 
-                        dialogProcesando();
-                        consultarNombreBis();
+                        if(!datoRazonSocial.equals(datoBuscarRazon)) {
+
+                            // SI HUBO CAMBIOS, CONSULTA PARA VER SI YA EXISTE EN LA BASE
+                            dialogProcesando();
+                            consultarNombreBis();
+
+                        } else {
+
+                            // SI NO HUBO CAMBIOS, VALIDA EL CAMPO
+                            Drawable drawable = getResources().getDrawable(R.drawable.ic_check_green);
+                            drawable.setBounds(0, 0, drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight());
+                            editRazonSocial.setError("Datos correctos!", drawable);
+                        }
 
                     } else {
 
@@ -379,8 +400,19 @@ public class ModificarProveedores extends Fragment {
 
                     if (datoCuit.length() == 13 && datoCuit.contains("-")) {
 
-                        dialogProcesando();
-                        consultarCuitBis();
+                        if(!datoCuit.equals(datoBuscarCuit)) {
+
+                            // SI HUBO CAMBIOS, CONSULTA PARA VER SI YA EXISTE EN LA BASE
+                            dialogProcesando();
+                            consultarCuitBis();
+
+                        } else {
+
+                            // SI NO HUBO CAMBIOS, VALIDA EL CAMPO
+                            Drawable drawable = getResources().getDrawable(R.drawable.ic_check_green);
+                            drawable.setBounds(0, 0, drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight());
+                            editCuit.setError("Datos correctos!", drawable);
+                        }
 
                     } else {
 
@@ -517,7 +549,11 @@ public class ModificarProveedores extends Fragment {
 
     private void dateFragments() {
 
-        // MÉTODO PARA OBTENER EL DÍA ACTUAL
+        // OBTIENE LA FECHA Y HORA ACTUAL
+        Date date = Calendar.getInstance().getTime();
+        String hour = date.toString();
+        datoHoraActual = "" + hour.charAt(11) + hour.charAt(12) + hour.charAt(13) + hour.charAt(14) + hour.charAt(15);
+
         Calendar calendar = Calendar.getInstance();
         String fechaActual = DateFormat.getDateInstance(DateFormat.SHORT).format(calendar.getTime());
 
@@ -549,7 +585,7 @@ public class ModificarProveedores extends Fragment {
             public void run() {
                 counter++;
 
-                if(counter == 20) {
+                if(counter == 30) {
                     timer.cancel();
                     dialogs.endProcesando();
                     counter = 0;
@@ -566,9 +602,10 @@ public class ModificarProveedores extends Fragment {
             @Override
             public void run() {
                 Dialogs dialogs = new Dialogs(getActivity());
-                dialogs.startError();
+                int layout = R.layout.dialog_error;
+                dialogs.startResultado(layout);
             }
-        }, 2000);
+        }, 3000);
     }
 
     private void dialogErrorProveedor(){
@@ -578,9 +615,10 @@ public class ModificarProveedores extends Fragment {
             @Override
             public void run() {
                 Dialogs dialogs = new Dialogs(getActivity());
-                dialogs.startErrorProveedor();
+                int layout = R.layout.dialog_error_proveedor;
+                dialogs.startResultado(layout);
             }
-        }, 2000);
+        }, 3000);
     }
 
     private void dialogOk(){
@@ -591,7 +629,8 @@ public class ModificarProveedores extends Fragment {
             @Override
             public void run() {
                 Dialogs dialogs = new Dialogs(getActivity());
-                dialogs.startOk();
+                int layout = R.layout.dialog_ok;
+                dialogs.startResultado(layout);
 
                 EditText editBuscarCodigo = getView().findViewById(R.id.editBuscarCodigo);
                 EditText editCodigo = getView().findViewById(R.id.editCodigo);
@@ -636,15 +675,19 @@ public class ModificarProveedores extends Fragment {
 
                 ScrollView scrollView = getView().findViewById(R.id.scroll);
                 scrollView.setScrollY(0);
+
+                Button buttonModificar = getView().findViewById(R.id.buttonModificar);
+                buttonModificar.setVisibility(View.VISIBLE);
+
                 editBuscarCodigo.requestFocusFromTouch();
             }
-        }, 2000);
+        }, 3000);
     }
 
     private void consultarCodigo() {
 
         // CONSULTA POR CÓDIGO SI YA FUE INGRESADO ANTERIORMENTE A LA BASE
-        String URL = "http://malpicas.heliohost.org/malpica/proveedores/proveedores_consultar_codigo.php?codigo=" + datoBuscarCodigo;
+        String URL = "http://malpicas.heliohost.org/malpica/proveedores/proveedores_consultar_codigo.php?parameter=" + datoBuscarCodigo;
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, URL, null,
                 new Response.Listener<JSONObject>() {
 
@@ -652,33 +695,33 @@ public class ModificarProveedores extends Fragment {
                     public void onResponse(JSONObject response) {
 
                         try {
-                            JSONArray jsonArray = response.getJSONArray("datos");
+                            JSONArray jsonArray = response.getJSONArray("data");
 
                             // RECORRE EL ARRAY DE JSON CON LA CONSULTA Y CON UN SETTER & GETTER MUESTRA LOS RESULTADOS
                             for (int i = 0; i < jsonArray.length(); i++) {
 
                                 JSONObject jsonObject = jsonArray.getJSONObject(i);
-                                ProveedoresSetters proveedoresSetters = new ProveedoresSetters();
+                                ProveedoresSetters setters = new ProveedoresSetters();
 
-                                proveedoresSetters.setCodigo(jsonObject.getString("codigo_prov"));
-                                proveedoresSetters.setRazonSocial(jsonObject.getString("nombre_prov"));
-                                proveedoresSetters.setCondicion(jsonObject.getString("condicion_prov"));
-                                proveedoresSetters.setDescripcion(jsonObject.getString("descripcion"));
-                                proveedoresSetters.setCuit(jsonObject.getString("cuit_cuil"));
-                                proveedoresSetters.setDireccion(jsonObject.getString("direccion"));
-                                proveedoresSetters.setLocalidad(jsonObject.getString("localidad"));
-                                proveedoresSetters.setContacto(jsonObject.getString("contacto"));
-                                proveedoresSetters.setTipo(jsonObject.getString("tipo_prov"));
+                                setters.setCodigo(jsonObject.getString("codigo"));
+                                setters.setRazonSocial(jsonObject.getString("razon_social"));
+                                setters.setCondicion(jsonObject.getString("condicion"));
+                                setters.setDescripcion(jsonObject.getString("descripcion"));
+                                setters.setCuit(jsonObject.getString("cuit"));
+                                setters.setDireccion(jsonObject.getString("direccion"));
+                                setters.setLocalidad(jsonObject.getString("localidad"));
+                                setters.setContacto(jsonObject.getString("contacto"));
+                                setters.setTipo(jsonObject.getString("tipo"));
 
-                                String codigo = proveedoresSetters.getCodigo();
-                                String nombre = proveedoresSetters.getRazonSocial();
-                                String condicion = proveedoresSetters.getCondicion();
-                                String descripcion = proveedoresSetters.getDescripcion();
-                                String cuit = proveedoresSetters.getCuit();
-                                String direccion = proveedoresSetters.getDireccion();
-                                String localidad = proveedoresSetters.getLocalidad();
-                                String contacto = proveedoresSetters.getContacto();
-                                String tipo = proveedoresSetters.getTipo();
+                                String codigo = setters.getCodigo();
+                                String razonSocial = setters.getRazonSocial();
+                                String condicion = setters.getCondicion();
+                                String descripcion = setters.getDescripcion();
+                                String cuit = setters.getCuit();
+                                String direccion = setters.getDireccion();
+                                String localidad = setters.getLocalidad();
+                                String contacto = setters.getContacto();
+                                String tipo = setters.getTipo();
 
                                 if (!codigo.equals("No existe")) {
 
@@ -694,7 +737,7 @@ public class ModificarProveedores extends Fragment {
                                     EditText editTipo = getView().findViewById(R.id.editTipo);
 
                                     editCodigo.setText(codigo);
-                                    editRazonSocial.setText(nombre);
+                                    editRazonSocial.setText(razonSocial);
                                     editCondicion.setText(condicion);
                                     editDescripcion.setText(descripcion);
                                     editCuit.setText(cuit);
@@ -716,7 +759,7 @@ public class ModificarProveedores extends Fragment {
                 }, new Response.ErrorListener() {
 
             public void onErrorResponse(VolleyError error) {
-                Toast.makeText(getContext(), "Por favor, revise su conexión!", Toast.LENGTH_LONG).show();
+                Toast.makeText(getContext(), "Por favor, revise su conexión!", Toast.LENGTH_SHORT).show();
             }
         });
         requestQueue.add(jsonObjectRequest);
@@ -727,7 +770,7 @@ public class ModificarProveedores extends Fragment {
         // CONSULTA POR RAZÓN SOCIAL SI YA FUE INGRESADO ANTERIORMENTE A LA BASE
         String razonSocial = datoBuscarRazon.replace(" ", "%20");
 
-        String URL = "http://malpicas.heliohost.org/malpica/proveedores/proveedores_consultar_nombre.php?nombre=" + razonSocial;
+        String URL = "http://malpicas.heliohost.org/malpica/proveedores/proveedores_consultar_nombre.php?parameter=" + razonSocial;
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, URL, null,
                 new Response.Listener<JSONObject>() {
 
@@ -735,35 +778,35 @@ public class ModificarProveedores extends Fragment {
                     public void onResponse(JSONObject response) {
 
                         try {
-                            JSONArray jsonArray = response.getJSONArray("datos");
+                            JSONArray jsonArray = response.getJSONArray("data");
 
                             // RECORRE EL ARRAY DE JSON CON LA CONSULTA Y CON UN SETTER & GETTER MUESTRA LOS RESULTADOS
                             for (int i = 0; i < jsonArray.length(); i++) {
 
                                 JSONObject jsonObject = jsonArray.getJSONObject(i);
-                                ProveedoresSetters proveedoresSetters = new ProveedoresSetters();
+                                ProveedoresSetters setters = new ProveedoresSetters();
 
-                                proveedoresSetters.setCodigo(jsonObject.getString("codigo_prov"));
-                                proveedoresSetters.setRazonSocial(jsonObject.getString("nombre_prov"));
-                                proveedoresSetters.setCondicion(jsonObject.getString("condicion_prov"));
-                                proveedoresSetters.setDescripcion(jsonObject.getString("descripcion"));
-                                proveedoresSetters.setCuit(jsonObject.getString("cuit_cuil"));
-                                proveedoresSetters.setDireccion(jsonObject.getString("direccion"));
-                                proveedoresSetters.setLocalidad(jsonObject.getString("localidad"));
-                                proveedoresSetters.setContacto(jsonObject.getString("contacto"));
-                                proveedoresSetters.setTipo(jsonObject.getString("tipo_prov"));
+                                setters.setCodigo(jsonObject.getString("codigo"));
+                                setters.setRazonSocial(jsonObject.getString("razon_social"));
+                                setters.setCondicion(jsonObject.getString("condicion"));
+                                setters.setDescripcion(jsonObject.getString("descripcion"));
+                                setters.setCuit(jsonObject.getString("cuit"));
+                                setters.setDireccion(jsonObject.getString("direccion"));
+                                setters.setLocalidad(jsonObject.getString("localidad"));
+                                setters.setContacto(jsonObject.getString("contacto"));
+                                setters.setTipo(jsonObject.getString("tipo"));
 
-                                String codigo = proveedoresSetters.getCodigo();
-                                String nombre = proveedoresSetters.getRazonSocial();
-                                String condicion = proveedoresSetters.getCondicion();
-                                String descripcion = proveedoresSetters.getDescripcion();
-                                String cuit = proveedoresSetters.getCuit();
-                                String direccion = proveedoresSetters.getDireccion();
-                                String localidad = proveedoresSetters.getLocalidad();
-                                String contacto = proveedoresSetters.getContacto();
-                                String tipo = proveedoresSetters.getTipo();
+                                String codigo = setters.getCodigo();
+                                String razonSocial = setters.getRazonSocial();
+                                String condicion = setters.getCondicion();
+                                String descripcion = setters.getDescripcion();
+                                String cuit = setters.getCuit();
+                                String direccion = setters.getDireccion();
+                                String localidad = setters.getLocalidad();
+                                String contacto = setters.getContacto();
+                                String tipo = setters.getTipo();
 
-                                if (!nombre.equals("No existe")) {
+                                if (!codigo.equals("No existe")) {
 
                                     // SI DEVUELVE VALORES LOS MUESTRA EN LOS CAMPOS
                                     EditText editCodigo = getView().findViewById(R.id.editCodigo);
@@ -777,7 +820,7 @@ public class ModificarProveedores extends Fragment {
                                     EditText editTipo = getView().findViewById(R.id.editTipo);
 
                                     editCodigo.setText(codigo);
-                                    editRazonSocial.setText(nombre);
+                                    editRazonSocial.setText(razonSocial);
                                     editCondicion.setText(condicion);
                                     editDescripcion.setText(descripcion);
                                     editCuit.setText(cuit);
@@ -799,7 +842,7 @@ public class ModificarProveedores extends Fragment {
                 }, new Response.ErrorListener() {
 
             public void onErrorResponse(VolleyError error) {
-                Toast.makeText(getContext(), "Por favor, revise su conexión!", Toast.LENGTH_LONG).show();
+                Toast.makeText(getContext(), "Por favor, revise su conexión!", Toast.LENGTH_SHORT).show();
             }
         });
         requestQueue.add(jsonObjectRequest);
@@ -808,7 +851,7 @@ public class ModificarProveedores extends Fragment {
     private void consultarCuit() {
 
         // CONSULTA POR CUIT SI YA FUE INGRESADO ANTERIORMENTE A LA BASE
-        String URL = "http://malpicas.heliohost.org/malpica/proveedores/proveedores_consultar_cuit.php?cuit=" + datoBuscarCuit;
+        String URL = "http://malpicas.heliohost.org/malpica/proveedores/proveedores_consultar_cuit.php?parameter=" + datoBuscarCuit;
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, URL, null,
                 new Response.Listener<JSONObject>() {
 
@@ -816,35 +859,35 @@ public class ModificarProveedores extends Fragment {
                     public void onResponse(JSONObject response) {
 
                         try {
-                            JSONArray jsonArray = response.getJSONArray("datos");
+                            JSONArray jsonArray = response.getJSONArray("data");
 
                             // RECORRE EL ARRAY DE JSON CON LA CONSULTA Y CON UN SETTER & GETTER MUESTRA LOS RESULTADOS
                             for (int i = 0; i < jsonArray.length(); i++) {
 
                                 JSONObject jsonObject = jsonArray.getJSONObject(i);
-                                ProveedoresSetters proveedoresSetters = new ProveedoresSetters();
+                                ProveedoresSetters setters = new ProveedoresSetters();
 
-                                proveedoresSetters.setCodigo(jsonObject.getString("codigo_prov"));
-                                proveedoresSetters.setRazonSocial(jsonObject.getString("nombre_prov"));
-                                proveedoresSetters.setCondicion(jsonObject.getString("condicion_prov"));
-                                proveedoresSetters.setDescripcion(jsonObject.getString("descripcion"));
-                                proveedoresSetters.setCuit(jsonObject.getString("cuit_cuil"));
-                                proveedoresSetters.setDireccion(jsonObject.getString("direccion"));
-                                proveedoresSetters.setLocalidad(jsonObject.getString("localidad"));
-                                proveedoresSetters.setContacto(jsonObject.getString("contacto"));
-                                proveedoresSetters.setTipo(jsonObject.getString("tipo_prov"));
+                                setters.setCodigo(jsonObject.getString("codigo"));
+                                setters.setRazonSocial(jsonObject.getString("razon_social"));
+                                setters.setCondicion(jsonObject.getString("condicion"));
+                                setters.setDescripcion(jsonObject.getString("descripcion"));
+                                setters.setCuit(jsonObject.getString("cuit"));
+                                setters.setDireccion(jsonObject.getString("direccion"));
+                                setters.setLocalidad(jsonObject.getString("localidad"));
+                                setters.setContacto(jsonObject.getString("contacto"));
+                                setters.setTipo(jsonObject.getString("tipo"));
 
-                                String codigo = proveedoresSetters.getCodigo();
-                                String nombre = proveedoresSetters.getRazonSocial();
-                                String condicion = proveedoresSetters.getCondicion();
-                                String descripcion = proveedoresSetters.getDescripcion();
-                                String cuit = proveedoresSetters.getCuit();
-                                String direccion = proveedoresSetters.getDireccion();
-                                String localidad = proveedoresSetters.getLocalidad();
-                                String contacto = proveedoresSetters.getContacto();
-                                String tipo = proveedoresSetters.getTipo();
+                                String codigo = setters.getCodigo();
+                                String razonSocial = setters.getRazonSocial();
+                                String condicion = setters.getCondicion();
+                                String descripcion = setters.getDescripcion();
+                                String cuit = setters.getCuit();
+                                String direccion = setters.getDireccion();
+                                String localidad = setters.getLocalidad();
+                                String contacto = setters.getContacto();
+                                String tipo = setters.getTipo();
 
-                                if (!cuit.equals("No existe")) {
+                                if (!codigo.equals("No existe")) {
 
                                     // SI DEVUELVE VALORES LOS MUESTRA EN LOS CAMPOS
                                     EditText editCodigo = getView().findViewById(R.id.editCodigo);
@@ -858,7 +901,7 @@ public class ModificarProveedores extends Fragment {
                                     EditText editTipo = getView().findViewById(R.id.editTipo);
 
                                     editCodigo.setText(codigo);
-                                    editRazonSocial.setText(nombre);
+                                    editRazonSocial.setText(razonSocial);
                                     editCondicion.setText(condicion);
                                     editDescripcion.setText(descripcion);
                                     editCuit.setText(cuit);
@@ -880,7 +923,7 @@ public class ModificarProveedores extends Fragment {
                 }, new Response.ErrorListener() {
 
             public void onErrorResponse(VolleyError error) {
-                Toast.makeText(getContext(), "Por favor, revise su conexión!", Toast.LENGTH_LONG).show();
+                Toast.makeText(getContext(), "Por favor, revise su conexión!", Toast.LENGTH_SHORT).show();
             }
         });
         requestQueue.add(jsonObjectRequest);
@@ -889,7 +932,7 @@ public class ModificarProveedores extends Fragment {
     private void consultarCodigoBis() {
 
         // CONSULTA POR CÓDIGO SI NO EXISTE OTRO CON EL MISMO CÓDIGO
-        String URL = "http://malpicas.heliohost.org/malpica/proveedores/proveedores_consultar_codigo.php?codigo=" + datoCodigo;
+        String URL = "http://malpicas.heliohost.org/malpica/proveedores/proveedores_consultar_codigo.php?parameter=" + datoCodigo;
         jsonObjectRequest = new JsonObjectRequest(Request.Method.GET,URL,null,
                 new Response.Listener<JSONObject>() {
 
@@ -897,27 +940,27 @@ public class ModificarProveedores extends Fragment {
                     public void onResponse(JSONObject response) {
 
                         try {
-                            JSONArray jsonArray = response.getJSONArray("datos");
+                            JSONArray jsonArray = response.getJSONArray("data");
 
                             // RECORRE EL ARRAY DE JSON CON LA CONSULTA Y CON UN SETTER & GETTER MUESTRA LOS RESULTADOS
                             for (int i = 0; i < jsonArray.length(); i++) {
 
                                 JSONObject jsonObject = jsonArray.getJSONObject(i);
-                                ProveedoresSetters proveedoresSetters = new ProveedoresSetters();
+                                ProveedoresSetters setters = new ProveedoresSetters();
 
-                                proveedoresSetters.setCodigo(jsonObject.getString("codigo_prov"));
+                                setters.setCodigo(jsonObject.getString("codigo"));
 
-                                String codigo = proveedoresSetters.getCodigo();
+                                String codigo = setters.getCodigo();
 
                                 if(!codigo.equals("No existe")){
 
-                                    // SI YA SE ENCUENTRA REGISTRADO MUESTRA UN MENSAJE DE ERROR PERO VALIDA EL CAMPO
+                                    // SI YA SE ENCUENTRA REGISTRADO MUESTRA UN MENSAJE DE ERROR
                                     dialogErrorProveedor();
 
-                                    Drawable drawable = getResources().getDrawable(R.drawable.ic_check_green);
+                                    Drawable drawable = getResources().getDrawable(R.drawable.ic_error);
                                     drawable.setBounds(0, 0, drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight());
                                     EditText editCodigo = getView().findViewById(R.id.editCodigo);
-                                    editCodigo.setError("Datos correctos!", drawable);
+                                    editCodigo.setError("Revise los datos!", drawable);
 
                                 } else {
 
@@ -935,7 +978,7 @@ public class ModificarProveedores extends Fragment {
                 }, new Response.ErrorListener() {
 
             public void onErrorResponse(VolleyError error) {
-                Toast.makeText(getContext(), "Por favor, revise su conexión!", Toast.LENGTH_LONG).show();
+                Toast.makeText(getContext(), "Por favor, revise su conexión!", Toast.LENGTH_SHORT).show();
             }
         });
         requestQueue.add(jsonObjectRequest);
@@ -946,7 +989,7 @@ public class ModificarProveedores extends Fragment {
         // CONSULTA POR RAZÓN SOCIAL SI YA FUE INGRESADO ANTERIORMENTE A LA BASE
         String razonSocial = datoRazonSocial.replace(" ","%20");
 
-        String URL = "http://malpicas.heliohost.org/malpica/proveedores/proveedores_consultar_nombre.php?nombre=" + razonSocial;
+        String URL = "http://malpicas.heliohost.org/malpica/proveedores/proveedores_consultar_nombre.php?parameter=" + razonSocial;
         jsonObjectRequest = new JsonObjectRequest(Request.Method.GET,URL,null,
                 new Response.Listener<JSONObject>() {
 
@@ -954,27 +997,27 @@ public class ModificarProveedores extends Fragment {
                     public void onResponse(JSONObject response) {
 
                         try {
-                            JSONArray jsonArray = response.getJSONArray("datos");
+                            JSONArray jsonArray = response.getJSONArray("data");
 
                             // RECORRE EL ARRAY DE JSON CON LA CONSULTA Y CON UN SETTER & GETTER MUESTRA LOS RESULTADOS
                             for (int i = 0; i < jsonArray.length(); i++) {
 
                                 JSONObject jsonObject = jsonArray.getJSONObject(i);
-                                ProveedoresSetters proveedoresSetters = new ProveedoresSetters();
+                                ProveedoresSetters setters = new ProveedoresSetters();
 
-                                proveedoresSetters.setRazonSocial(jsonObject.getString("nombre_prov"));
+                                setters.setRazonSocial(jsonObject.getString("razon_social"));
 
-                                String nombre = proveedoresSetters.getRazonSocial();
+                                String razonSocial = setters.getRazonSocial();
 
-                                if(!nombre.equals("No existe")){
+                                if(!razonSocial.equals("No existe")){
 
-                                    // SI YA SE ENCUENTRA REGISTRADO MUESTRA UN MENSAJE DE ERROR PERO VALIDA EL CAMPO
+                                    // SI YA SE ENCUENTRA REGISTRADO MUESTRA UN MENSAJE DE ERROR
                                     dialogErrorProveedor();
 
-                                    Drawable drawable = getResources().getDrawable(R.drawable.ic_check_green);
+                                    Drawable drawable = getResources().getDrawable(R.drawable.ic_error);
                                     drawable.setBounds(0, 0, drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight());
                                     EditText editRazonSocial = getView().findViewById(R.id.editRazonSocial);
-                                    editRazonSocial.setError("Datos correctos!", drawable);
+                                    editRazonSocial.setError("Revise los datos!", drawable);
 
                                 } else {
 
@@ -992,7 +1035,7 @@ public class ModificarProveedores extends Fragment {
                 }, new Response.ErrorListener() {
 
             public void onErrorResponse(VolleyError error) {
-                Toast.makeText(getContext(), "Por favor, revise su conexión!", Toast.LENGTH_LONG).show();
+                Toast.makeText(getContext(), "Por favor, revise su conexión!", Toast.LENGTH_SHORT).show();
             }
         });
         requestQueue.add(jsonObjectRequest);
@@ -1001,7 +1044,7 @@ public class ModificarProveedores extends Fragment {
     private void consultarCuitBis() {
 
         // CONSULTA POR CUIT SI YA FUE INGRESADO ANTERIORMENTE A LA BASE
-        String URL = "http://malpicas.heliohost.org/malpica/proveedores/proveedores_consultar_cuit.php?cuit=" + datoCuit;
+        String URL = "http://malpicas.heliohost.org/malpica/proveedores/proveedores_consultar_cuit.php?parameter=" + datoCuit;
         jsonObjectRequest = new JsonObjectRequest(Request.Method.GET,URL,null,
                 new Response.Listener<JSONObject>() {
 
@@ -1009,27 +1052,27 @@ public class ModificarProveedores extends Fragment {
                     public void onResponse(JSONObject response) {
 
                         try {
-                            JSONArray jsonArray = response.getJSONArray("datos");
+                            JSONArray jsonArray = response.getJSONArray("data");
 
                             // RECORRE EL ARRAY DE JSON CON LA CONSULTA Y CON UN SETTER & GETTER MUESTRA LOS RESULTADOS
                             for (int i = 0; i < jsonArray.length(); i++) {
 
                                 JSONObject jsonObject = jsonArray.getJSONObject(i);
-                                ProveedoresSetters proveedoresSetters = new ProveedoresSetters();
+                                ProveedoresSetters setters = new ProveedoresSetters();
 
-                                proveedoresSetters.setCuit(jsonObject.getString("cuit_cuil"));
+                                setters.setCuit(jsonObject.getString("cuit"));
 
-                                String cuit = proveedoresSetters.getCuit();
+                                String cuit = setters.getCuit();
 
                                 if(!cuit.equals("No existe")){
 
-                                    // SI YA SE ENCUENTRA REGISTRADO MUESTRA UN MENSAJE DE ERROR PERO VALIDA EL CAMPO
+                                    // SI YA SE ENCUENTRA REGISTRADO MUESTRA UN MENSAJE DE ERROR
                                     dialogErrorProveedor();
 
-                                    Drawable drawable = getResources().getDrawable(R.drawable.ic_check_green);
+                                    Drawable drawable = getResources().getDrawable(R.drawable.ic_error);
                                     drawable.setBounds(0, 0, drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight());
                                     EditText editCuit = getView().findViewById(R.id.editCuit);
-                                    editCuit.setError("Datos correctos!", drawable);
+                                    editCuit.setError("Revise los datos!", drawable);
 
                                 } else {
 
@@ -1047,7 +1090,7 @@ public class ModificarProveedores extends Fragment {
                 }, new Response.ErrorListener() {
 
             public void onErrorResponse(VolleyError error) {
-                Toast.makeText(getContext(), "Por favor, revise su conexión!", Toast.LENGTH_LONG).show();
+                Toast.makeText(getContext(), "Por favor, revise su conexión!", Toast.LENGTH_SHORT).show();
             }
         });
         requestQueue.add(jsonObjectRequest);
@@ -1070,24 +1113,25 @@ public class ModificarProveedores extends Fragment {
         }) {
             @Override
             protected Map<String, String> getParams() {
-                Map<String, String> parametros = new HashMap<>();
+                Map<String, String> parameter = new HashMap<>();
 
-                parametros.put("codigo_viejo",datoBuscarCodigo);
-                parametros.put("codigo_nuevo",datoCodigo);
-                parametros.put("nombre",datoRazonSocial);
-                parametros.put("condicion",datoCondicion);
-                parametros.put("descripcion",datoDescripcion);
-                parametros.put("cuit",datoCuit);
-                parametros.put("direccion",datoDireccion);
-                parametros.put("localidad",datoLocalidad);
-                parametros.put("contacto",datoContacto);
-                parametros.put("tipo",datoTipo);
-                parametros.put("fecha_modif",datoFechaActual);
-                parametros.put("dia_modif",datoDia);
-                parametros.put("mes_modif",datoMes);
-                parametros.put("ano_modif",datoAno);
+                parameter.put("codigo_viejo",datoBuscarCodigo);
+                parameter.put("codigo_nuevo",datoCodigo);
+                parameter.put("razon_social",datoRazonSocial);
+                parameter.put("condicion",datoCondicion);
+                parameter.put("descripcion",datoDescripcion);
+                parameter.put("cuit",datoCuit);
+                parameter.put("direccion",datoDireccion);
+                parameter.put("localidad",datoLocalidad);
+                parameter.put("contacto",datoContacto);
+                parameter.put("tipo",datoTipo);
+                parameter.put("fecha_modif",datoFechaActual);
+                parameter.put("hora_modif",datoHoraActual);
+                parameter.put("dia_modif",datoDia);
+                parameter.put("mes_modif",datoMes);
+                parameter.put("ano_modif",datoAno);
 
-                return parametros;
+                return parameter;
             }
         };
         requestQueue.add(stringRequest);

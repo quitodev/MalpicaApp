@@ -32,6 +32,7 @@ import org.json.JSONObject;
 import java.text.DateFormat;
 import java.text.DecimalFormat;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Timer;
@@ -41,7 +42,7 @@ public class ModificarStock extends Fragment {
 
     private RequestQueue requestQueue;
     private JsonObjectRequest jsonObjectRequest;
-    private String datoFechaActual, datoBuscarCodigo, datoBuscarDescripcion, datoCodigo, datoDescripcion,
+    private String datoFechaActual, datoHoraActual, datoBuscarCodigo, datoBuscarDescripcion, datoCodigo, datoDescripcion,
             datoCantidad, datoMoneda, datoPrecioUnit, datoPrecioTotal, datoDia, datoMes, datoAno;
     private int counter, cantidad;
     private double precioUnit, precioTotal;
@@ -67,16 +68,15 @@ public class ModificarStock extends Fragment {
         final EditText editPrecioUnit = root.findViewById(R.id.editPrecioUnit);
         final EditText editPrecioTotal = root.findViewById(R.id.editPrecioTotal);
 
-        Button buttonConsultar = root.findViewById(R.id.buttonConsultar);
-        Button buttonModificar = root.findViewById(R.id.buttonModificar);
-        Button buttonGuardar = root.findViewById(R.id.buttonGuardar);
+        final Button buttonConsultar = root.findViewById(R.id.buttonConsultar);
+        final Button buttonModificar = root.findViewById(R.id.buttonModificar);
+        final Button buttonGuardar = root.findViewById(R.id.buttonGuardar);
 
         // EVENTOS DEL BOTÓN CONSULTAR
         buttonConsultar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-                Button buttonModificar = getView().findViewById(R.id.buttonModificar);
                 buttonModificar.setVisibility(View.VISIBLE);
 
                 editCodigo.setFocusable(false);
@@ -135,7 +135,6 @@ public class ModificarStock extends Fragment {
                 if(!datoCodigo.isEmpty()){
 
                     // SI DEVUELVE UN CÓDIGO, HABILITA LOS CAMPOS PARA HACER MODIFICACIONES
-                    Button buttonModificar = getView().findViewById(R.id.buttonModificar);
                     buttonModificar.setVisibility(View.INVISIBLE);
 
                     Drawable drawable = getResources().getDrawable(R.drawable.ic_check_green);
@@ -227,8 +226,19 @@ public class ModificarStock extends Fragment {
 
                     if (!datoCodigo.isEmpty()) {
 
-                        dialogProcesando();
-                        consultarCodigoBis();
+                        if(!datoCodigo.equals(datoBuscarCodigo)) {
+
+                            // SI HUBO CAMBIOS, CONSULTA PARA VER SI YA EXISTE EN LA BASE
+                            dialogProcesando();
+                            consultarCodigoBis();
+
+                        } else {
+
+                            // SI NO HUBO CAMBIOS, VALIDA EL CAMPO
+                            Drawable drawable = getResources().getDrawable(R.drawable.ic_check_green);
+                            drawable.setBounds(0, 0, drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight());
+                            editCodigo.setError("Datos correctos!", drawable);
+                        }
 
                     } else {
 
@@ -254,8 +264,19 @@ public class ModificarStock extends Fragment {
 
                     if (!datoDescripcion.isEmpty()) {
 
-                        dialogProcesando();
-                        consultarDescripcionBis();
+                        if(!datoDescripcion.equals(datoBuscarDescripcion)) {
+
+                            // SI HUBO CAMBIOS, CONSULTA PARA VER SI YA EXISTE EN LA BASE
+                            dialogProcesando();
+                            consultarDescripcionBis();
+
+                        } else {
+
+                            // SI NO HUBO CAMBIOS, VALIDA EL CAMPO
+                            Drawable drawable = getResources().getDrawable(R.drawable.ic_check_green);
+                            drawable.setBounds(0, 0, drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight());
+                            editDescripcion.setError("Datos correctos!", drawable);
+                        }
 
                     } else {
 
@@ -504,7 +525,11 @@ public class ModificarStock extends Fragment {
 
     private void dateFragments() {
 
-        // MÉTODO PARA OBTENER EL DÍA ACTUAL
+        // OBTIENE LA FECHA Y HORA ACTUAL
+        Date date = Calendar.getInstance().getTime();
+        String hour = date.toString();
+        datoHoraActual = "" + hour.charAt(11) + hour.charAt(12) + hour.charAt(13) + hour.charAt(14) + hour.charAt(15);
+
         Calendar calendar = Calendar.getInstance();
         String fechaActual = DateFormat.getDateInstance(DateFormat.SHORT).format(calendar.getTime());
 
@@ -536,7 +561,7 @@ public class ModificarStock extends Fragment {
             public void run() {
                 counter++;
 
-                if(counter == 20) {
+                if(counter == 30) {
                     timer.cancel();
                     dialogs.endProcesando();
                     counter = 0;
@@ -553,9 +578,10 @@ public class ModificarStock extends Fragment {
             @Override
             public void run() {
                 Dialogs dialogs = new Dialogs(getActivity());
-                dialogs.startError();
+                int layout = R.layout.dialog_error;
+                dialogs.startResultado(layout);
             }
-        }, 2000);
+        }, 3000);
     }
 
     private void dialogErrorProducto(){
@@ -565,9 +591,10 @@ public class ModificarStock extends Fragment {
             @Override
             public void run() {
                 Dialogs dialogs = new Dialogs(getActivity());
-                dialogs.startErrorProducto();
+                int layout = R.layout.dialog_error_producto;
+                dialogs.startResultado(layout);
             }
-        }, 2000);
+        }, 3000);
     }
 
     private void dialogOk(){
@@ -578,7 +605,8 @@ public class ModificarStock extends Fragment {
             @Override
             public void run() {
                 Dialogs dialogs = new Dialogs(getActivity());
-                dialogs.startOk();
+                int layout = R.layout.dialog_ok;
+                dialogs.startResultado(layout);
 
                 EditText editBuscarCodigo = getView().findViewById(R.id.editBuscarCodigo);
                 EditText editCodigo = getView().findViewById(R.id.editCodigo);
@@ -611,15 +639,19 @@ public class ModificarStock extends Fragment {
 
                 ScrollView scrollView = getView().findViewById(R.id.scroll);
                 scrollView.setScrollY(0);
+
+                Button buttonModificar = getView().findViewById(R.id.buttonModificar);
+                buttonModificar.setVisibility(View.VISIBLE);
+
                 editBuscarCodigo.requestFocusFromTouch();
             }
-        }, 2000);
+        }, 3000);
     }
 
     private void consultarCodigo() {
 
         // CONSULTA POR CÓDIGO SI YA FUE INGRESADO ANTERIORMENTE A LA BASE
-        String URL = "http://malpicas.heliohost.org/malpica/stock/stock_consultar_codigo.php?codigo=" + datoBuscarCodigo;
+        String URL = "http://malpicas.heliohost.org/malpica/stock/stock_consultar_codigo.php?parameter=" + datoBuscarCodigo;
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, URL, null,
                 new Response.Listener<JSONObject>() {
 
@@ -627,27 +659,27 @@ public class ModificarStock extends Fragment {
                     public void onResponse(JSONObject response) {
 
                         try {
-                            JSONArray jsonArray = response.getJSONArray("datos");
+                            JSONArray jsonArray = response.getJSONArray("data");
 
                             // RECORRE EL ARRAY DE JSON CON LA CONSULTA Y CON UN SETTER & GETTER MUESTRA LOS RESULTADOS
                             for (int i = 0; i < jsonArray.length(); i++) {
 
                                 JSONObject jsonObject = jsonArray.getJSONObject(i);
-                                StockSetters stockSetters = new StockSetters();
+                                StockSetters setters = new StockSetters();
 
-                                stockSetters.setCodigo(jsonObject.getString("codigo"));
-                                stockSetters.setDescripcion(jsonObject.getString("descripcion"));
-                                stockSetters.setCantidad(jsonObject.getString("cantidad"));
-                                stockSetters.setMoneda(jsonObject.getString("moneda"));
-                                stockSetters.setPrecioUnit(jsonObject.getString("precio_unit"));
-                                stockSetters.setPrecioTotal(jsonObject.getString("precio_total"));
+                                setters.setCodigo(jsonObject.getString("codigo_stock"));
+                                setters.setDescripcion(jsonObject.getString("descripcion_stock"));
+                                setters.setCantidad(jsonObject.getString("cantidad"));
+                                setters.setMoneda(jsonObject.getString("moneda"));
+                                setters.setPrecioUnit(jsonObject.getString("precio_unit"));
+                                setters.setPrecioTotal(jsonObject.getString("precio_total"));
 
-                                String codigo = stockSetters.getCodigo();
-                                String descripcion = stockSetters.getDescripcion();
-                                String cantidad = stockSetters.getCantidad();
-                                String moneda = stockSetters.getMoneda();
-                                String precioUnit = stockSetters.getPrecioUnit();
-                                String precioTotal = stockSetters.getPrecioTotal();
+                                String codigo = setters.getCodigo();
+                                String descripcion = setters.getDescripcion();
+                                String cantidad = setters.getCantidad();
+                                String moneda = setters.getMoneda();
+                                String precioUnit = setters.getPrecioUnit();
+                                String precioTotal = setters.getPrecioTotal();
 
                                 if (!codigo.equals("No existe")) {
 
@@ -679,7 +711,7 @@ public class ModificarStock extends Fragment {
                 }, new Response.ErrorListener() {
 
             public void onErrorResponse(VolleyError error) {
-                Toast.makeText(getContext(), "Por favor, revise su conexión!", Toast.LENGTH_LONG).show();
+                Toast.makeText(getContext(), "Por favor, revise su conexión!", Toast.LENGTH_SHORT).show();
             }
         });
         requestQueue.add(jsonObjectRequest);
@@ -690,7 +722,7 @@ public class ModificarStock extends Fragment {
         // CONSULTA POR DESCRIPCIÓN SI YA FUE INGRESADO ANTERIORMENTE A LA BASE
         String descripcion = datoBuscarDescripcion.replace(" ", "%20");
 
-        String URL = "http://malpicas.heliohost.org/malpica/stock/stock_consultar_descripcion.php?descripcion=" + descripcion;
+        String URL = "http://malpicas.heliohost.org/malpica/stock/stock_consultar_descripcion.php?parameter=" + descripcion;
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, URL, null,
                 new Response.Listener<JSONObject>() {
 
@@ -698,29 +730,29 @@ public class ModificarStock extends Fragment {
                     public void onResponse(JSONObject response) {
 
                         try {
-                            JSONArray jsonArray = response.getJSONArray("datos");
+                            JSONArray jsonArray = response.getJSONArray("data");
 
                             // RECORRE EL ARRAY DE JSON CON LA CONSULTA Y CON UN SETTER & GETTER MUESTRA LOS RESULTADOS
                             for (int i = 0; i < jsonArray.length(); i++) {
 
                                 JSONObject jsonObject = jsonArray.getJSONObject(i);
-                                StockSetters stockSetters = new StockSetters();
+                                StockSetters setters = new StockSetters();
 
-                                stockSetters.setCodigo(jsonObject.getString("codigo"));
-                                stockSetters.setDescripcion(jsonObject.getString("descripcion"));
-                                stockSetters.setCantidad(jsonObject.getString("cantidad"));
-                                stockSetters.setMoneda(jsonObject.getString("moneda"));
-                                stockSetters.setPrecioUnit(jsonObject.getString("precio_unit"));
-                                stockSetters.setPrecioTotal(jsonObject.getString("precio_total"));
+                                setters.setCodigo(jsonObject.getString("codigo_stock"));
+                                setters.setDescripcion(jsonObject.getString("descripcion_stock"));
+                                setters.setCantidad(jsonObject.getString("cantidad"));
+                                setters.setMoneda(jsonObject.getString("moneda"));
+                                setters.setPrecioUnit(jsonObject.getString("precio_unit"));
+                                setters.setPrecioTotal(jsonObject.getString("precio_total"));
 
-                                String codigo = stockSetters.getCodigo();
-                                String descripcion = stockSetters.getDescripcion();
-                                String cantidad = stockSetters.getCantidad();
-                                String moneda = stockSetters.getMoneda();
-                                String precioUnit = stockSetters.getPrecioUnit();
-                                String precioTotal = stockSetters.getPrecioTotal();
+                                String codigo = setters.getCodigo();
+                                String descripcion = setters.getDescripcion();
+                                String cantidad = setters.getCantidad();
+                                String moneda = setters.getMoneda();
+                                String precioUnit = setters.getPrecioUnit();
+                                String precioTotal = setters.getPrecioTotal();
 
-                                if (!descripcion.equals("No existe")) {
+                                if (!codigo.equals("No existe")) {
 
                                     // SI DEVUELVE VALORES LOS MUESTRA EN LOS CAMPOS
                                     EditText editCodigo = getView().findViewById(R.id.editCodigo);
@@ -750,7 +782,7 @@ public class ModificarStock extends Fragment {
                 }, new Response.ErrorListener() {
 
             public void onErrorResponse(VolleyError error) {
-                Toast.makeText(getContext(), "Por favor, revise su conexión!", Toast.LENGTH_LONG).show();
+                Toast.makeText(getContext(), "Por favor, revise su conexión!", Toast.LENGTH_SHORT).show();
             }
         });
         requestQueue.add(jsonObjectRequest);
@@ -759,7 +791,7 @@ public class ModificarStock extends Fragment {
     private void consultarCodigoBis() {
 
         // CONSULTA POR CÓDIGO SI NO EXISTE OTRO CON EL MISMO CÓDIGO
-        String URL = "http://malpicas.heliohost.org/malpica/stock/stock_consultar_codigo.php?codigo=" + datoCodigo;
+        String URL = "http://malpicas.heliohost.org/malpica/stock/stock_consultar_codigo.php?parameter=" + datoCodigo;
         jsonObjectRequest = new JsonObjectRequest(Request.Method.GET,URL,null,
                 new Response.Listener<JSONObject>() {
 
@@ -767,27 +799,27 @@ public class ModificarStock extends Fragment {
                     public void onResponse(JSONObject response) {
 
                         try {
-                            JSONArray jsonArray = response.getJSONArray("datos");
+                            JSONArray jsonArray = response.getJSONArray("data");
 
                             // RECORRE EL ARRAY DE JSON CON LA CONSULTA Y CON UN SETTER & GETTER MUESTRA LOS RESULTADOS
                             for (int i = 0; i < jsonArray.length(); i++) {
 
                                 JSONObject jsonObject = jsonArray.getJSONObject(i);
-                                StockSetters stockSetters = new StockSetters();
+                                StockSetters setters = new StockSetters();
 
-                                stockSetters.setCodigo(jsonObject.getString("codigo"));
+                                setters.setCodigo(jsonObject.getString("codigo_stock"));
 
-                                String codigo = stockSetters.getCodigo();
+                                String codigo = setters.getCodigo();
 
                                 if(!codigo.equals("No existe")){
 
-                                    // SI YA SE ENCUENTRA REGISTRADO MUESTRA UN MENSAJE DE ERROR PERO VALIDA EL CAMPO
+                                    // SI YA SE ENCUENTRA REGISTRADO MUESTRA UN MENSAJE DE ERROR
                                     dialogErrorProducto();
 
-                                    Drawable drawable = getResources().getDrawable(R.drawable.ic_check_green);
+                                    Drawable drawable = getResources().getDrawable(R.drawable.ic_error);
                                     drawable.setBounds(0, 0, drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight());
                                     EditText editCodigo = getView().findViewById(R.id.editCodigo);
-                                    editCodigo.setError("Datos correctos!", drawable);
+                                    editCodigo.setError("Revise los datos!", drawable);
 
                                 } else {
 
@@ -806,7 +838,7 @@ public class ModificarStock extends Fragment {
                 }, new Response.ErrorListener() {
 
             public void onErrorResponse(VolleyError error) {
-                Toast.makeText(getContext(), "Por favor, revise su conexión!", Toast.LENGTH_LONG).show();
+                Toast.makeText(getContext(), "Por favor, revise su conexión!", Toast.LENGTH_SHORT).show();
             }
         });
         requestQueue.add(jsonObjectRequest);
@@ -817,7 +849,7 @@ public class ModificarStock extends Fragment {
         // CONSULTA POR DESCRIPCIÓN SI YA FUE INGRESADO ANTERIORMENTE A LA BASE
         String descripcion = datoDescripcion.replace(" ","%20");
 
-        String URL = "http://malpicas.heliohost.org/malpica/stock/stock_consultar_descripcion.php?descripcion=" + descripcion;
+        String URL = "http://malpicas.heliohost.org/malpica/stock/stock_consultar_descripcion.php?parameter=" + descripcion;
         jsonObjectRequest = new JsonObjectRequest(Request.Method.GET,URL,null,
                 new Response.Listener<JSONObject>() {
 
@@ -825,27 +857,27 @@ public class ModificarStock extends Fragment {
                     public void onResponse(JSONObject response) {
 
                         try {
-                            JSONArray jsonArray = response.getJSONArray("datos");
+                            JSONArray jsonArray = response.getJSONArray("data");
 
                             // RECORRE EL ARRAY DE JSON CON LA CONSULTA Y CON UN SETTER & GETTER MUESTRA LOS RESULTADOS
                             for (int i = 0; i < jsonArray.length(); i++) {
 
                                 JSONObject jsonObject = jsonArray.getJSONObject(i);
-                                StockSetters stockSetters = new StockSetters();
+                                StockSetters setters = new StockSetters();
 
-                                stockSetters.setDescripcion(jsonObject.getString("descripcion"));
+                                setters.setDescripcion(jsonObject.getString("descripcion_stock"));
 
-                                String descripcion = stockSetters.getDescripcion();
+                                String descripcion = setters.getDescripcion();
 
                                 if(!descripcion.equals("No existe")){
 
-                                    // SI YA SE ENCUENTRA REGISTRADO MUESTRA UN MENSAJE DE ERROR PERO VALIDA EL CAMPO
+                                    // SI YA SE ENCUENTRA REGISTRADO MUESTRA UN MENSAJE DE ERROR
                                     dialogErrorProducto();
 
-                                    Drawable drawable = getResources().getDrawable(R.drawable.ic_check_green);
+                                    Drawable drawable = getResources().getDrawable(R.drawable.ic_error);
                                     drawable.setBounds(0, 0, drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight());
                                     EditText editDescripcion = getView().findViewById(R.id.editDescripcion);
-                                    editDescripcion.setError("Datos correctos!", drawable);
+                                    editDescripcion.setError("Revise los datos!", drawable);
 
                                 } else {
 
@@ -863,7 +895,7 @@ public class ModificarStock extends Fragment {
                 }, new Response.ErrorListener() {
 
             public void onErrorResponse(VolleyError error) {
-                Toast.makeText(getContext(), "Por favor, revise su conexión!", Toast.LENGTH_LONG).show();
+                Toast.makeText(getContext(), "Por favor, revise su conexión!", Toast.LENGTH_SHORT).show();
             }
         });
         requestQueue.add(jsonObjectRequest);
@@ -886,21 +918,22 @@ public class ModificarStock extends Fragment {
         }) {
             @Override
             protected Map<String, String> getParams() {
-                Map<String, String> parametros = new HashMap<>();
+                Map<String, String> parameter = new HashMap<>();
 
-                parametros.put("codigo_viejo",datoBuscarCodigo);
-                parametros.put("codigo_nuevo",datoCodigo);
-                parametros.put("descripcion",datoDescripcion);
-                parametros.put("cantidad",datoCantidad);
-                parametros.put("moneda",datoMoneda);
-                parametros.put("precio_unit",datoPrecioUnit);
-                parametros.put("precio_total",datoPrecioTotal);
-                parametros.put("fecha_modif",datoFechaActual);
-                parametros.put("dia_modif",datoDia);
-                parametros.put("mes_modif",datoMes);
-                parametros.put("ano_modif",datoAno);
+                parameter.put("codigo_viejo",datoBuscarCodigo);
+                parameter.put("codigo_nuevo",datoCodigo);
+                parameter.put("descripcion_stock",datoDescripcion);
+                parameter.put("cantidad",datoCantidad);
+                parameter.put("moneda",datoMoneda);
+                parameter.put("precio_unit",datoPrecioUnit);
+                parameter.put("precio_total",datoPrecioTotal);
+                parameter.put("fecha_modif",datoFechaActual);
+                parameter.put("hora_modif",datoHoraActual);
+                parameter.put("dia_modif",datoDia);
+                parameter.put("mes_modif",datoMes);
+                parameter.put("ano_modif",datoAno);
 
-                return parametros;
+                return parameter;
             }
         };
         requestQueue.add(stringRequest);

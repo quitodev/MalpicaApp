@@ -49,6 +49,8 @@ public class ConsultarClientes extends Fragment {
         final EditText editBuscarCodigo = root.findViewById(R.id.editBuscarCodigo);
         final EditText editBuscarRazon = root.findViewById(R.id.editBuscarRazon);
         final EditText editBuscarCuit = root.findViewById(R.id.editBuscarCuit);
+        final EditText editFechaAlta = root.findViewById(R.id.editFechaAlta);
+        final EditText editFechaModif = root.findViewById(R.id.editFechaModif);
         final EditText editCodigo = root.findViewById(R.id.editCodigo);
         final EditText editRazonSocial = root.findViewById(R.id.editRazonSocial);
         final EditText editCondicion = root.findViewById(R.id.editCondicion);
@@ -59,7 +61,7 @@ public class ConsultarClientes extends Fragment {
         final EditText editContacto = root.findViewById(R.id.editContacto);
         final EditText editTipo = root.findViewById(R.id.editTipo);
 
-        Button buttonConsultar = root.findViewById(R.id.buttonConsultar);
+        final Button buttonConsultar = root.findViewById(R.id.buttonConsultar);
 
         // EVENTOS DEL BOTÓN CONSULTAR
         buttonConsultar.setOnClickListener(new View.OnClickListener() {
@@ -92,6 +94,8 @@ public class ConsultarClientes extends Fragment {
                 if (datoBuscarCodigo.isEmpty() && datoBuscarRazon.isEmpty() && datoBuscarCuit.isEmpty()) {
 
                     // SI LOS CAMPOS ESTÁN VACÍOS, SE LIMPIAN LOS RESULTADOS ANTERIORES Y MUESTRA UN ERROR
+                    editFechaAlta.setText("");
+                    editFechaModif.setText("");
                     editCodigo.setText("");
                     editRazonSocial.setText("");
                     editCondicion.setText("");
@@ -158,7 +162,7 @@ public class ConsultarClientes extends Fragment {
             public void run() {
                 counter++;
 
-                if (counter == 20) {
+                if (counter == 30) {
                     timer.cancel();
                     dialogs.endProcesando();
                     counter = 0;
@@ -175,8 +179,11 @@ public class ConsultarClientes extends Fragment {
             @Override
             public void run() {
                 Dialogs dialogs = new Dialogs(getActivity());
-                dialogs.startError();
+                int layout = R.layout.dialog_error;
+                dialogs.startResultado(layout);
 
+                EditText editFechaAlta = getView().findViewById(R.id.editFechaAlta);
+                EditText editFechaModif = getView().findViewById(R.id.editFechaModif);
                 EditText editCodigo = getView().findViewById(R.id.editCodigo);
                 EditText editRazonSocial = getView().findViewById(R.id.editRazonSocial);
                 EditText editCondicion = getView().findViewById(R.id.editCondicion);
@@ -187,6 +194,8 @@ public class ConsultarClientes extends Fragment {
                 EditText editContacto = getView().findViewById(R.id.editContacto);
                 EditText editTipo = getView().findViewById(R.id.editTipo);
 
+                editFechaAlta.setText("");
+                editFechaModif.setText("");
                 editCodigo.setText("");
                 editRazonSocial.setText("");
                 editCondicion.setText("");
@@ -197,13 +206,13 @@ public class ConsultarClientes extends Fragment {
                 editContacto.setText("");
                 editTipo.setText("");
             }
-        }, 2000);
+        }, 3000);
     }
 
     private void consultarCodigo() {
 
         // CONSULTA POR CÓDIGO SI YA FUE INGRESADO ANTERIORMENTE A LA BASE
-        String URL = "http://malpicas.heliohost.org/malpica/clientes/clientes_consultar_codigo.php?codigo=" + datoBuscarCodigo;
+        String URL = "http://malpicas.heliohost.org/malpica/clientes/clientes_consultar_codigo.php?parameter=" + datoBuscarCodigo;
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, URL, null,
                 new Response.Listener<JSONObject>() {
 
@@ -211,37 +220,45 @@ public class ConsultarClientes extends Fragment {
                     public void onResponse(JSONObject response) {
 
                         try {
-                            JSONArray jsonArray = response.getJSONArray("datos");
+                            JSONArray jsonArray = response.getJSONArray("data");
 
                             // RECORRE EL ARRAY DE JSON CON LA CONSULTA Y CON UN SETTER & GETTER MUESTRA LOS RESULTADOS
                             for (int i = 0; i < jsonArray.length(); i++) {
 
                                 JSONObject jsonObject = jsonArray.getJSONObject(i);
-                                ClientesSetters clientesSetters = new ClientesSetters();
+                                ClientesSetters setters = new ClientesSetters();
 
-                                clientesSetters.setCodigo(jsonObject.getString("codigo_cliente"));
-                                clientesSetters.setRazonSocial(jsonObject.getString("nombre_cliente"));
-                                clientesSetters.setCondicion(jsonObject.getString("condicion_cliente"));
-                                clientesSetters.setDescripcion(jsonObject.getString("descripcion"));
-                                clientesSetters.setCuit(jsonObject.getString("cuit_cuil"));
-                                clientesSetters.setDireccion(jsonObject.getString("direccion"));
-                                clientesSetters.setLocalidad(jsonObject.getString("localidad"));
-                                clientesSetters.setContacto(jsonObject.getString("contacto"));
-                                clientesSetters.setTipo(jsonObject.getString("tipo_cliente"));
+                                setters.setFechaAlta(jsonObject.getString("fecha_alta"));
+                                setters.setHoraAlta(jsonObject.getString("hora_alta"));
+                                setters.setFechaModif(jsonObject.getString("fecha_modif"));
+                                setters.setHoraModif(jsonObject.getString("hora_modif"));
+                                setters.setCodigo(jsonObject.getString("codigo"));
+                                setters.setRazonSocial(jsonObject.getString("razon_social"));
+                                setters.setCondicion(jsonObject.getString("condicion"));
+                                setters.setDescripcion(jsonObject.getString("descripcion"));
+                                setters.setCuit(jsonObject.getString("cuit"));
+                                setters.setDireccion(jsonObject.getString("direccion"));
+                                setters.setLocalidad(jsonObject.getString("localidad"));
+                                setters.setContacto(jsonObject.getString("contacto"));
+                                setters.setTipo(jsonObject.getString("tipo"));
 
-                                String codigo = clientesSetters.getCodigo();
-                                String nombre = clientesSetters.getRazonSocial();
-                                String condicion = clientesSetters.getCondicion();
-                                String descripcion = clientesSetters.getDescripcion();
-                                String cuit = clientesSetters.getCuit();
-                                String direccion = clientesSetters.getDireccion();
-                                String localidad = clientesSetters.getLocalidad();
-                                String contacto = clientesSetters.getContacto();
-                                String tipo = clientesSetters.getTipo();
+                                String fechaAlta = setters.getFechaAlta() + " " + setters.getHoraAlta();
+                                String fechaModif = setters.getFechaModif() + " " + setters.getHoraModif();
+                                String codigo = setters.getCodigo();
+                                String razonSocial = setters.getRazonSocial();
+                                String condicion = setters.getCondicion();
+                                String descripcion = setters.getDescripcion();
+                                String cuit = setters.getCuit();
+                                String direccion = setters.getDireccion();
+                                String localidad = setters.getLocalidad();
+                                String contacto = setters.getContacto();
+                                String tipo = setters.getTipo();
 
-                                if (!codigo.equals("No existe")) {
+                                if (!fechaAlta.equals("No existe")) {
 
                                     // SI DEVUELVE VALORES LOS MUESTRA EN LOS CAMPOS
+                                    EditText editFechaAlta = getView().findViewById(R.id.editFechaAlta);
+                                    EditText editFechaModif = getView().findViewById(R.id.editFechaModif);
                                     EditText editCodigo = getView().findViewById(R.id.editCodigo);
                                     EditText editRazonSocial = getView().findViewById(R.id.editRazonSocial);
                                     EditText editCondicion = getView().findViewById(R.id.editCondicion);
@@ -252,8 +269,10 @@ public class ConsultarClientes extends Fragment {
                                     EditText editContacto = getView().findViewById(R.id.editContacto);
                                     EditText editTipo = getView().findViewById(R.id.editTipo);
 
+                                    editFechaAlta.setText(fechaAlta);
+                                    editFechaModif.setText(fechaModif);
                                     editCodigo.setText(codigo);
-                                    editRazonSocial.setText(nombre);
+                                    editRazonSocial.setText(razonSocial);
                                     editCondicion.setText(condicion);
                                     editDescripcion.setText(descripcion);
                                     editCuit.setText(cuit);
@@ -261,6 +280,16 @@ public class ConsultarClientes extends Fragment {
                                     editLocalidad.setText(localidad);
                                     editContacto.setText(contacto);
                                     editTipo.setText(tipo);
+
+                                    if (fechaAlta.contains("/2") && fechaModif.contains("/2")) {
+
+                                        // REEMPLAZO DE FORMATO DE FECHA
+                                        String fechaAlta1 = fechaAlta.replace("/2","/202");
+                                        String fechaModif1 = fechaModif.replace("/2","/202");
+
+                                        editFechaAlta.setText(fechaAlta1);
+                                        editFechaModif.setText(fechaModif1);
+                                    }
 
                                 } else {
 
@@ -275,7 +304,7 @@ public class ConsultarClientes extends Fragment {
                 }, new Response.ErrorListener() {
 
             public void onErrorResponse(VolleyError error) {
-                Toast.makeText(getContext(), "Por favor, revise su conexión!", Toast.LENGTH_LONG).show();
+                Toast.makeText(getContext(), "Por favor, revise su conexión!", Toast.LENGTH_SHORT).show();
             }
         });
         requestQueue.add(jsonObjectRequest);
@@ -286,7 +315,7 @@ public class ConsultarClientes extends Fragment {
         // CONSULTA POR RAZÓN SOCIAL SI YA FUE INGRESADO ANTERIORMENTE A LA BASE
         String razonSocial = datoBuscarRazon.replace(" ", "%20");
 
-        String URL = "http://malpicas.heliohost.org/malpica/clientes/clientes_consultar_nombre.php?nombre=" + razonSocial;
+        String URL = "http://malpicas.heliohost.org/malpica/clientes/clientes_consultar_nombre.php?parameter=" + razonSocial;
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, URL, null,
                 new Response.Listener<JSONObject>() {
 
@@ -294,37 +323,45 @@ public class ConsultarClientes extends Fragment {
                     public void onResponse(JSONObject response) {
 
                         try {
-                            JSONArray jsonArray = response.getJSONArray("datos");
+                            JSONArray jsonArray = response.getJSONArray("data");
 
                             // RECORRE EL ARRAY DE JSON CON LA CONSULTA Y CON UN SETTER & GETTER MUESTRA LOS RESULTADOS
                             for (int i = 0; i < jsonArray.length(); i++) {
 
                                 JSONObject jsonObject = jsonArray.getJSONObject(i);
-                                ClientesSetters clientesSetters = new ClientesSetters();
+                                ClientesSetters setters = new ClientesSetters();
 
-                                clientesSetters.setCodigo(jsonObject.getString("codigo_cliente"));
-                                clientesSetters.setRazonSocial(jsonObject.getString("nombre_cliente"));
-                                clientesSetters.setCondicion(jsonObject.getString("condicion_cliente"));
-                                clientesSetters.setDescripcion(jsonObject.getString("descripcion"));
-                                clientesSetters.setCuit(jsonObject.getString("cuit_cuil"));
-                                clientesSetters.setDireccion(jsonObject.getString("direccion"));
-                                clientesSetters.setLocalidad(jsonObject.getString("localidad"));
-                                clientesSetters.setContacto(jsonObject.getString("contacto"));
-                                clientesSetters.setTipo(jsonObject.getString("tipo_cliente"));
+                                setters.setFechaAlta(jsonObject.getString("fecha_alta"));
+                                setters.setHoraAlta(jsonObject.getString("hora_alta"));
+                                setters.setFechaModif(jsonObject.getString("fecha_modif"));
+                                setters.setHoraModif(jsonObject.getString("hora_modif"));
+                                setters.setCodigo(jsonObject.getString("codigo"));
+                                setters.setRazonSocial(jsonObject.getString("razon_social"));
+                                setters.setCondicion(jsonObject.getString("condicion"));
+                                setters.setDescripcion(jsonObject.getString("descripcion"));
+                                setters.setCuit(jsonObject.getString("cuit"));
+                                setters.setDireccion(jsonObject.getString("direccion"));
+                                setters.setLocalidad(jsonObject.getString("localidad"));
+                                setters.setContacto(jsonObject.getString("contacto"));
+                                setters.setTipo(jsonObject.getString("tipo"));
 
-                                String codigo = clientesSetters.getCodigo();
-                                String nombre = clientesSetters.getRazonSocial();
-                                String condicion = clientesSetters.getCondicion();
-                                String descripcion = clientesSetters.getDescripcion();
-                                String cuit = clientesSetters.getCuit();
-                                String direccion = clientesSetters.getDireccion();
-                                String localidad = clientesSetters.getLocalidad();
-                                String contacto = clientesSetters.getContacto();
-                                String tipo = clientesSetters.getTipo();
+                                String fechaAlta = setters.getFechaAlta() + " " + setters.getHoraAlta();
+                                String fechaModif = setters.getFechaModif() + " " + setters.getHoraModif();
+                                String codigo = setters.getCodigo();
+                                String razonSocial = setters.getRazonSocial();
+                                String condicion = setters.getCondicion();
+                                String descripcion = setters.getDescripcion();
+                                String cuit = setters.getCuit();
+                                String direccion = setters.getDireccion();
+                                String localidad = setters.getLocalidad();
+                                String contacto = setters.getContacto();
+                                String tipo = setters.getTipo();
 
-                                if (!nombre.equals("No existe")) {
+                                if (!fechaAlta.equals("No existe")) {
 
                                     // SI DEVUELVE VALORES LOS MUESTRA EN LOS CAMPOS
+                                    EditText editFechaAlta = getView().findViewById(R.id.editFechaAlta);
+                                    EditText editFechaModif = getView().findViewById(R.id.editFechaModif);
                                     EditText editCodigo = getView().findViewById(R.id.editCodigo);
                                     EditText editRazonSocial = getView().findViewById(R.id.editRazonSocial);
                                     EditText editCondicion = getView().findViewById(R.id.editCondicion);
@@ -335,8 +372,10 @@ public class ConsultarClientes extends Fragment {
                                     EditText editContacto = getView().findViewById(R.id.editContacto);
                                     EditText editTipo = getView().findViewById(R.id.editTipo);
 
+                                    editFechaAlta.setText(fechaAlta);
+                                    editFechaModif.setText(fechaModif);
                                     editCodigo.setText(codigo);
-                                    editRazonSocial.setText(nombre);
+                                    editRazonSocial.setText(razonSocial);
                                     editCondicion.setText(condicion);
                                     editDescripcion.setText(descripcion);
                                     editCuit.setText(cuit);
@@ -344,6 +383,16 @@ public class ConsultarClientes extends Fragment {
                                     editLocalidad.setText(localidad);
                                     editContacto.setText(contacto);
                                     editTipo.setText(tipo);
+
+                                    if (fechaAlta.contains("/2") && fechaModif.contains("/2")) {
+
+                                        // REEMPLAZO DE FORMATO DE FECHA
+                                        String fechaAlta1 = fechaAlta.replace("/2","/202");
+                                        String fechaModif1 = fechaModif.replace("/2","/202");
+
+                                        editFechaAlta.setText(fechaAlta1);
+                                        editFechaModif.setText(fechaModif1);
+                                    }
 
                                 } else {
 
@@ -358,7 +407,7 @@ public class ConsultarClientes extends Fragment {
                 }, new Response.ErrorListener() {
 
             public void onErrorResponse(VolleyError error) {
-                Toast.makeText(getContext(), "Por favor, revise su conexión!", Toast.LENGTH_LONG).show();
+                Toast.makeText(getContext(), "Por favor, revise su conexión!", Toast.LENGTH_SHORT).show();
             }
         });
         requestQueue.add(jsonObjectRequest);
@@ -367,7 +416,7 @@ public class ConsultarClientes extends Fragment {
     private void consultarCuit() {
 
         // CONSULTA POR CUIT SI YA FUE INGRESADO ANTERIORMENTE A LA BASE
-        String URL = "http://malpicas.heliohost.org/malpica/clientes/clientes_consultar_cuit.php?cuit=" + datoBuscarCuit;
+        String URL = "http://malpicas.heliohost.org/malpica/clientes/clientes_consultar_cuit.php?parameter=" + datoBuscarCuit;
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, URL, null,
                 new Response.Listener<JSONObject>() {
 
@@ -375,37 +424,45 @@ public class ConsultarClientes extends Fragment {
                     public void onResponse(JSONObject response) {
 
                         try {
-                            JSONArray jsonArray = response.getJSONArray("datos");
+                            JSONArray jsonArray = response.getJSONArray("data");
 
                             // RECORRE EL ARRAY DE JSON CON LA CONSULTA Y CON UN SETTER & GETTER MUESTRA LOS RESULTADOS
                             for (int i = 0; i < jsonArray.length(); i++) {
 
                                 JSONObject jsonObject = jsonArray.getJSONObject(i);
-                                ClientesSetters clientesSetters = new ClientesSetters();
+                                ClientesSetters setters = new ClientesSetters();
 
-                                clientesSetters.setCodigo(jsonObject.getString("codigo_cliente"));
-                                clientesSetters.setRazonSocial(jsonObject.getString("nombre_cliente"));
-                                clientesSetters.setCondicion(jsonObject.getString("condicion_cliente"));
-                                clientesSetters.setDescripcion(jsonObject.getString("descripcion"));
-                                clientesSetters.setCuit(jsonObject.getString("cuit_cuil"));
-                                clientesSetters.setDireccion(jsonObject.getString("direccion"));
-                                clientesSetters.setLocalidad(jsonObject.getString("localidad"));
-                                clientesSetters.setContacto(jsonObject.getString("contacto"));
-                                clientesSetters.setTipo(jsonObject.getString("tipo_cliente"));
+                                setters.setFechaAlta(jsonObject.getString("fecha_alta"));
+                                setters.setHoraAlta(jsonObject.getString("hora_alta"));
+                                setters.setFechaModif(jsonObject.getString("fecha_modif"));
+                                setters.setHoraModif(jsonObject.getString("hora_modif"));
+                                setters.setCodigo(jsonObject.getString("codigo"));
+                                setters.setRazonSocial(jsonObject.getString("razon_social"));
+                                setters.setCondicion(jsonObject.getString("condicion"));
+                                setters.setDescripcion(jsonObject.getString("descripcion"));
+                                setters.setCuit(jsonObject.getString("cuit"));
+                                setters.setDireccion(jsonObject.getString("direccion"));
+                                setters.setLocalidad(jsonObject.getString("localidad"));
+                                setters.setContacto(jsonObject.getString("contacto"));
+                                setters.setTipo(jsonObject.getString("tipo"));
 
-                                String codigo = clientesSetters.getCodigo();
-                                String nombre = clientesSetters.getRazonSocial();
-                                String condicion = clientesSetters.getCondicion();
-                                String descripcion = clientesSetters.getDescripcion();
-                                String cuit = clientesSetters.getCuit();
-                                String direccion = clientesSetters.getDireccion();
-                                String localidad = clientesSetters.getLocalidad();
-                                String contacto = clientesSetters.getContacto();
-                                String tipo = clientesSetters.getTipo();
+                                String fechaAlta = setters.getFechaAlta() + " " + setters.getHoraAlta();
+                                String fechaModif = setters.getFechaModif() + " " + setters.getHoraModif();
+                                String codigo = setters.getCodigo();
+                                String razonSocial = setters.getRazonSocial();
+                                String condicion = setters.getCondicion();
+                                String descripcion = setters.getDescripcion();
+                                String cuit = setters.getCuit();
+                                String direccion = setters.getDireccion();
+                                String localidad = setters.getLocalidad();
+                                String contacto = setters.getContacto();
+                                String tipo = setters.getTipo();
 
-                                if (!cuit.equals("No existe")) {
+                                if (!fechaAlta.equals("No existe")) {
 
                                     // SI DEVUELVE VALORES LOS MUESTRA EN LOS CAMPOS
+                                    EditText editFechaAlta = getView().findViewById(R.id.editFechaAlta);
+                                    EditText editFechaModif = getView().findViewById(R.id.editFechaModif);
                                     EditText editCodigo = getView().findViewById(R.id.editCodigo);
                                     EditText editRazonSocial = getView().findViewById(R.id.editRazonSocial);
                                     EditText editCondicion = getView().findViewById(R.id.editCondicion);
@@ -416,8 +473,10 @@ public class ConsultarClientes extends Fragment {
                                     EditText editContacto = getView().findViewById(R.id.editContacto);
                                     EditText editTipo = getView().findViewById(R.id.editTipo);
 
+                                    editFechaAlta.setText(fechaAlta);
+                                    editFechaModif.setText(fechaModif);
                                     editCodigo.setText(codigo);
-                                    editRazonSocial.setText(nombre);
+                                    editRazonSocial.setText(razonSocial);
                                     editCondicion.setText(condicion);
                                     editDescripcion.setText(descripcion);
                                     editCuit.setText(cuit);
@@ -425,6 +484,16 @@ public class ConsultarClientes extends Fragment {
                                     editLocalidad.setText(localidad);
                                     editContacto.setText(contacto);
                                     editTipo.setText(tipo);
+
+                                    if (fechaAlta.contains("/2") && fechaModif.contains("/2")) {
+
+                                        // REEMPLAZO DE FORMATO DE FECHA
+                                        String fechaAlta1 = fechaAlta.replace("/2","/202");
+                                        String fechaModif1 = fechaModif.replace("/2","/202");
+
+                                        editFechaAlta.setText(fechaAlta1);
+                                        editFechaModif.setText(fechaModif1);
+                                    }
 
                                 } else {
 
@@ -439,7 +508,7 @@ public class ConsultarClientes extends Fragment {
                 }, new Response.ErrorListener() {
 
             public void onErrorResponse(VolleyError error) {
-                Toast.makeText(getContext(), "Por favor, revise su conexión!", Toast.LENGTH_LONG).show();
+                Toast.makeText(getContext(), "Por favor, revise su conexión!", Toast.LENGTH_SHORT).show();
             }
         });
         requestQueue.add(jsonObjectRequest);

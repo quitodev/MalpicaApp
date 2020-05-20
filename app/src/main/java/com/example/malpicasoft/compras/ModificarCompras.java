@@ -32,6 +32,7 @@ import org.json.JSONObject;
 import java.text.DateFormat;
 import java.text.DecimalFormat;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Timer;
@@ -41,9 +42,9 @@ public class ModificarCompras extends Fragment {
 
     private RequestQueue requestQueue;
     private JsonObjectRequest jsonObjectRequest;
-    private String datoFechaActual, datoFechaCompra, datoFechaIngresada, datoCodigoProv, datoRazonSocialProv,
-            datoCondicionProv, datoCodigoProd, datoDescripcionProd, datoCantidad, datoPrecioUnit, datoImpuestos,
-            datoPrecioTotal, datoBuscarFactura, datoDia, datoMes, datoAno, nuevoPrecioTotal, codigoFactura;
+    private String datoFechaActual, datoHoraActual, datoBuscarFactura, datoFechaFactura, datoFechaIngreso, datoNroFactura, datoCodigo,
+            datoRazonSocial, datoCondicion, datoCodigoStock, datoDescripcionStock, datoCantidad, datoPrecioUnit, datoImpuestos,
+            datoPrecioTotal, datoDia, datoMes, datoAno, nuevoPrecioTotal, codigoFactura;
     private int counter, cantidad, nuevaCantidad, cantidadFactura;
     private double impuestos, precioUnit, precioTotal;
 
@@ -62,56 +63,57 @@ public class ModificarCompras extends Fragment {
 
         // COMPONENTES DE LA VISTA
         final EditText editBuscarFactura = root.findViewById(R.id.editBuscarFactura);
-        final EditText editFechaCompra = root.findViewById(R.id.editFechaCompra);
-        final EditText editFechaIngresada = root.findViewById(R.id.editFechaIngresada);
-        final EditText editCodigoProv = root.findViewById(R.id.editCodigoProv);
-        final EditText editRazonSocialProv = root.findViewById(R.id.editRazonSocialProv);
-        final EditText editCondicionProv = root.findViewById(R.id.editCondicionProv);
-        final EditText editCodigoProd = root.findViewById(R.id.editCodigoProd);
-        final EditText editDescripcionProd = root.findViewById(R.id.editDescripcionProd);
+        final EditText editFechaFactura = root.findViewById(R.id.editFechaFactura);
+        final EditText editFechaIngreso = root.findViewById(R.id.editFechaIngreso);
+        final EditText editNroFactura = root.findViewById(R.id.editNroFactura);
+        final EditText editCodigo = root.findViewById(R.id.editCodigo);
+        final EditText editRazonSocial = root.findViewById(R.id.editRazonSocial);
+        final EditText editCondicion = root.findViewById(R.id.editCondicion);
+        final EditText editCodigoStock = root.findViewById(R.id.editCodigoStock);
+        final EditText editDescripcionStock = root.findViewById(R.id.editDescripcionStock);
         final EditText editCantidad = root.findViewById(R.id.editCantidad);
         final EditText editPrecioUnit = root.findViewById(R.id.editPrecioUnit);
         final EditText editImpuestos = root.findViewById(R.id.editImpuestos);
         final EditText editPrecioTotal = root.findViewById(R.id.editPrecioTotal);
 
-        Button buttonConsultar = root.findViewById(R.id.buttonConsultar);
-        Button buttonModificar = root.findViewById(R.id.buttonModificar);
-        Button buttonGuardar = root.findViewById(R.id.buttonGuardar);
+        final Button buttonConsultar = root.findViewById(R.id.buttonConsultar);
+        final Button buttonModificar = root.findViewById(R.id.buttonModificar);
+        final Button buttonGuardar = root.findViewById(R.id.buttonGuardar);
 
         // EVENTOS DEL BOTÓN CONSULTAR
         buttonConsultar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-                Button buttonModificar = getView().findViewById(R.id.buttonModificar);
                 buttonModificar.setVisibility(View.VISIBLE);
 
-                editFechaCompra.setFocusable(false);
-                editFechaIngresada.setFocusable(false);
-                editCodigoProv.setFocusable(false);
-                editRazonSocialProv.setFocusable(false);
-                editCondicionProv.setFocusable(false);
-                editCodigoProd.setFocusable(false);
-                editDescripcionProd.setFocusable(false);
+                editFechaFactura.setFocusable(false);
+                editFechaIngreso.setFocusable(false);
+                editNroFactura.setFocusable(false);
+                editCodigo.setFocusable(false);
+                editRazonSocial.setFocusable(false);
+                editCondicion.setFocusable(false);
+                editCodigoStock.setFocusable(false);
+                editDescripcionStock.setFocusable(false);
                 editCantidad.setFocusable(false);
                 editPrecioUnit.setFocusable(false);
                 editImpuestos.setFocusable(false);
                 editPrecioTotal.setFocusable(false);
 
-                editFechaCompra.setError(null);
-                editFechaIngresada.setError(null);
-                editCodigoProv.setError(null);
-                editRazonSocialProv.setError(null);
-                editCondicionProv.setError(null);
-                editCodigoProd.setError(null);
-                editDescripcionProd.setError(null);
+                editFechaFactura.setError(null);
+                editFechaIngreso.setError(null);
+                editNroFactura.setError(null);
+                editCodigo.setError(null);
+                editRazonSocial.setError(null);
+                editCondicion.setError(null);
+                editCodigoStock.setError(null);
+                editDescripcionStock.setError(null);
                 editCantidad.setError(null);
                 editPrecioUnit.setError(null);
                 editImpuestos.setError(null);
                 editPrecioTotal.setError(null);
 
                 datoBuscarFactura = editBuscarFactura.getText().toString();
-                editBuscarFactura.clearFocus();
 
                 if(!datoBuscarFactura.isEmpty()){
 
@@ -122,13 +124,14 @@ public class ModificarCompras extends Fragment {
                 } else {
 
                     // SI EL CAMPO ESTÁ VACÍO, MUESTRA UN MENSAJE DE ERROR
-                    editFechaCompra.setText("");
-                    editFechaIngresada.setText("");
-                    editCodigoProv.setText("");
-                    editRazonSocialProv.setText("");
-                    editCondicionProv.setText("");
-                    editCodigoProd.setText("");
-                    editDescripcionProd.setText("");
+                    editFechaFactura.setText("");
+                    editFechaIngreso.setText("");
+                    editNroFactura.setText("");
+                    editCodigo.setText("");
+                    editRazonSocial.setText("");
+                    editCondicion.setText("");
+                    editCodigoStock.setText("");
+                    editDescripcionStock.setText("");
                     editCantidad.setText("");
                     editPrecioUnit.setText("");
                     editImpuestos.setText("");
@@ -145,41 +148,42 @@ public class ModificarCompras extends Fragment {
             @Override
             public void onClick(View v) {
 
-                datoFechaCompra = editFechaCompra.getText().toString();
+                datoFechaFactura = editFechaFactura.getText().toString();
 
-                if(!datoFechaCompra.isEmpty()){
+                if(!datoFechaFactura.isEmpty()){
 
                     // SI DEVUELVE UNA FACTURA, HABILITA LOS CAMPOS PARA HACER MODIFICACIONES
-                    Button buttonModificar = getView().findViewById(R.id.buttonModificar);
                     buttonModificar.setVisibility(View.INVISIBLE);
 
                     Drawable drawable = getResources().getDrawable(R.drawable.ic_check_green);
                     drawable.setBounds(0, 0, drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight());
 
-                    editFechaIngresada.setError("Datos correctos!", drawable);
-                    editCodigoProv.setError("Datos correctos!", drawable);
-                    editRazonSocialProv.setError("Datos correctos!", drawable);
-                    editCondicionProv.setError("Datos correctos!", drawable);
-                    editCodigoProd.setError("Datos correctos!", drawable);
-                    editDescripcionProd.setError("Datos correctos!", drawable);
+                    editFechaIngreso.setError("Datos correctos!", drawable);
+                    editNroFactura.setError("Datos correctos!", drawable);
+                    editCodigo.setError("Datos correctos!", drawable);
+                    editRazonSocial.setError("Datos correctos!", drawable);
+                    editCondicion.setError("Datos correctos!", drawable);
+                    editCodigoStock.setError("Datos correctos!", drawable);
+                    editDescripcionStock.setError("Datos correctos!", drawable);
                     editCantidad.setError("Datos correctos!", drawable);
                     editPrecioUnit.setError("Datos correctos!", drawable);
                     editImpuestos.setError("Datos correctos!", drawable);
                     editPrecioTotal.setError("Datos correctos!", drawable);
 
-                    editFechaCompra.setFocusableInTouchMode(true);
-                    editFechaIngresada.setFocusableInTouchMode(true);
-                    editCodigoProv.setFocusableInTouchMode(true);
-                    editRazonSocialProv.setFocusableInTouchMode(true);
-                    editCondicionProv.setFocusableInTouchMode(true);
-                    editCodigoProd.setFocusableInTouchMode(true);
-                    editDescripcionProd.setFocusableInTouchMode(true);
+                    editFechaFactura.setFocusableInTouchMode(true);
+                    editFechaIngreso.setFocusableInTouchMode(true);
+                    editNroFactura.setFocusableInTouchMode(true);
+                    editCodigo.setFocusableInTouchMode(true);
+                    editRazonSocial.setFocusableInTouchMode(true);
+                    editCondicion.setFocusableInTouchMode(true);
+                    editCodigoStock.setFocusableInTouchMode(true);
+                    editDescripcionStock.setFocusableInTouchMode(true);
                     editCantidad.setFocusableInTouchMode(true);
                     editPrecioUnit.setFocusableInTouchMode(true);
                     editImpuestos.setFocusableInTouchMode(true);
                     editPrecioTotal.setFocusableInTouchMode(true);
 
-                    editFechaCompra.requestFocusFromTouch();
+                    editFechaFactura.requestFocusFromTouch();
 
                     ScrollView scrollView = getView().findViewById(R.id.scroll);
                     scrollView.setScrollY(0);
@@ -192,51 +196,41 @@ public class ModificarCompras extends Fragment {
             @Override
             public void onClick(View v) {
 
-                EditText editBuscarFactura = getView().findViewById(R.id.editBuscarFactura);
-                EditText editFechaCompra = getView().findViewById(R.id.editFechaCompra);
-                EditText editFechaIngresada = getView().findViewById(R.id.editFechaIngresada);
-                EditText editCodigoProv = getView().findViewById(R.id.editCodigoProv);
-                EditText editRazonSocialProv = getView().findViewById(R.id.editRazonSocialProv);
-                EditText editCondicionProv = getView().findViewById(R.id.editCondicionProv);
-                EditText editCodigoProd = getView().findViewById(R.id.editCodigoProd);
-                EditText editDescripcionProd = getView().findViewById(R.id.editDescripcionProd);
-                EditText editCantidad = getView().findViewById(R.id.editCantidad);
-                EditText editPrecioUnit = getView().findViewById(R.id.editPrecioUnit);
-                EditText editImpuestos = getView().findViewById(R.id.editImpuestos);
-                EditText editPrecioTotal = getView().findViewById(R.id.editPrecioTotal);
-
                 datoBuscarFactura = editBuscarFactura.getText().toString();
-                datoFechaCompra = editFechaCompra.getText().toString();
-                datoFechaIngresada = editFechaIngresada.getText().toString();
-                datoCodigoProv = editCodigoProv.getText().toString();
-                datoRazonSocialProv = editRazonSocialProv.getText().toString();
-                datoCondicionProv = editCondicionProv.getText().toString();
-                datoCodigoProd = editCodigoProd.getText().toString();
-                datoDescripcionProd = editDescripcionProd.getText().toString();
+                datoFechaFactura = editFechaFactura.getText().toString();
+                datoFechaIngreso = editFechaIngreso.getText().toString();
+                datoNroFactura = editNroFactura.getText().toString();
+                datoCodigo = editCodigo.getText().toString();
+                datoRazonSocial = editRazonSocial.getText().toString();
+                datoCondicion = editCondicion.getText().toString();
+                datoCodigoStock = editCodigoStock.getText().toString();
+                datoDescripcionStock = editDescripcionStock.getText().toString();
                 datoCantidad = editCantidad.getText().toString();
                 datoPrecioUnit = editPrecioUnit.getText().toString();
                 datoImpuestos = editImpuestos.getText().toString();
                 datoPrecioTotal = editPrecioTotal.getText().toString();
 
-                editFechaCompra.setFocusable(false);
-                editFechaIngresada.setFocusable(false);
-                editCodigoProv.setFocusable(false);
-                editRazonSocialProv.setFocusable(false);
-                editCondicionProv.setFocusable(false);
-                editCodigoProd.setFocusable(false);
-                editDescripcionProd.setFocusable(false);
+                editFechaFactura.setFocusable(false);
+                editFechaIngreso.setFocusable(false);
+                editNroFactura.setFocusable(false);
+                editCodigo.setFocusable(false);
+                editRazonSocial.setFocusable(false);
+                editCondicion.setFocusable(false);
+                editCodigoStock.setFocusable(false);
+                editDescripcionStock.setFocusable(false);
                 editCantidad.setFocusable(false);
                 editPrecioUnit.setFocusable(false);
                 editImpuestos.setFocusable(false);
                 editPrecioTotal.setFocusable(false);
 
-                if (editFechaCompra.getError() == "Datos correctos!"
-                        && editFechaIngresada.getError() == "Datos correctos!"
-                        && editCodigoProv.getError() == "Datos correctos!"
-                        && editRazonSocialProv.getError() == "Datos correctos!"
-                        && editCondicionProv.getError() == "Datos correctos!"
-                        && editCodigoProd.getError() == "Datos correctos!"
-                        && editDescripcionProd.getError() == "Datos correctos!"
+                if (editFechaFactura.getError() == "Datos correctos!"
+                        && editFechaIngreso.getError() == "Datos correctos!"
+                        && editNroFactura.getError() == "Datos correctos!"
+                        && editCodigo.getError() == "Datos correctos!"
+                        && editRazonSocial.getError() == "Datos correctos!"
+                        && editCondicion.getError() == "Datos correctos!"
+                        && editCodigoStock.getError() == "Datos correctos!"
+                        && editDescripcionStock.getError() == "Datos correctos!"
                         && editCantidad.getError() == "Datos correctos!"
                         && editPrecioUnit.getError() == "Datos correctos!"
                         && editImpuestos.getError() == "Datos correctos!"
@@ -258,13 +252,14 @@ public class ModificarCompras extends Fragment {
                     dialogProcesando();
                     dialogError();
 
-                    editFechaCompra.setFocusableInTouchMode(true);
-                    editFechaIngresada.setFocusableInTouchMode(true);
-                    editCodigoProv.setFocusableInTouchMode(true);
-                    editRazonSocialProv.setFocusableInTouchMode(true);
-                    editCondicionProv.setFocusableInTouchMode(true);
-                    editCodigoProd.setFocusableInTouchMode(true);
-                    editDescripcionProd.setFocusableInTouchMode(true);
+                    editFechaFactura.setFocusableInTouchMode(true);
+                    editFechaIngreso.setFocusableInTouchMode(true);
+                    editNroFactura.setFocusableInTouchMode(true);
+                    editCodigo.setFocusableInTouchMode(true);
+                    editRazonSocial.setFocusableInTouchMode(true);
+                    editCondicion.setFocusableInTouchMode(true);
+                    editCodigoStock.setFocusableInTouchMode(true);
+                    editDescripcionStock.setFocusableInTouchMode(true);
                     editCantidad.setFocusableInTouchMode(true);
                     editPrecioUnit.setFocusableInTouchMode(true);
                     editImpuestos.setFocusableInTouchMode(true);
@@ -277,77 +272,115 @@ public class ModificarCompras extends Fragment {
         });
 
         // EVENTOS AL CAMBIAR DE CAMPOS
-        editFechaCompra.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+        editFechaFactura.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View view, boolean hasFocus) {
                 if (!hasFocus) {
 
                     // SI SALE DEL CAMPO, GUARDA Y VALIDA LOS DATOS INGRESADOS
-                    String datoFechaLarga = editFechaCompra.getText().toString();
-                    datoFechaCompra = datoFechaLarga.replace("/20", "/");
+                    String datoFechaLarga = editFechaFactura.getText().toString();
+                    datoFechaFactura = datoFechaLarga.replace("/20", "/");
 
                     if (datoFechaLarga.length() == 10 && datoFechaLarga.contains("/")) {
 
                         Drawable drawable = getResources().getDrawable(R.drawable.ic_check_green);
                         drawable.setBounds(0, 0, drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight());
-                        editFechaCompra.setError("Datos correctos!", drawable);
+                        editFechaFactura.setError("Datos correctos!", drawable);
 
                     } else {
 
                         Drawable drawable = getResources().getDrawable(R.drawable.ic_error);
                         drawable.setBounds(0, 0, drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight());
-                        editFechaCompra.setError("Revise los datos!", drawable);
+                        editFechaFactura.setError("Revise los datos!", drawable);
                     }
 
                 } else {
 
                     // SI INGRESA AL CAMPO, OCULTA EL ÍCONO DE VALIDACIÓN
-                    editFechaCompra.setError(null);
+                    editFechaFactura.setError(null);
                 }
             }
         });
-        editFechaIngresada.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+        editFechaIngreso.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View view, boolean hasFocus) {
                 if (!hasFocus) {
 
                     // SI SALE DEL CAMPO, GUARDA Y VALIDA LOS DATOS INGRESADOS
-                    String datoFechaLarga = editFechaIngresada.getText().toString();
-                    datoFechaIngresada = datoFechaLarga.replace("/20", "/");
+                    String datoFechaLarga = editFechaIngreso.getText().toString();
+                    datoFechaIngreso = datoFechaLarga.replace("/20", "/");
 
                     if (datoFechaLarga.length() == 10 && datoFechaLarga.contains("/")) {
 
                         Drawable drawable = getResources().getDrawable(R.drawable.ic_check_green);
                         drawable.setBounds(0, 0, drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight());
-                        editFechaIngresada.setError("Datos correctos!", drawable);
+                        editFechaIngreso.setError("Datos correctos!", drawable);
 
                     } else {
 
                         Drawable drawable = getResources().getDrawable(R.drawable.ic_error);
                         drawable.setBounds(0, 0, drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight());
-                        editFechaIngresada.setError("Revise los datos!", drawable);
+                        editFechaIngreso.setError("Revise los datos!", drawable);
                     }
 
                 } else {
 
                     // SI INGRESA AL CAMPO, OCULTA EL ÍCONO DE VALIDACIÓN
-                    editFechaIngresada.setError(null);
+                    editFechaIngreso.setError(null);
                 }
             }
         });
-        editCodigoProv.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+        editNroFactura.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View view, boolean hasFocus) {
                 if (!hasFocus) {
 
                     // SI SALE DEL CAMPO, GUARDA Y VALIDA LOS DATOS INGRESADOS
-                    datoCodigoProv = editCodigoProv.getText().toString();
+                    datoNroFactura = editNroFactura.getText().toString();
 
-                    if (!datoCodigoProv.isEmpty()) {
+                    if (datoNroFactura.length() == 15 && datoNroFactura.contains("-")) {
+
+                        if(!datoNroFactura.equals(datoBuscarFactura)) {
+
+                            // SI HUBO CAMBIOS, CONSULTA PARA VER SI YA EXISTE EN LA BASE
+                            dialogProcesando();
+                            consultarFacturaBis();
+
+                        } else {
+
+                            // SI NO HUBO CAMBIOS, VALIDA EL CAMPO
+                            Drawable drawable = getResources().getDrawable(R.drawable.ic_check_green);
+                            drawable.setBounds(0, 0, drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight());
+                            editNroFactura.setError("Datos correctos!", drawable);
+                        }
+
+                    } else {
+
+                        Drawable drawable = getResources().getDrawable(R.drawable.ic_error);
+                        drawable.setBounds(0, 0, drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight());
+                        editNroFactura.setError("Revise los datos!", drawable);
+                    }
+
+                } else {
+
+                    // SI INGRESA AL CAMPO, OCULTA EL ÍCONO DE VALIDACIÓN
+                    editNroFactura.setError(null);
+                }
+            }
+        });
+        editCodigo.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View view, boolean hasFocus) {
+                if (!hasFocus) {
+
+                    // SI SALE DEL CAMPO, GUARDA Y VALIDA LOS DATOS INGRESADOS
+                    datoCodigo = editCodigo.getText().toString();
+
+                    if (!datoCodigo.isEmpty()) {
 
                         Drawable drawable = getResources().getDrawable(R.drawable.ic_check_green);
                         drawable.setBounds(0, 0, drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight());
-                        editCodigoProv.setError("Datos correctos!", drawable);
+                        editCodigo.setError("Datos correctos!", drawable);
 
                         // CONSULTA LOS DATOS INGRESADOS EN LA BASE PARA AGILIZAR LA CARGA
                         dialogProcesando();
@@ -357,63 +390,63 @@ public class ModificarCompras extends Fragment {
 
                         Drawable drawable = getResources().getDrawable(R.drawable.ic_error);
                         drawable.setBounds(0, 0, drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight());
-                        editCodigoProv.setError("Revise los datos!", drawable);
+                        editCodigo.setError("Revise los datos!", drawable);
                     }
 
                 } else {
 
                     // SI INGRESA AL CAMPO, OCULTA EL ÍCONO DE VALIDACIÓN
-                    editCodigoProv.setError(null);
+                    editCodigo.setError(null);
                 }
             }
         });
-        editRazonSocialProv.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+        editRazonSocial.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View view, boolean hasFocus) {
                 if (!hasFocus) {
 
                     // SI SALE DEL CAMPO, GUARDA Y VALIDA LOS DATOS INGRESADOS
-                    datoRazonSocialProv = editRazonSocialProv.getText().toString();
+                    datoRazonSocial = editRazonSocial.getText().toString();
 
-                    if (!datoRazonSocialProv.isEmpty()) {
+                    if (!datoRazonSocial.isEmpty()) {
 
                         Drawable drawable = getResources().getDrawable(R.drawable.ic_check_green);
                         drawable.setBounds(0, 0, drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight());
-                        editRazonSocialProv.setError("Datos correctos!", drawable);
+                        editRazonSocial.setError("Datos correctos!", drawable);
 
                     } else {
 
                         Drawable drawable = getResources().getDrawable(R.drawable.ic_error);
                         drawable.setBounds(0, 0, drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight());
-                        editRazonSocialProv.setError("Revise los datos!", drawable);
+                        editRazonSocial.setError("Revise los datos!", drawable);
                     }
 
                 } else {
 
                     // SI INGRESA AL CAMPO, OCULTA EL ÍCONO DE VALIDACIÓN
-                    editRazonSocialProv.setError(null);
+                    editRazonSocial.setError(null);
                 }
             }
         });
-        editCondicionProv.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+        editCondicion.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View view, boolean hasFocus) {
                 if (!hasFocus) {
 
                     // SI SALE DEL CAMPO, GUARDA Y VALIDA LOS DATOS INGRESADOS
-                    datoCondicionProv = editCondicionProv.getText().toString();
+                    datoCondicion = editCondicion.getText().toString();
 
-                    if (datoCondicionProv.length() == 2) {
+                    if (datoCondicion.length() == 2) {
 
                         Drawable drawable = getResources().getDrawable(R.drawable.ic_check_green);
                         drawable.setBounds(0, 0, drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight());
-                        editCondicionProv.setError("Datos correctos!", drawable);
+                        editCondicion.setError("Datos correctos!", drawable);
 
                     } else {
 
                         Drawable drawable = getResources().getDrawable(R.drawable.ic_error);
                         drawable.setBounds(0, 0, drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight());
-                        editCondicionProv.setError("Revise los datos!", drawable);
+                        editCondicion.setError("Revise los datos!", drawable);
                     }
 
                 } else {
@@ -421,23 +454,23 @@ public class ModificarCompras extends Fragment {
                     // SI INGRESA AL CAMPO, MUESTRA UN DIALOG CON INFORMACIÓN RELEVANTE
                     Drawable drawable = getResources().getDrawable(R.drawable.ic_help);
                     drawable.setBounds(0, 0, drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight());
-                    editCondicionProv.setError("RI (Resp. Inscripto)\nMT (Resp. Mono.)\nCF (Cons. Final)", drawable);
+                    editCondicion.setError("RI (Resp. Inscripto)\nMT (Resp. Mono.)\nCF (Cons. Final)", drawable);
                 }
             }
         });
-        editCodigoProd.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+        editCodigoStock.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View view, boolean hasFocus) {
                 if (!hasFocus) {
 
                     // SI SALE DEL CAMPO, GUARDA Y VALIDA LOS DATOS INGRESADOS
-                    datoCodigoProd = editCodigoProd.getText().toString();
+                    datoCodigoStock = editCodigoStock.getText().toString();
 
-                    if (!datoCodigoProd.isEmpty()) {
+                    if (!datoCodigoStock.isEmpty()) {
 
                         Drawable drawable = getResources().getDrawable(R.drawable.ic_check_green);
                         drawable.setBounds(0, 0, drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight());
-                        editCodigoProd.setError("Datos correctos!", drawable);
+                        editCodigoStock.setError("Datos correctos!", drawable);
 
                         // CONSULTA LOS DATOS INGRESADOS EN LA BASE PARA AGILIZAR LA CARGA
                         dialogProcesando();
@@ -447,41 +480,41 @@ public class ModificarCompras extends Fragment {
 
                         Drawable drawable = getResources().getDrawable(R.drawable.ic_error);
                         drawable.setBounds(0, 0, drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight());
-                        editCodigoProd.setError("Revise los datos!", drawable);
+                        editCodigoStock.setError("Revise los datos!", drawable);
                     }
 
                 } else {
 
                     // SI INGRESA AL CAMPO, OCULTA EL ÍCONO DE VALIDACIÓN
-                    editCodigoProd.setError(null);
+                    editCodigoStock.setError(null);
                 }
             }
         });
-        editDescripcionProd.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+        editDescripcionStock.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View view, boolean hasFocus) {
                 if (!hasFocus) {
 
                     // SI SALE DEL CAMPO, GUARDA Y VALIDA LOS DATOS INGRESADOS
-                    datoDescripcionProd = editDescripcionProd.getText().toString();
+                    datoDescripcionStock = editDescripcionStock.getText().toString();
 
-                    if (!datoDescripcionProd.isEmpty()) {
+                    if (!datoDescripcionStock.isEmpty()) {
 
                         Drawable drawable = getResources().getDrawable(R.drawable.ic_check_green);
                         drawable.setBounds(0, 0, drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight());
-                        editDescripcionProd.setError("Datos correctos!", drawable);
+                        editDescripcionStock.setError("Datos correctos!", drawable);
 
                     } else {
 
                         Drawable drawable = getResources().getDrawable(R.drawable.ic_error);
                         drawable.setBounds(0, 0, drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight());
-                        editDescripcionProd.setError("Revise los datos!", drawable);
+                        editDescripcionStock.setError("Revise los datos!", drawable);
                     }
 
                 } else {
 
                     // SI INGRESA AL CAMPO, OCULTA EL ÍCONO DE VALIDACIÓN
-                    editDescripcionProd.setError(null);
+                    editDescripcionStock.setError(null);
                 }
             }
         });
@@ -744,7 +777,11 @@ public class ModificarCompras extends Fragment {
 
     private void dateFragments() {
 
-        // MÉTODO PARA OBTENER EL DÍA ACTUAL
+        // OBTIENE LA FECHA Y HORA ACTUAL
+        Date date = Calendar.getInstance().getTime();
+        String hour = date.toString();
+        datoHoraActual = "" + hour.charAt(11) + hour.charAt(12) + hour.charAt(13) + hour.charAt(14) + hour.charAt(15);
+
         Calendar calendar = Calendar.getInstance();
         String fechaActual = DateFormat.getDateInstance(DateFormat.SHORT).format(calendar.getTime());
 
@@ -793,7 +830,21 @@ public class ModificarCompras extends Fragment {
             @Override
             public void run() {
                 Dialogs dialogs = new Dialogs(getActivity());
-                dialogs.startError();
+                int layout = R.layout.dialog_error;
+                dialogs.startResultado(layout);
+            }
+        }, 3000);
+    }
+
+    private void dialogErrorFactura(){
+
+        // DIALOG CON MENSAJE DE ERROR
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                Dialogs dialogs = new Dialogs(getActivity());
+                int layout = R.layout.dialog_error_factura;
+                dialogs.startResultado(layout);
             }
         }, 3000);
     }
@@ -805,39 +856,44 @@ public class ModificarCompras extends Fragment {
             @Override
             public void run() {
                 Dialogs dialogs = new Dialogs(getActivity());
-                dialogs.startOk();
+                int layout = R.layout.dialog_ok;
+                dialogs.startResultado(layout);
 
-                EditText editFechaCompra = getView().findViewById(R.id.editFechaCompra);
-                EditText editFechaIngresada = getView().findViewById(R.id.editFechaIngresada);
-                EditText editCodigoProv = getView().findViewById(R.id.editCodigoProv);
-                EditText editRazonSocialProv = getView().findViewById(R.id.editRazonSocialProv);
-                EditText editCondicionProv = getView().findViewById(R.id.editCondicionProv);
-                EditText editCodigoProd = getView().findViewById(R.id.editCodigoProd);
-                EditText editDescripcionProd = getView().findViewById(R.id.editDescripcionProd);
+                EditText editBuscarFactura = getView().findViewById(R.id.editBuscarFactura);
+                EditText editFechaFactura = getView().findViewById(R.id.editFechaFactura);
+                EditText editFechaIngreso = getView().findViewById(R.id.editFechaIngreso);
+                EditText editNroFactura = getView().findViewById(R.id.editNroFactura);
+                EditText editCodigo = getView().findViewById(R.id.editCodigo);
+                EditText editRazonSocial = getView().findViewById(R.id.editRazonSocial);
+                EditText editCondicion = getView().findViewById(R.id.editCondicion);
+                EditText editCodigoStock = getView().findViewById(R.id.editCodigoStock);
+                EditText editDescripcionStock = getView().findViewById(R.id.editDescripcionStock);
                 EditText editCantidad = getView().findViewById(R.id.editCantidad);
                 EditText editPrecioUnit = getView().findViewById(R.id.editPrecioUnit);
                 EditText editImpuestos = getView().findViewById(R.id.editImpuestos);
                 EditText editPrecioTotal = getView().findViewById(R.id.editPrecioTotal);
 
-                editFechaCompra.setText("");
-                editFechaIngresada.setText("");
-                editCodigoProv.setText("");
-                editRazonSocialProv.setText("");
-                editCondicionProv.setText("");
-                editCodigoProd.setText("");
-                editDescripcionProd.setText("");
+                editFechaFactura.setText("");
+                editFechaIngreso.setText("");
+                editNroFactura.setText("");
+                editCodigo.setText("");
+                editRazonSocial.setText("");
+                editCondicion.setText("");
+                editCodigoStock.setText("");
+                editDescripcionStock.setText("");
                 editCantidad.setText("");
                 editPrecioUnit.setText("");
                 editImpuestos.setText("");
                 editPrecioTotal.setText("");
 
-                editFechaCompra.setError(null);
-                editFechaIngresada.setError(null);
-                editCodigoProv.setError(null);
-                editRazonSocialProv.setError(null);
-                editCondicionProv.setError(null);
-                editCodigoProd.setError(null);
-                editDescripcionProd.setError(null);
+                editFechaFactura.setError(null);
+                editFechaIngreso.setError(null);
+                editNroFactura.setError(null);
+                editCodigo.setError(null);
+                editRazonSocial.setError(null);
+                editCondicion.setError(null);
+                editCodigoStock.setError(null);
+                editDescripcionStock.setError(null);
                 editCantidad.setError(null);
                 editPrecioUnit.setError(null);
                 editImpuestos.setError(null);
@@ -848,14 +904,16 @@ public class ModificarCompras extends Fragment {
 
                 Button buttonModificar = getView().findViewById(R.id.buttonModificar);
                 buttonModificar.setVisibility(View.VISIBLE);
+
+                editBuscarFactura.requestFocusFromTouch();
             }
-        }, 4000);
+        }, 3000);
     }
 
     private void consultarFactura() {
 
         // CONSULTA LA FACTURA INGRESADA EN LA BASE DE DATOS
-        String URL = "http://malpicas.heliohost.org/malpica/compras/compras_buscar_factura.php?factura=" + datoBuscarFactura;
+        String URL = "http://malpicas.heliohost.org/malpica/compras/compras_consultar_factura.php?parameter=" + datoBuscarFactura;
         jsonObjectRequest = new JsonObjectRequest(Request.Method.GET,URL,null,
                 new Response.Listener<JSONObject>() {
 
@@ -863,76 +921,80 @@ public class ModificarCompras extends Fragment {
                     public void onResponse(JSONObject response) {
 
                         try {
-                            JSONArray jsonArray = response.getJSONArray("factura");
+                            JSONArray jsonArray = response.getJSONArray("data");
 
                             // RECORRE EL ARRAY DE JSON CON LA CONSULTA Y CON UN SETTER & GETTER MUESTRA LOS RESULTADOS
                             for (int i = 0; i < jsonArray.length(); i++) {
 
                                 JSONObject jsonObject = jsonArray.getJSONObject(i);
-                                ComprasSetters comprasSetters = new ComprasSetters();
+                                ComprasSetters setters = new ComprasSetters();
 
-                                comprasSetters.setFechaCompra(jsonObject.getString("fecha_compra"));
-                                comprasSetters.setFechaIngreso(jsonObject.getString("fecha_ingreso"));
-                                comprasSetters.setCodigoProv(jsonObject.getString("codigo_prov"));
-                                comprasSetters.setNombreProv(jsonObject.getString("nombre_prov"));
-                                comprasSetters.setCondicionProv(jsonObject.getString("condicion_prov"));
-                                comprasSetters.setCodigoProd(jsonObject.getString("codigo"));
-                                comprasSetters.setDescripcionProd(jsonObject.getString("descripcion"));
-                                comprasSetters.setCantidadProd(jsonObject.getString("cantidad"));
-                                comprasSetters.setPrecioUnitProd(jsonObject.getString("precio_unit"));
-                                comprasSetters.setImpuestos(jsonObject.getString("impuestos"));
-                                comprasSetters.setPrecioTotalProd(jsonObject.getString("precio_final"));
+                                setters.setFechaFactura(jsonObject.getString("fecha_factura"));
+                                setters.setFechaIngreso(jsonObject.getString("fecha_ingreso"));
+                                setters.setNroFactura(jsonObject.getString("nro_factura"));
+                                setters.setCodigo(jsonObject.getString("codigo"));
+                                setters.setRazonSocial(jsonObject.getString("razon_social"));
+                                setters.setCondicion(jsonObject.getString("condicion"));
+                                setters.setCodigoStock(jsonObject.getString("codigo_stock"));
+                                setters.setDescripcionStock(jsonObject.getString("descripcion_stock"));
+                                setters.setCantidad(jsonObject.getString("cantidad"));
+                                setters.setPrecioUnit(jsonObject.getString("precio_unit"));
+                                setters.setImpuestos(jsonObject.getString("impuestos"));
+                                setters.setPrecioTotal(jsonObject.getString("precio_total"));
 
-                                String fechaCompra = comprasSetters.getFechaCompra();
-                                String fechaIngreso = comprasSetters.getFechaIngreso();
-                                String codigoProv = comprasSetters.getCodigoProv();
-                                String nombreProv = comprasSetters.getNombreProv();
-                                String condicionProv = comprasSetters.getCondicionProv();
-                                String codigoProd = comprasSetters.getCodigoProd();
-                                String descripcionProd = comprasSetters.getDescripcionProd();
-                                String cantidadProd = comprasSetters.getCantidadProd();
-                                String precioUnitProd = comprasSetters.getPrecioUnitProd();
-                                String impuestos = comprasSetters.getImpuestos();
-                                String precioTotalProd = comprasSetters.getPrecioTotalProd();
+                                String fechaFactura = setters.getFechaFactura();
+                                String fechaIngreso = setters.getFechaIngreso();
+                                String nroFactura = setters.getNroFactura();
+                                String codigo = setters.getCodigo();
+                                String razonSocial = setters.getRazonSocial();
+                                String condicion = setters.getCondicion();
+                                String codigoStock = setters.getCodigoStock();
+                                String descripcionStock = setters.getDescripcionStock();
+                                String cantidad = setters.getCantidad();
+                                String precioUnit = setters.getPrecioUnit();
+                                String impuestos = setters.getImpuestos();
+                                String precioTotal = setters.getPrecioTotal();
 
-                                if(!fechaCompra.equals("No existe")){
+                                if(!fechaFactura.equals("No existe")){
 
                                     // SI DEVUELVE UNA FACTURA MUESTRA LOS DATOS EN LOS CAMPOS
-                                    EditText editFechaCompra = getView().findViewById(R.id.editFechaCompra);
-                                    EditText editFechaIngresada = getView().findViewById(R.id.editFechaIngresada);
-                                    EditText editCodigoProv = getView().findViewById(R.id.editCodigoProv);
-                                    EditText editRazonSocialProv = getView().findViewById(R.id.editRazonSocialProv);
-                                    EditText editCondicionProv = getView().findViewById(R.id.editCondicionProv);
-                                    EditText editCodigoProd = getView().findViewById(R.id.editCodigoProd);
-                                    EditText editDescripcionProd = getView().findViewById(R.id.editDescripcionProd);
+                                    EditText editFechaFactura = getView().findViewById(R.id.editFechaFactura);
+                                    EditText editFechaIngreso = getView().findViewById(R.id.editFechaIngreso);
+                                    EditText editNroFactura = getView().findViewById(R.id.editNroFactura);
+                                    EditText editCodigo = getView().findViewById(R.id.editCodigo);
+                                    EditText editRazonSocial = getView().findViewById(R.id.editRazonSocial);
+                                    EditText editCondicion = getView().findViewById(R.id.editCondicion);
+                                    EditText editCodigoStock = getView().findViewById(R.id.editCodigoStock);
+                                    EditText editDescripcionStock = getView().findViewById(R.id.editDescripcionStock);
                                     EditText editCantidad = getView().findViewById(R.id.editCantidad);
                                     EditText editPrecioUnit = getView().findViewById(R.id.editPrecioUnit);
                                     EditText editImpuestos = getView().findViewById(R.id.editImpuestos);
                                     EditText editPrecioTotal = getView().findViewById(R.id.editPrecioTotal);
 
-                                    codigoFactura = codigoProd + "";
-                                    cantidadFactura = Integer.parseInt(cantidadProd);
+                                    codigoFactura = codigoStock + "";
+                                    cantidadFactura = Integer.parseInt(cantidad);
 
-                                    editFechaCompra.setText(fechaCompra);
-                                    editFechaIngresada.setText(fechaIngreso);
-                                    editCodigoProv.setText(codigoProv);
-                                    editRazonSocialProv.setText(nombreProv);
-                                    editCondicionProv.setText(condicionProv);
-                                    editCodigoProd.setText(codigoProd);
-                                    editDescripcionProd.setText(descripcionProd);
-                                    editCantidad.setText(cantidadProd);
-                                    editPrecioUnit.setText(precioUnitProd);
+                                    editFechaFactura.setText(fechaFactura);
+                                    editFechaIngreso.setText(fechaIngreso);
+                                    editNroFactura.setText(nroFactura);
+                                    editCodigo.setText(codigo);
+                                    editRazonSocial.setText(razonSocial);
+                                    editCondicion.setText(condicion);
+                                    editCodigoStock.setText(codigoStock);
+                                    editDescripcionStock.setText(descripcionStock);
+                                    editCantidad.setText(cantidad);
+                                    editPrecioUnit.setText(precioUnit);
                                     editImpuestos.setText(impuestos);
-                                    editPrecioTotal.setText(precioTotalProd);
+                                    editPrecioTotal.setText(precioTotal);
 
-                                    if (fechaCompra.contains("/2") && fechaIngreso.contains("/2")) {
+                                    if (fechaFactura.contains("/2") && fechaIngreso.contains("/2")) {
 
                                         // REEMPLAZO DE FORMATO DE FECHA
-                                        String fechaCompra1 = fechaCompra.replace("/2","/202");
+                                        String fechaFactura1 = fechaFactura.replace("/2","/202");
                                         String fechaIngreso1 = fechaIngreso.replace("/2","/202");
 
-                                        editFechaCompra.setText(fechaCompra1);
-                                        editFechaIngresada.setText(fechaIngreso1);
+                                        editFechaFactura.setText(fechaFactura1);
+                                        editFechaIngreso.setText(fechaIngreso1);
                                     }
 
                                 } else {
@@ -940,25 +1002,27 @@ public class ModificarCompras extends Fragment {
                                     // SI NO DEVUELVE UNA FACTURA MUESTRA UN MENSAJE DE ERROR Y LIMPIA LOS CAMPOS
                                     dialogError();
 
-                                    EditText editFechaCompra = getView().findViewById(R.id.editFechaCompra);
-                                    EditText editFechaIngresada = getView().findViewById(R.id.editFechaIngresada);
-                                    EditText editCodigoProv = getView().findViewById(R.id.editCodigoProv);
-                                    EditText editRazonSocialProv = getView().findViewById(R.id.editRazonSocialProv);
-                                    EditText editCondicionProv = getView().findViewById(R.id.editCondicionProv);
-                                    EditText editCodigoProd = getView().findViewById(R.id.editCodigoProd);
-                                    EditText editDescripcionProd = getView().findViewById(R.id.editDescripcionProd);
+                                    EditText editFechaFactura = getView().findViewById(R.id.editFechaFactura);
+                                    EditText editFechaIngreso = getView().findViewById(R.id.editFechaIngreso);
+                                    EditText editNroFactura = getView().findViewById(R.id.editNroFactura);
+                                    EditText editCodigo = getView().findViewById(R.id.editCodigo);
+                                    EditText editRazonSocial = getView().findViewById(R.id.editRazonSocial);
+                                    EditText editCondicion = getView().findViewById(R.id.editCondicion);
+                                    EditText editCodigoStock = getView().findViewById(R.id.editCodigoStock);
+                                    EditText editDescripcionStock = getView().findViewById(R.id.editDescripcionStock);
                                     EditText editCantidad = getView().findViewById(R.id.editCantidad);
                                     EditText editPrecioUnit = getView().findViewById(R.id.editPrecioUnit);
                                     EditText editImpuestos = getView().findViewById(R.id.editImpuestos);
                                     EditText editPrecioTotal = getView().findViewById(R.id.editPrecioTotal);
 
-                                    editFechaCompra.setText("");
-                                    editFechaIngresada.setText("");
-                                    editCodigoProv.setText("");
-                                    editRazonSocialProv.setText("");
-                                    editCondicionProv.setText("");
-                                    editCodigoProd.setText("");
-                                    editDescripcionProd.setText("");
+                                    editFechaFactura.setText("");
+                                    editFechaIngreso.setText("");
+                                    editNroFactura.setText("");
+                                    editCodigo.setText("");
+                                    editRazonSocial.setText("");
+                                    editCondicion.setText("");
+                                    editCodigoStock.setText("");
+                                    editDescripcionStock.setText("");
                                     editCantidad.setText("");
                                     editPrecioUnit.setText("");
                                     editImpuestos.setText("");
@@ -972,16 +1036,16 @@ public class ModificarCompras extends Fragment {
                 }, new Response.ErrorListener() {
 
             public void onErrorResponse(VolleyError error) {
-                Toast.makeText(getContext(), "Por favor, revise su conexión!", Toast.LENGTH_LONG).show();
+                Toast.makeText(getContext(), "Por favor, revise su conexión!", Toast.LENGTH_SHORT).show();
             }
         });
         requestQueue.add(jsonObjectRequest);
     }
 
-    private void consultarProveedor() {
+    private void consultarFacturaBis() {
 
-        // CONSULTA POR CÓDIGO DE PROVEEDOR SI YA FUE INGRESADO PARA OBTENER EL RESTO DE LOS DATOS
-        String URL = "http://malpicas.heliohost.org/malpica/compras/compras_consultar_proveedor.php?codigo_prov=" + datoCodigoProv;
+        // CONSULTA POR FACTURA SI YA FUE INGRESADA ANTERIORMENTE A LA BASE
+        String URL = "http://malpicas.heliohost.org/malpica/compras/compras_consultar_factura.php?parameter=" + datoNroFactura;
         jsonObjectRequest = new JsonObjectRequest(Request.Method.GET,URL,null,
                 new Response.Listener<JSONObject>() {
 
@@ -989,38 +1053,35 @@ public class ModificarCompras extends Fragment {
                     public void onResponse(JSONObject response) {
 
                         try {
-                            JSONArray jsonArray = response.getJSONArray("proveedores");
+                            JSONArray jsonArray = response.getJSONArray("data");
 
                             // RECORRE EL ARRAY DE JSON CON LA CONSULTA Y CON UN SETTER & GETTER MUESTRA LOS RESULTADOS
                             for (int i = 0; i < jsonArray.length(); i++) {
 
                                 JSONObject jsonObject = jsonArray.getJSONObject(i);
-                                ComprasSetters comprasSetters = new ComprasSetters();
+                                ComprasSetters setters = new ComprasSetters();
 
-                                comprasSetters.setCodigoProv(jsonObject.getString("codigo_prov"));
-                                comprasSetters.setNombreProv(jsonObject.getString("nombre_prov"));
-                                comprasSetters.setCondicionProv(jsonObject.getString("condicion_prov"));
+                                setters.setNroFactura(jsonObject.getString("nro_factura"));
 
-                                String nombreProv = comprasSetters.getNombreProv();
-                                String condicionProv = comprasSetters.getCondicionProv();
+                                String nroFactura = setters.getNroFactura();
 
-                                if(!nombreProv.equals("No existe")){
+                                if(!nroFactura.equals("No existe")){
 
-                                    // SI DEVUELVE EL PROVEEDOR MUESTRA LOS DATOS EN LOS CAMPOS, SINO DEJA EN BLANCO
-                                    EditText editRazonSocialProv = getView().findViewById(R.id.editRazonSocialProv);
-                                    EditText editCondicionProv = getView().findViewById(R.id.editCondicionProv);
-                                    editRazonSocialProv.setText(nombreProv);
-                                    editCondicionProv.setText(condicionProv);
-                                    datoRazonSocialProv = nombreProv + "";
-                                    datoCondicionProv = condicionProv + "";
+                                    // SI DEVUELVE UNA FACTURA MUESTRA UN MENSAJE DE ERROR
+                                    dialogErrorFactura();
 
+                                    Drawable drawable = getResources().getDrawable(R.drawable.ic_error);
+                                    drawable.setBounds(0, 0, drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight());
+                                    EditText editNroFactura = getView().findViewById(R.id.editNroFactura);
+                                    editNroFactura.setError("Revise los datos!", drawable);
+
+                                } else {
+
+                                    // SI NO DEVUELVE UNA FACTURA VALIDA EL CAMPO
                                     Drawable drawable = getResources().getDrawable(R.drawable.ic_check_green);
                                     drawable.setBounds(0, 0, drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight());
-                                    editRazonSocialProv.setError("Datos correctos!", drawable);
-                                    editCondicionProv.setError("Datos correctos!", drawable);
-
-                                    EditText editCodigoProd = getView().findViewById(R.id.editCodigoProd);
-                                    editCodigoProd.requestFocus();
+                                    EditText editNroFactura = getView().findViewById(R.id.editNroFactura);
+                                    editNroFactura.setError("Datos correctos!", drawable);
                                 }
                             }
                         } catch (JSONException e) {
@@ -1030,7 +1091,65 @@ public class ModificarCompras extends Fragment {
                 }, new Response.ErrorListener() {
 
             public void onErrorResponse(VolleyError error) {
-                Toast.makeText(getContext(), "Por favor, revise su conexión!", Toast.LENGTH_LONG).show();
+                Toast.makeText(getContext(), "Por favor, revise su conexión!", Toast.LENGTH_SHORT).show();
+            }
+        });
+        requestQueue.add(jsonObjectRequest);
+    }
+
+    private void consultarProveedor() {
+
+        // CONSULTA POR CÓDIGO DE PROVEEDOR SI YA FUE INGRESADO PARA OBTENER EL RESTO DE LOS DATOS
+        String URL = "http://malpicas.heliohost.org/malpica/compras/compras_consultar_proveedor.php?parameter=" + datoCodigo;
+        jsonObjectRequest = new JsonObjectRequest(Request.Method.GET,URL,null,
+                new Response.Listener<JSONObject>() {
+
+                    @Override
+                    public void onResponse(JSONObject response) {
+
+                        try {
+                            JSONArray jsonArray = response.getJSONArray("data");
+
+                            // RECORRE EL ARRAY DE JSON CON LA CONSULTA Y CON UN SETTER & GETTER MUESTRA LOS RESULTADOS
+                            for (int i = 0; i < jsonArray.length(); i++) {
+
+                                JSONObject jsonObject = jsonArray.getJSONObject(i);
+                                ComprasSetters setters = new ComprasSetters();
+
+                                setters.setCodigo(jsonObject.getString("codigo"));
+                                setters.setRazonSocial(jsonObject.getString("razon_social"));
+                                setters.setCondicion(jsonObject.getString("condicion"));
+
+                                String razonSocial = setters.getRazonSocial();
+                                String condicion = setters.getCondicion();
+
+                                if(!razonSocial.equals("No existe")){
+
+                                    // SI DEVUELVE EL PROVEEDOR MUESTRA LOS DATOS EN LOS CAMPOS, SINO DEJA EN BLANCO
+                                    EditText editRazonSocial = getView().findViewById(R.id.editRazonSocial);
+                                    EditText editCondicion = getView().findViewById(R.id.editCondicion);
+                                    editRazonSocial.setText(razonSocial);
+                                    editCondicion.setText(condicion);
+                                    datoRazonSocial = razonSocial + "";
+                                    datoCondicion = condicion + "";
+
+                                    Drawable drawable = getResources().getDrawable(R.drawable.ic_check_green);
+                                    drawable.setBounds(0, 0, drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight());
+                                    editRazonSocial.setError("Datos correctos!", drawable);
+                                    editCondicion.setError("Datos correctos!", drawable);
+
+                                    EditText editCodigoStock = getView().findViewById(R.id.editCodigoStock);
+                                    editCodigoStock.requestFocus();
+                                }
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }, new Response.ErrorListener() {
+
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(getContext(), "Por favor, revise su conexión!", Toast.LENGTH_SHORT).show();
             }
         });
         requestQueue.add(jsonObjectRequest);
@@ -1039,7 +1158,7 @@ public class ModificarCompras extends Fragment {
     private void consultarProducto() {
 
         // CONSULTA POR CÓDIGO DE PRODUCTO SI YA FUE INGRESADO PARA OBTENER EL RESTO DE LOS DATOS
-        String URL = "http://malpicas.heliohost.org/malpica/compras/compras_consultar_producto.php?codigo=" + datoCodigoProd;
+        String URL = "http://malpicas.heliohost.org/malpica/compras/compras_consultar_producto.php?parameter=" + datoCodigoStock;
         jsonObjectRequest = new JsonObjectRequest(Request.Method.GET,URL,null,
                 new Response.Listener<JSONObject>() {
 
@@ -1047,38 +1166,38 @@ public class ModificarCompras extends Fragment {
                     public void onResponse(JSONObject response) {
 
                         try {
-                            JSONArray jsonArray = response.getJSONArray("stock");
+                            JSONArray jsonArray = response.getJSONArray("data");
 
                             // RECORRE EL ARRAY DE JSON CON LA CONSULTA Y CON UN SETTER & GETTER MUESTRA LOS RESULTADOS
                             for (int i = 0; i < jsonArray.length(); i++) {
 
                                 JSONObject jsonObject = jsonArray.getJSONObject(i);
-                                ComprasSetters comprasSetters = new ComprasSetters();
+                                ComprasSetters setters = new ComprasSetters();
 
-                                comprasSetters.setCodigoProd(jsonObject.getString("codigo"));
-                                comprasSetters.setDescripcionProd(jsonObject.getString("descripcion"));
-                                comprasSetters.setCantidadProd(jsonObject.getString("cantidad"));
-                                comprasSetters.setMonedaProd(jsonObject.getString("moneda"));
-                                comprasSetters.setPrecioUnitProd(jsonObject.getString("precio_unit"));
-                                comprasSetters.setPrecioTotalProd(jsonObject.getString("precio_total"));
+                                setters.setCodigoStock(jsonObject.getString("codigo_stock"));
+                                setters.setDescripcionStock(jsonObject.getString("descripcion_stock"));
+                                setters.setCantidad(jsonObject.getString("cantidad"));
+                                setters.setMoneda(jsonObject.getString("moneda"));
+                                setters.setPrecioUnit(jsonObject.getString("precio_unit"));
+                                setters.setPrecioTotal(jsonObject.getString("precio_total"));
 
-                                String descripcionProd = comprasSetters.getDescripcionProd();
-                                String precioUnitProd = comprasSetters.getPrecioUnitProd();
+                                String descripcionStock = setters.getDescripcionStock();
+                                String precioUnitStock = setters.getPrecioUnit();
 
-                                if(!descripcionProd.equals("No existe")){
+                                if(!descripcionStock.equals("No existe")){
 
                                     // SI DEVUELVE EL PRODUCTO MUESTRA LOS DATOS EN LOS CAMPOS, SINO DEJA EN BLANCO
-                                    EditText editDescripcionProd = getView().findViewById(R.id.editDescripcionProd);
-                                    EditText editPrecioUnitProd = getView().findViewById(R.id.editPrecioUnit);
-                                    editDescripcionProd.setText(descripcionProd);
-                                    editPrecioUnitProd.setText(precioUnitProd);
-                                    datoDescripcionProd = descripcionProd + "";
-                                    datoPrecioUnit = precioUnitProd + "";
+                                    EditText editDescripcionStock = getView().findViewById(R.id.editDescripcionStock);
+                                    EditText editPrecioUnit = getView().findViewById(R.id.editPrecioUnit);
+                                    editDescripcionStock.setText(descripcionStock);
+                                    editPrecioUnit.setText(precioUnitStock);
+                                    datoDescripcionStock = descripcionStock + "";
+                                    datoPrecioUnit = precioUnitStock + "";
 
                                     Drawable drawable = getResources().getDrawable(R.drawable.ic_check_green);
                                     drawable.setBounds(0, 0, drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight());
-                                    editDescripcionProd.setError("Datos correctos!", drawable);
-                                    editPrecioUnitProd.setError("Datos correctos!", drawable);
+                                    editDescripcionStock.setError("Datos correctos!", drawable);
+                                    editPrecioUnit.setError("Datos correctos!", drawable);
 
                                     EditText editCantidad = getView().findViewById(R.id.editCantidad);
                                     editCantidad.requestFocus();
@@ -1091,7 +1210,7 @@ public class ModificarCompras extends Fragment {
                 }, new Response.ErrorListener() {
 
             public void onErrorResponse(VolleyError error) {
-                Toast.makeText(getContext(), "Por favor, revise su conexión!", Toast.LENGTH_LONG).show();
+                Toast.makeText(getContext(), "Por favor, revise su conexión!", Toast.LENGTH_SHORT).show();
             }
         });
         requestQueue.add(jsonObjectRequest);
@@ -1100,7 +1219,7 @@ public class ModificarCompras extends Fragment {
     private void consultarProveedorBis() {
 
         // CONSULTA EL PROVEEDOR DE VUELTA PARA VER SI SE ENCUENTRA O NO EN LA TABLA DE PROVEEDORES
-        String URL = "http://malpicas.heliohost.org/malpica/compras/compras_consultar_proveedor.php?codigo_prov=" + datoCodigoProv;
+        String URL = "http://malpicas.heliohost.org/malpica/compras/compras_consultar_proveedor.php?parameter=" + datoCodigo;
         jsonObjectRequest = new JsonObjectRequest(Request.Method.GET,URL,null,
                 new Response.Listener<JSONObject>() {
 
@@ -1108,21 +1227,21 @@ public class ModificarCompras extends Fragment {
                     public void onResponse(JSONObject response) {
 
                         try {
-                            JSONArray jsonArray = response.getJSONArray("proveedores");
+                            JSONArray jsonArray = response.getJSONArray("data");
 
                             // RECORRE EL ARRAY DE JSON CON LA CONSULTA Y CON UN SETTER & GETTER MUESTRA LOS RESULTADOS
                             for (int i = 0; i < jsonArray.length(); i++) {
 
                                 JSONObject jsonObject = jsonArray.getJSONObject(i);
-                                ComprasSetters comprasSetters = new ComprasSetters();
+                                ComprasSetters setters = new ComprasSetters();
 
-                                comprasSetters.setCodigoProv(jsonObject.getString("codigo_prov"));
-                                comprasSetters.setNombreProv(jsonObject.getString("nombre_prov"));
-                                comprasSetters.setCondicionProv(jsonObject.getString("condicion_prov"));
+                                setters.setCodigo(jsonObject.getString("codigo"));
+                                setters.setRazonSocial(jsonObject.getString("razon_social"));
+                                setters.setCondicion(jsonObject.getString("condicion"));
 
-                                String nombreProv = comprasSetters.getNombreProv();
+                                String razonSocial = setters.getRazonSocial();
 
-                                if(nombreProv.equals("No existe")){
+                                if(razonSocial.equals("No existe")){
 
                                     // SI NO DEVUELVE EL PROVEEDOR, REGISTRA LO BÁSICO EN LA TABLA DE PROVEEDORES
                                     dialogProcesando();
@@ -1139,7 +1258,7 @@ public class ModificarCompras extends Fragment {
                 }, new Response.ErrorListener() {
 
             public void onErrorResponse(VolleyError error) {
-                Toast.makeText(getContext(), "Por favor, revise su conexión!", Toast.LENGTH_LONG).show();
+                Toast.makeText(getContext(), "Por favor, revise su conexión!", Toast.LENGTH_SHORT).show();
             }
         });
         requestQueue.add(jsonObjectRequest);
@@ -1162,21 +1281,23 @@ public class ModificarCompras extends Fragment {
         }) {
             @Override
             protected Map<String, String> getParams() {
-                Map<String, String> datosProveedores = new HashMap<>();
+                Map<String, String> parameter = new HashMap<>();
 
-                datosProveedores.put("codigo_prov",datoCodigoProv);
-                datosProveedores.put("nombre_prov",datoRazonSocialProv);
-                datosProveedores.put("condicion_prov",datoCondicionProv);
-                datosProveedores.put("fecha_alta",datoFechaActual);
-                datosProveedores.put("fecha_modif",datoFechaActual);
-                datosProveedores.put("dia_alta",datoDia);
-                datosProveedores.put("mes_alta",datoMes);
-                datosProveedores.put("ano_alta",datoAno);
-                datosProveedores.put("dia_modif",datoDia);
-                datosProveedores.put("mes_modif",datoMes);
-                datosProveedores.put("ano_modif",datoAno);
+                parameter.put("codigo",datoCodigo);
+                parameter.put("razon_social",datoRazonSocial);
+                parameter.put("condicion",datoCondicion);
+                parameter.put("fecha_alta",datoFechaActual);
+                parameter.put("hora_alta",datoHoraActual);
+                parameter.put("fecha_modif",datoFechaActual);
+                parameter.put("hora_modif",datoHoraActual);
+                parameter.put("dia_alta",datoDia);
+                parameter.put("mes_alta",datoMes);
+                parameter.put("ano_alta",datoAno);
+                parameter.put("dia_modif",datoDia);
+                parameter.put("mes_modif",datoMes);
+                parameter.put("ano_modif",datoAno);
 
-                return datosProveedores;
+                return parameter;
             }
         };
         requestQueue.add(stringRequest);
@@ -1184,10 +1305,10 @@ public class ModificarCompras extends Fragment {
 
     private void consultarProductoBis() {
 
-        if(!datoCodigoProd.equals(codigoFactura)){
+        if(!datoCodigoStock.equals(codigoFactura)){
 
             // SI EL PRODUCTO CAMBIÓ, TIENE QUE CONSULTAR EN LA BASE SI ESTÁ CREADO O HAY QUE CREARLO
-            String URL = "http://malpicas.heliohost.org/malpica/compras/compras_consultar_producto.php?codigo=" + datoCodigoProd;
+            String URL = "http://malpicas.heliohost.org/malpica/compras/compras_consultar_producto.php?parameter=" + datoCodigoStock;
             jsonObjectRequest = new JsonObjectRequest(Request.Method.GET,URL,null,
                     new Response.Listener<JSONObject>() {
 
@@ -1195,26 +1316,26 @@ public class ModificarCompras extends Fragment {
                         public void onResponse(JSONObject response) {
 
                             try {
-                                JSONArray jsonArray = response.getJSONArray("stock");
+                                JSONArray jsonArray = response.getJSONArray("data");
 
                                 // RECORRE EL ARRAY DE JSON CON LA CONSULTA Y CON UN SETTER & GETTER MUESTRA LOS RESULTADOS
                                 for (int i = 0; i < jsonArray.length(); i++) {
 
                                     JSONObject jsonObject = jsonArray.getJSONObject(i);
-                                    ComprasSetters comprasSetters = new ComprasSetters();
+                                    ComprasSetters setters = new ComprasSetters();
 
-                                    comprasSetters.setCodigoProd(jsonObject.getString("codigo"));
-                                    comprasSetters.setDescripcionProd(jsonObject.getString("descripcion"));
-                                    comprasSetters.setCantidadProd(jsonObject.getString("cantidad"));
-                                    comprasSetters.setMonedaProd(jsonObject.getString("moneda"));
-                                    comprasSetters.setPrecioUnitProd(jsonObject.getString("precio_unit"));
-                                    comprasSetters.setPrecioTotalProd(jsonObject.getString("precio_total"));
+                                    setters.setCodigoStock(jsonObject.getString("codigo_stock"));
+                                    setters.setDescripcionStock(jsonObject.getString("descripcion_stock"));
+                                    setters.setCantidad(jsonObject.getString("cantidad"));
+                                    setters.setMoneda(jsonObject.getString("moneda"));
+                                    setters.setPrecioUnit(jsonObject.getString("precio_unit"));
+                                    setters.setPrecioTotal(jsonObject.getString("precio_total"));
 
-                                    String descripcionProd = comprasSetters.getDescripcionProd();
-                                    String cantidadProd = comprasSetters.getCantidadProd();
-                                    String precioUnitProd = comprasSetters.getPrecioUnitProd();
+                                    String descripcionStock = setters.getDescripcionStock();
+                                    String cantidadStock = setters.getCantidad();
+                                    String precioUnitStock = setters.getPrecioUnit();
 
-                                    if(descripcionProd.equals("No existe")){
+                                    if(descripcionStock.equals("No existe")){
 
                                         // SI NO DEVUELVE EL PRODUCTO, REGISTRA LO BÁSICO EN LA TABLA DE STOCK
                                         dialogProcesando();
@@ -1223,9 +1344,9 @@ public class ModificarCompras extends Fragment {
                                     } else {
 
                                         // SI DEVUELVE EL PRODUCTO, ACTUALIZA LOS VALORES DEL PRODUCTO NUEVO
-                                        int cantidadGetter = Integer.parseInt(cantidadProd);
+                                        int cantidadGetter = Integer.parseInt(cantidadStock);
                                         nuevaCantidad = cantidadGetter + cantidad;
-                                        double precioUnitGetter = Double.parseDouble(precioUnitProd);
+                                        double precioUnitGetter = Double.parseDouble(precioUnitStock);
                                         double preciototal = nuevaCantidad * precioUnitGetter;
 
                                         DecimalFormat decimalFormat = new DecimalFormat("#.00");
@@ -1246,7 +1367,7 @@ public class ModificarCompras extends Fragment {
                     }, new Response.ErrorListener() {
 
                 public void onErrorResponse(VolleyError error) {
-                    Toast.makeText(getContext(), "Por favor, revise su conexión!", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getContext(), "Por favor, revise su conexión!", Toast.LENGTH_SHORT).show();
                 }
             });
             requestQueue.add(jsonObjectRequest);
@@ -1254,7 +1375,7 @@ public class ModificarCompras extends Fragment {
         } else {
 
             // SI EL PRODUCTO NO CAMBIÓ, TIENE QUE CONSULTAR EN LA BASE LA CANTIDAD Y EL PRECIO UNITARIO PARA ACTUALIZAR STOCK
-            String URL = "http://malpicas.heliohost.org/malpica/compras/compras_consultar_producto.php?codigo=" + datoCodigoProd;
+            String URL = "http://malpicas.heliohost.org/malpica/compras/compras_consultar_producto.php?parameter=" + datoCodigoStock;
             jsonObjectRequest = new JsonObjectRequest(Request.Method.GET,URL,null,
                     new Response.Listener<JSONObject>() {
 
@@ -1262,28 +1383,28 @@ public class ModificarCompras extends Fragment {
                         public void onResponse(JSONObject response) {
 
                             try {
-                                JSONArray jsonArray = response.getJSONArray("stock");
+                                JSONArray jsonArray = response.getJSONArray("data");
 
                                 // RECORRE EL ARRAY DE JSON CON LA CONSULTA Y CON UN SETTER & GETTER MUESTRA LOS RESULTADOS
                                 for (int i = 0; i < jsonArray.length(); i++) {
 
                                     JSONObject jsonObject = jsonArray.getJSONObject(i);
-                                    ComprasSetters comprasSetters = new ComprasSetters();
+                                    ComprasSetters setters = new ComprasSetters();
 
-                                    comprasSetters.setCodigoProd(jsonObject.getString("codigo"));
-                                    comprasSetters.setDescripcionProd(jsonObject.getString("descripcion"));
-                                    comprasSetters.setCantidadProd(jsonObject.getString("cantidad"));
-                                    comprasSetters.setMonedaProd(jsonObject.getString("moneda"));
-                                    comprasSetters.setPrecioUnitProd(jsonObject.getString("precio_unit"));
-                                    comprasSetters.setPrecioTotalProd(jsonObject.getString("precio_total"));
+                                    setters.setCodigoStock(jsonObject.getString("codigo_stock"));
+                                    setters.setDescripcionStock(jsonObject.getString("descripcion_stock"));
+                                    setters.setCantidad(jsonObject.getString("cantidad"));
+                                    setters.setMoneda(jsonObject.getString("moneda"));
+                                    setters.setPrecioUnit(jsonObject.getString("precio_unit"));
+                                    setters.setPrecioTotal(jsonObject.getString("precio_total"));
 
-                                    String cantidadProd = comprasSetters.getCantidadProd();
-                                    String precioUnitProd = comprasSetters.getPrecioUnitProd();
+                                    String cantidadStock = setters.getCantidad();
+                                    String precioUnitStock = setters.getPrecioUnit();
 
                                     // ACTUALIZA LOS VALORES DEL MISMO PRODUCTO
-                                    int cantidadGetter = Integer.parseInt(cantidadProd);
+                                    int cantidadGetter = Integer.parseInt(cantidadStock);
                                     nuevaCantidad = cantidadGetter - cantidadFactura + cantidad;
-                                    double precioUnitGetter = Double.parseDouble(precioUnitProd);
+                                    double precioUnitGetter = Double.parseDouble(precioUnitStock);
                                     double preciototal = nuevaCantidad * precioUnitGetter;
 
                                     DecimalFormat decimalFormat = new DecimalFormat("#.00");
@@ -1302,7 +1423,7 @@ public class ModificarCompras extends Fragment {
                     }, new Response.ErrorListener() {
 
                 public void onErrorResponse(VolleyError error) {
-                    Toast.makeText(getContext(), "Por favor, revise su conexión!", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getContext(), "Por favor, revise su conexión!", Toast.LENGTH_SHORT).show();
                 }
             });
             requestQueue.add(jsonObjectRequest);
@@ -1328,24 +1449,26 @@ public class ModificarCompras extends Fragment {
         }) {
             @Override
             protected Map<String, String> getParams() {
-                Map<String, String> datosProducto = new HashMap<>();
+                Map<String, String> parameter = new HashMap<>();
 
-                datosProducto.put("codigo",datoCodigoProd);
-                datosProducto.put("descripcion",datoDescripcionProd);
-                datosProducto.put("cantidad",datoCantidad);
-                datosProducto.put("moneda",datoMoneda);
-                datosProducto.put("precio_unit",datoPrecioUnit);
-                datosProducto.put("precio_total",datoPrecioTotal);
-                datosProducto.put("fecha_alta",datoFechaActual);
-                datosProducto.put("fecha_modif",datoFechaActual);
-                datosProducto.put("dia_alta",datoDia);
-                datosProducto.put("mes_alta",datoMes);
-                datosProducto.put("ano_alta",datoAno);
-                datosProducto.put("dia_modif",datoDia);
-                datosProducto.put("mes_modif",datoMes);
-                datosProducto.put("ano_modif",datoAno);
+                parameter.put("codigo_stock",datoCodigoStock);
+                parameter.put("descripcion_stock",datoDescripcionStock);
+                parameter.put("cantidad",datoCantidad);
+                parameter.put("moneda",datoMoneda);
+                parameter.put("precio_unit",datoPrecioUnit);
+                parameter.put("precio_total",datoPrecioTotal);
+                parameter.put("fecha_alta",datoFechaActual);
+                parameter.put("hora_alta",datoHoraActual);
+                parameter.put("fecha_modif",datoFechaActual);
+                parameter.put("hora_modif",datoHoraActual);
+                parameter.put("dia_alta",datoDia);
+                parameter.put("mes_alta",datoMes);
+                parameter.put("ano_alta",datoAno);
+                parameter.put("dia_modif",datoDia);
+                parameter.put("mes_modif",datoMes);
+                parameter.put("ano_modif",datoAno);
 
-                return datosProducto;
+                return parameter;
             }
         };
         requestQueue.add(stringRequest);
@@ -1375,17 +1498,18 @@ public class ModificarCompras extends Fragment {
         }) {
             @Override
             protected Map<String, String> getParams() {
-                Map<String, String> datosProducto = new HashMap<>();
+                Map<String, String> parameter = new HashMap<>();
 
-                datosProducto.put("codigo",datoCodigoProd);
-                datosProducto.put("cantidad",datoCantidadNueva);
-                datosProducto.put("precio_total",datoPrecioTotaNuevo);
-                datosProducto.put("fecha_modif",datoFechaActual);
-                datosProducto.put("dia_modif",datoDia);
-                datosProducto.put("mes_modif",datoMes);
-                datosProducto.put("ano_modif",datoAno);
+                parameter.put("codigo_stock",datoCodigoStock);
+                parameter.put("cantidad",datoCantidadNueva);
+                parameter.put("precio_total",datoPrecioTotaNuevo);
+                parameter.put("fecha_modif",datoFechaActual);
+                parameter.put("hora_modif",datoHoraActual);
+                parameter.put("dia_modif",datoDia);
+                parameter.put("mes_modif",datoMes);
+                parameter.put("ano_modif",datoAno);
 
-                return datosProducto;
+                return parameter;
             }
         };
         requestQueue.add(stringRequest);
@@ -1415,17 +1539,18 @@ public class ModificarCompras extends Fragment {
         }) {
             @Override
             protected Map<String, String> getParams() {
-                Map<String, String> datosProducto = new HashMap<>();
+                Map<String, String> parameter = new HashMap<>();
 
-                datosProducto.put("codigo",datoCodigoProd);
-                datosProducto.put("cantidad",datoCantidadNueva);
-                datosProducto.put("precio_total",datoPrecioTotaNuevo);
-                datosProducto.put("fecha_modif",datoFechaActual);
-                datosProducto.put("dia_modif",datoDia);
-                datosProducto.put("mes_modif",datoMes);
-                datosProducto.put("ano_modif",datoAno);
+                parameter.put("codigo_stock",datoCodigoStock);
+                parameter.put("cantidad",datoCantidadNueva);
+                parameter.put("precio_total",datoPrecioTotaNuevo);
+                parameter.put("fecha_modif",datoFechaActual);
+                parameter.put("hora_modif",datoHoraActual);
+                parameter.put("dia_modif",datoDia);
+                parameter.put("mes_modif",datoMes);
+                parameter.put("ano_modif",datoAno);
 
-                return datosProducto;
+                return parameter;
             }
         };
         requestQueue.add(stringRequest);
@@ -1438,7 +1563,7 @@ public class ModificarCompras extends Fragment {
     private void consultarProductoAnterior() {
 
         // CONSULTA POR CÓDIGO DE PRODUCTO SI YA FUE INGRESADO PARA OBTENER EL RESTO DE LOS DATOS
-        String URL = "http://malpicas.heliohost.org/malpica/compras/compras_consultar_producto.php?codigo=" + codigoFactura;
+        String URL = "http://malpicas.heliohost.org/malpica/compras/compras_consultar_producto.php?parameter=" + codigoFactura;
         jsonObjectRequest = new JsonObjectRequest(Request.Method.GET,URL,null,
                 new Response.Listener<JSONObject>() {
 
@@ -1446,28 +1571,28 @@ public class ModificarCompras extends Fragment {
                     public void onResponse(JSONObject response) {
 
                         try {
-                            JSONArray jsonArray = response.getJSONArray("stock");
+                            JSONArray jsonArray = response.getJSONArray("data");
 
                             // RECORRE EL ARRAY DE JSON CON LA CONSULTA Y CON UN SETTER & GETTER MUESTRA LOS RESULTADOS
                             for (int i = 0; i < jsonArray.length(); i++) {
 
                                 JSONObject jsonObject = jsonArray.getJSONObject(i);
-                                ComprasSetters comprasSetters = new ComprasSetters();
+                                ComprasSetters setters = new ComprasSetters();
 
-                                comprasSetters.setCodigoProd(jsonObject.getString("codigo"));
-                                comprasSetters.setDescripcionProd(jsonObject.getString("descripcion"));
-                                comprasSetters.setCantidadProd(jsonObject.getString("cantidad"));
-                                comprasSetters.setMonedaProd(jsonObject.getString("moneda"));
-                                comprasSetters.setPrecioUnitProd(jsonObject.getString("precio_unit"));
-                                comprasSetters.setPrecioTotalProd(jsonObject.getString("precio_total"));
+                                setters.setCodigoStock(jsonObject.getString("codigo_stock"));
+                                setters.setDescripcionStock(jsonObject.getString("descripcion_stock"));
+                                setters.setCantidad(jsonObject.getString("cantidad"));
+                                setters.setMoneda(jsonObject.getString("moneda"));
+                                setters.setPrecioUnit(jsonObject.getString("precio_unit"));
+                                setters.setPrecioTotal(jsonObject.getString("precio_total"));
 
-                                String cantidadProd = comprasSetters.getCantidadProd();
-                                String precioUnitProd = comprasSetters.getPrecioUnitProd();
+                                String cantidadStock = setters.getCantidad();
+                                String precioUnitStock = setters.getPrecioUnit();
 
                                 // ACTUALIZA LOS VALORES DEL PRODUCTO ANTERIOR
-                                int cantidadGetter = Integer.parseInt(cantidadProd);
+                                int cantidadGetter = Integer.parseInt(cantidadStock);
                                 nuevaCantidad = cantidadGetter - cantidadFactura;
-                                double precioUnitGetter = Double.parseDouble(precioUnitProd);
+                                double precioUnitGetter = Double.parseDouble(precioUnitStock);
                                 double preciototal = nuevaCantidad * precioUnitGetter;
 
                                 DecimalFormat decimalFormat = new DecimalFormat("#.00");
@@ -1488,7 +1613,7 @@ public class ModificarCompras extends Fragment {
                 }, new Response.ErrorListener() {
 
             public void onErrorResponse(VolleyError error) {
-                Toast.makeText(getContext(), "Por favor, revise su conexión!", Toast.LENGTH_LONG).show();
+                Toast.makeText(getContext(), "Por favor, revise su conexión!", Toast.LENGTH_SHORT).show();
             }
         });
         requestQueue.add(jsonObjectRequest);
@@ -1514,17 +1639,18 @@ public class ModificarCompras extends Fragment {
         }) {
             @Override
             protected Map<String, String> getParams() {
-                Map<String, String> datosProducto = new HashMap<>();
+                Map<String, String> parameter = new HashMap<>();
 
-                datosProducto.put("codigo",codigoFactura);
-                datosProducto.put("cantidad",datoCantidadNueva);
-                datosProducto.put("precio_total",datoPrecioTotaNuevo);
-                datosProducto.put("fecha_modif",datoFechaActual);
-                datosProducto.put("dia_modif",datoDia);
-                datosProducto.put("mes_modif",datoMes);
-                datosProducto.put("ano_modif",datoAno);
+                parameter.put("codigo_stock",codigoFactura);
+                parameter.put("cantidad",datoCantidadNueva);
+                parameter.put("precio_total",datoPrecioTotaNuevo);
+                parameter.put("fecha_modif",datoFechaActual);
+                parameter.put("hora_modif",datoHoraActual);
+                parameter.put("dia_modif",datoDia);
+                parameter.put("mes_modif",datoMes);
+                parameter.put("ano_modif",datoAno);
 
-                return datosProducto;
+                return parameter;
             }
         };
         requestQueue.add(stringRequest);
@@ -1537,17 +1663,17 @@ public class ModificarCompras extends Fragment {
     private void actualizarCompra() {
 
         // ANTES DE TERMINAR DE ACTUALIZAR, CON UN ARRAY DIVIDE LAS FECHAS INGRESADAS
-        String[] arrayFechaCompra = datoFechaCompra.split("/");
-        final String datoDiaCompra = arrayFechaCompra[0];
-        final String datoMesCompra = arrayFechaCompra[1];
-        final String datoAnoCompra = arrayFechaCompra[2];
+        String[] arrayFechaFactura = datoFechaFactura.split("/");
+        final String datoDiaFactura = arrayFechaFactura[0];
+        final String datoMesFactura = arrayFechaFactura[1];
+        final String datoAnoFactura = arrayFechaFactura[2];
 
-        String[] arrayFechaIngresada = datoFechaIngresada.split("/");
-        final String datoDiaIngresada = arrayFechaIngresada[0];
-        final String datoMesIngresada = arrayFechaIngresada[1];
-        final String datoAnoIngresada = arrayFechaIngresada[2];
+        String[] arrayFechaIngreso = datoFechaIngreso.split("/");
+        final String datoDiaIngreso = arrayFechaIngreso[0];
+        final String datoMesIngreso = arrayFechaIngreso[1];
+        final String datoAnoIngreso = arrayFechaIngreso[2];
 
-        // FINALMENTE MODIFICA LA COMPRA CON LOS DATOS INGRESADOS
+        // FINALMENTE MODIFICA LA FACTURA CON LOS DATOS INGRESADOS
         String URL1 = "http://malpicas.heliohost.org/malpica/compras/compras_actualizar_factura.php";
         StringRequest stringRequest1 = new StringRequest(Request.Method.POST, URL1, new Response.Listener<String>() {
             @Override
@@ -1562,28 +1688,34 @@ public class ModificarCompras extends Fragment {
         }) {
             @Override
             protected Map<String, String> getParams() {
-                Map<String, String> datosFactura = new HashMap<>();
+                Map<String, String> parameter = new HashMap<>();
 
-                datosFactura.put("fecha_compra",datoFechaCompra);
-                datosFactura.put("fecha_ingreso",datoFechaIngresada);
-                datosFactura.put("nro_factura",datoBuscarFactura);
-                datosFactura.put("codigo_prov",datoCodigoProv);
-                datosFactura.put("nombre_prov",datoRazonSocialProv);
-                datosFactura.put("condicion_prov",datoCondicionProv);
-                datosFactura.put("codigo",datoCodigoProd);
-                datosFactura.put("descripcion",datoDescripcionProd);
-                datosFactura.put("cantidad",datoCantidad);
-                datosFactura.put("precio_unit",datoPrecioUnit);
-                datosFactura.put("impuestos",datoImpuestos);
-                datosFactura.put("precio_final",datoPrecioTotal);
-                datosFactura.put("dia_ingreso",datoDiaIngresada);
-                datosFactura.put("mes_ingreso",datoMesIngresada);
-                datosFactura.put("ano_ingreso",datoAnoIngresada);
-                datosFactura.put("dia_compra",datoDiaCompra);
-                datosFactura.put("mes_compra",datoMesCompra);
-                datosFactura.put("ano_compra",datoAnoCompra);
+                parameter.put("factura_vieja",datoBuscarFactura);
+                parameter.put("factura_nueva",datoNroFactura);
+                parameter.put("fecha_factura",datoFechaFactura);
+                parameter.put("fecha_ingreso",datoFechaIngreso);
+                parameter.put("fecha_modif",datoFechaActual);
+                parameter.put("hora_modif",datoHoraActual);
+                parameter.put("codigo",datoCodigo);
+                parameter.put("razon_social",datoRazonSocial);
+                parameter.put("condicion",datoCondicion);
+                parameter.put("codigo_stock",datoCodigoStock);
+                parameter.put("descripcion_stock",datoDescripcionStock);
+                parameter.put("cantidad",datoCantidad);
+                parameter.put("precio_unit",datoPrecioUnit);
+                parameter.put("impuestos",datoImpuestos);
+                parameter.put("precio_total",datoPrecioTotal);
+                parameter.put("dia_factura",datoDiaFactura);
+                parameter.put("mes_factura",datoMesFactura);
+                parameter.put("ano_factura",datoAnoFactura);
+                parameter.put("dia_ingreso",datoDiaIngreso);
+                parameter.put("mes_ingreso",datoMesIngreso);
+                parameter.put("ano_ingreso",datoAnoIngreso);
+                parameter.put("dia_modif",datoDia);
+                parameter.put("mes_modif",datoMes);
+                parameter.put("ano_modif",datoAno);
 
-                return datosFactura;
+                return parameter;
             }
         };
         requestQueue.add(stringRequest1);

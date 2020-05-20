@@ -2,7 +2,24 @@ package com.example.malpicasoft.proveedores;
 
 class ProveedoresSetters {
 
-    private String codigo, razonSocial, condicion, descripcion, cuit, direccion, localidad, contacto, tipo;
+    private String fechaAlta, horaAlta, fechaModif, horaModif, codigo, razonSocial, condicion,
+            descripcion, cuit, direccion, localidad, contacto, tipo;
+
+    String getFechaAlta() { return fechaAlta; }
+
+    void setFechaAlta(String fechaAlta) { this.fechaAlta = fechaAlta; }
+
+    String getHoraAlta() { return horaAlta; }
+
+    void setHoraAlta(String horaAlta) { this.horaAlta = horaAlta; }
+
+    String getFechaModif() { return fechaModif; }
+
+    void setFechaModif(String fechaModif) { this.fechaModif = fechaModif; }
+
+    String getHoraModif() { return horaModif; }
+
+    void setHoraModif(String horaModif) { this.horaModif = horaModif; }
 
     String getCodigo() { return codigo; }
 

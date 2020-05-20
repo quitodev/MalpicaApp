@@ -48,7 +48,7 @@
                 android:textSize="24sp" />
 
             <TextView
-                android:id="@+id/textFechaCompra"
+                android:id="@+id/textFechaFactura"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/textIngresar"
@@ -62,15 +62,15 @@
                 android:layout_marginEnd="0dp"
                 android:layout_marginRight="0dp"
                 android:fontFamily="sans-serif-light"
-                android:text="@string/fecha_compra"
+                android:text="@string/fecha_factura"
                 android:textColor="@color/colorAccent"
                 android:textSize="16sp" />
 
             <EditText
-                android:id="@+id/editFechaCompra"
+                android:id="@+id/editFechaFactura"
                 android:layout_width="310dp"
                 android:layout_height="42dp"
-                android:layout_below="@+id/textFechaCompra"
+                android:layout_below="@+id/textFechaFactura"
                 android:layout_alignParentStart="true"
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentEnd="true"
@@ -84,7 +84,7 @@
                 android:ems="10"
                 android:fontFamily="sans-serif-light"
                 android:hint="@string/ingresar_fecha"
-                android:inputType="textPersonName"
+                android:inputType="date"
                 android:maxLength="10"
                 android:text=""
                 android:textColor="@color/colorText"
@@ -97,7 +97,7 @@
                 android:id="@+id/textNroFactura"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/editFechaCompra"
+                android:layout_below="@+id/editFechaFactura"
                 android:layout_alignParentStart="true"
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentEnd="true"
@@ -130,7 +130,7 @@
                 android:ems="10"
                 android:fontFamily="sans-serif-light"
                 android:hint="@string/ingresar_nro_factura"
-                android:inputType="textPersonName"
+                android:inputType="date"
                 android:maxLength="15"
                 android:text=""
                 android:textColor="@color/colorText"
@@ -160,7 +160,7 @@
                 android:textSize="18sp" />
 
             <TextView
-                android:id="@+id/textCodigoProv"
+                android:id="@+id/textCodigo"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/textDatosProveedor"
@@ -179,10 +179,10 @@
                 android:textSize="16sp" />
 
             <EditText
-                android:id="@+id/editCodigoProv"
+                android:id="@+id/editCodigo"
                 android:layout_width="310dp"
                 android:layout_height="42dp"
-                android:layout_below="@+id/textCodigoProv"
+                android:layout_below="@+id/textCodigo"
                 android:layout_alignParentStart="true"
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentEnd="true"
@@ -205,10 +205,10 @@
                 tools:ignore="Autofill" />
 
             <TextView
-                android:id="@+id/textRazonSocialProv"
+                android:id="@+id/textRazonSocial"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/editCodigoProv"
+                android:layout_below="@+id/editCodigo"
                 android:layout_alignParentStart="true"
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentEnd="true"
@@ -224,10 +224,10 @@
                 android:textSize="16sp" />
 
             <EditText
-                android:id="@+id/editRazonSocialProv"
+                android:id="@+id/editRazonSocial"
                 android:layout_width="310dp"
                 android:layout_height="42dp"
-                android:layout_below="@+id/textRazonSocialProv"
+                android:layout_below="@+id/textRazonSocial"
                 android:layout_alignParentStart="true"
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentEnd="true"
@@ -250,10 +250,10 @@
                 tools:ignore="Autofill" />
 
             <TextView
-                android:id="@+id/textCondicionProv"
+                android:id="@+id/textCondicion"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/editRazonSocialProv"
+                android:layout_below="@+id/editRazonSocial"
                 android:layout_alignParentStart="true"
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentEnd="true"
@@ -269,10 +269,10 @@
                 android:textSize="16sp" />
 
             <EditText
-                android:id="@+id/editCondicionProv"
+                android:id="@+id/editCondicion"
                 android:layout_width="310dp"
                 android:layout_height="42dp"
-                android:layout_below="@+id/textCondicionProv"
+                android:layout_below="@+id/textCondicion"
                 android:layout_alignParentStart="true"
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentEnd="true"
@@ -298,7 +298,7 @@
                 android:id="@+id/textDatosProducto"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/editCondicionProv"
+                android:layout_below="@+id/editCondicion"
                 android:layout_alignParentStart="true"
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentEnd="true"
@@ -315,7 +315,7 @@
                 android:textSize="18sp" />
 
             <TextView
-                android:id="@+id/textCodigoProd"
+                android:id="@+id/textCodigoStock"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/textDatosProducto"
@@ -334,10 +334,10 @@
                 android:textSize="16sp" />
 
             <EditText
-                android:id="@+id/editCodigoProd"
+                android:id="@+id/editCodigoStock"
                 android:layout_width="310dp"
                 android:layout_height="42dp"
-                android:layout_below="@+id/textCodigoProd"
+                android:layout_below="@+id/textCodigoStock"
                 android:layout_alignParentStart="true"
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentEnd="true"
@@ -360,10 +360,10 @@
                 tools:ignore="Autofill" />
 
             <TextView
-                android:id="@+id/textDescripcionProd"
+                android:id="@+id/textDescripcionStock"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/editCodigoProd"
+                android:layout_below="@+id/editCodigoStock"
                 android:layout_alignParentStart="true"
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentEnd="true"
@@ -379,10 +379,10 @@
                 android:textSize="16sp" />
 
             <EditText
-                android:id="@+id/editDescripcionProd"
+                android:id="@+id/editDescripcionStock"
                 android:layout_width="310dp"
                 android:layout_height="42dp"
-                android:layout_below="@+id/textDescripcionProd"
+                android:layout_below="@+id/textDescripcionStock"
                 android:layout_alignParentStart="true"
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentEnd="true"
@@ -408,7 +408,7 @@
                 android:id="@+id/textCantidad"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/editDescripcionProd"
+                android:layout_below="@+id/editDescripcionStock"
                 android:layout_alignParentStart="true"
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentEnd="true"

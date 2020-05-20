@@ -2,84 +2,67 @@ package com.example.malpicasoft.ventas;
 
 class VentasSetters {
 
-    private String fechaVenta, fechaIngreso, nroFactura, codigoCliente, nombreCliente, condicionCliente,
-            codigoProd, descripcionProd, cantidadProd, monedaProd, precioUnitProd, impuestos, precioTotalProd;
+    private String fechaFactura, fechaIngreso, fechaModif, horaModif, nroFactura, codigo, razonSocial, condicion,
+            codigoStock, descripcionStock, cantidad, moneda, precioUnit, impuestos, precioTotal;
 
-    String getFechaVenta() { return fechaVenta; }
+    String getFechaFactura() { return fechaFactura; }
 
-    void setFechaVenta(String fechaVenta) { this.fechaVenta = fechaVenta; }
+    void setFechaFactura(String fechaFactura) { this.fechaFactura = fechaFactura; }
 
     String getFechaIngreso() { return fechaIngreso; }
 
     void setFechaIngreso(String fechaIngreso) { this.fechaIngreso = fechaIngreso; }
 
+    String getFechaModif() { return fechaModif; }
+
+    void setFechaModif(String fechaModif) { this.fechaModif = fechaModif; }
+
+    String getHoraModif() { return horaModif; }
+
+    void setHoraModif(String horaModif) { this.horaModif = horaModif; }
+
     String getNroFactura() { return nroFactura; }
 
     void setNroFactura(String nroFactura) { this.nroFactura = nroFactura; }
 
-    String getCodigoCliente() { return codigoCliente; }
+    String getCodigo() { return codigo; }
 
-    void setCodigoCliente(String codigoCliente) {
-        this.codigoCliente = codigoCliente;
-    }
+    void setCodigo(String codigo) { this.codigo = codigo; }
 
-    String getNombreCliente() { return nombreCliente; }
+    String getRazonSocial() { return razonSocial; }
 
-    void setNombreCliente(String nombreCliente) {
-        this.nombreCliente = nombreCliente;
-    }
+    void setRazonSocial(String razonSocial) { this.razonSocial = razonSocial; }
 
-    String getCondicionCliente() { return condicionCliente; }
+    String getCondicion() { return condicion; }
 
-    void setCondicionCliente(String condicionCliente) {
-        this.condicionCliente = condicionCliente;
-    }
+    void setCondicion(String condicion) { this.condicion = condicion; }
 
-    String getCodigoProd() {
-        return codigoProd;
-    }
+    String getCodigoStock() { return codigoStock; }
 
-    void setCodigoProd(String codigoProd) {
-        this.codigoProd = codigoProd;
-    }
+    void setCodigoStock(String codigoStock) { this.codigoStock = codigoStock; }
 
-    String getDescripcionProd() {
-        return descripcionProd;
-    }
+    String getDescripcionStock() { return descripcionStock; }
 
-    void setDescripcionProd(String descripcionProd) { this.descripcionProd = descripcionProd; }
+    void setDescripcionStock(String descripcionStock) { this.descripcionStock = descripcionStock; }
 
-    String getCantidadProd() { return cantidadProd; }
+    String getCantidad() { return cantidad; }
 
-    void setCantidadProd(String cantidadProd) { this.cantidadProd = cantidadProd; }
+    void setCantidad(String cantidad) { this.cantidad = cantidad; }
 
-    String getMonedaProd() {
-        return monedaProd;
-    }
+    String getMoneda() { return moneda; }
 
-    void setMonedaProd(String monedaProd) {
-        this.monedaProd = monedaProd;
-    }
+    void setMoneda(String moneda) { this.moneda = moneda; }
 
-    String getPrecioUnitProd() {
-        return precioUnitProd;
-    }
+    String getPrecioUnit() { return precioUnit; }
 
-    void setPrecioUnitProd(String precioUnitProd) {
-        this.precioUnitProd = precioUnitProd;
-    }
+    void setPrecioUnit(String precioUnit) { this.precioUnit = precioUnit; }
 
-    String getImpuestos() {
-        return impuestos;
-    }
+    String getImpuestos() { return impuestos; }
 
-    void setImpuestos(String impuestos) {
-        this.impuestos = impuestos;
-    }
+    void setImpuestos(String impuestos) { this.impuestos = impuestos; }
 
-    String getPrecioTotalProd() {
-        return precioTotalProd;
-    }
+    String getPrecioTotal() { return precioTotal; }
 
-    void setPrecioTotalProd(String precioTotalProd) { this.precioTotalProd = precioTotalProd; }
+    void setPrecioTotal(String precioTotal) { this.precioTotal = precioTotal; }
 }
+

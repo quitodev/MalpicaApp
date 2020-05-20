@@ -1,11 +1,16 @@
 package com.example.malpicasoft.login;
 
+import android.annotation.SuppressLint;
 import android.content.ContentValues;
 import android.content.Intent;
 
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.os.Handler;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -21,6 +26,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.malpicasoft.AdminSQLiteOpenHelper;
+import com.example.malpicasoft.Dialogs;
 import com.example.malpicasoft.usuario.Usuario;
 import com.example.malpicasoft.R;
 
@@ -28,14 +34,19 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.DateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class Login extends AppCompatActivity {
 
     private RequestQueue requestQueue;
     private EditText editUser, editPass;
+    private int counter;
 
+    @SuppressLint("ClickableViewAccessibility")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -45,26 +56,116 @@ public class Login extends AppCompatActivity {
         requestQueue = Volley.newRequestQueue(this);
 
         // COMPONENTES DE LA VISTA
-        Button buttonLogin = findViewById(R.id.buttonLogin);
-        TextView textHelp = findViewById(R.id.textHelp);
+        final Button buttonLogin = findViewById(R.id.buttonLogin);
+        final TextView textHelp = findViewById(R.id.textHelp);
         editUser = findViewById(R.id.editUser);
         editPass = findViewById(R.id.editPass);
 
-        // EVENTOS DEL BOTÓN LOGIN
-        textHelp.setOnClickListener(new View.OnClickListener() {
+        editUser.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @SuppressLint("SetTextI18n")
             @Override
-            public void onClick(View v) {
-                mensajeAyuda();
+            public void onFocusChange(View view, boolean hasFocus) {
+                if (hasFocus) {
+
+                    // SI INGRESA AL CAMPO, CAMBIA EL FONDO
+                    editUser.setBackground(getResources().getDrawable(R.drawable.app_campos1));
+
+                } else {
+
+                    // SI SALE DEL CAMPO, RECUPERA EL FONDO
+                    editUser.setBackground(getResources().getDrawable(R.drawable.app_campos));
+                }
+            }
+        });
+
+        editPass.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @SuppressLint("SetTextI18n")
+            @Override
+            public void onFocusChange(View view, boolean hasFocus) {
+                if (hasFocus) {
+
+                    // SI INGRESA AL CAMPO, CAMBIA EL FONDO
+                    editPass.setBackground(getResources().getDrawable(R.drawable.app_campos1));
+
+                } else {
+
+                    // SI SALE DEL CAMPO, RECUPERA EL FONDO
+                    editPass.setBackground(getResources().getDrawable(R.drawable.app_campos));
+                }
+            }
+        });
+
+        // EVENTOS DEL TEXT DE AYUDA
+        textHelp.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+
+                switch(event.getAction()) {
+                    case MotionEvent.ACTION_DOWN:
+                        textHelp.setTextColor(Color.parseColor("#FF9800"));
+                        mensajeAyuda();
+                        break;
+                    case MotionEvent.ACTION_UP:
+                        textHelp.setTextColor(Color.parseColor("#F44336"));
+                        break;
+                }
+                return true;
             }
         });
 
         // EVENTOS DEL BOTÓN LOGIN
-        buttonLogin.setOnClickListener(new View.OnClickListener() {
+        buttonLogin.setOnTouchListener(new View.OnTouchListener() {
             @Override
-            public void onClick(View v) {
-                iniciarSesion();
+            public boolean onTouch(View v, MotionEvent event) {
+
+                switch(event.getAction()) {
+                    case MotionEvent.ACTION_DOWN:
+                        buttonLogin.setTextColor(Color.parseColor("#FF9800"));
+                        dialogProcesando();
+                        iniciarSesion();
+                        break;
+                    case MotionEvent.ACTION_UP:
+                        buttonLogin.setTextColor(Color.parseColor("#F44336"));
+                        break;
+                }
+                return true;
             }
         });
+    }
+
+    private void dialogProcesando(){
+
+        // DIALOG CON PROGRESS BAR MIENTRAS CONSULTA A LAS TABLAS
+        final Dialogs dialogs = new Dialogs(this);
+        dialogs.startProcesando();
+
+        final Timer timer = new Timer();
+        TimerTask timerTask = new TimerTask() {
+            @Override
+            public void run() {
+                counter++;
+
+                if(counter == 30) {
+                    timer.cancel();
+                    dialogs.endProcesando();
+                    counter = 0;
+                }
+            }
+        };
+        timer.schedule(timerTask,0,100);
+    }
+
+    private void dialogError() {
+
+        // DIALOG CON MENSAJE DE ERROR
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                Dialogs dialogs = new Dialogs(getParent());
+                int layout = R.layout.dialog_error;
+                dialogs.startResultado(layout);
+            }
+        }, 3000);
     }
 
     private void mensajeAyuda() {
@@ -76,10 +177,11 @@ public class Login extends AppCompatActivity {
 
     private void iniciarSesion(){
 
-        // CONSULTA Y ACTUALIZA HORA DE CONEXIÓN PARA ALMACENAR EN BASE SQLITE
+        // OBTIENE LA HORA ACTUAL Y ACTUALIZA HORA DE CONEXIÓN PARA ALMACENAR EN BASE SQLITE
         Date date = Calendar.getInstance().getTime();
         String hour = date.toString();
         String horaActual = "" + hour.charAt(11) + hour.charAt(12) + hour.charAt(13) + hour.charAt(14) + hour.charAt(15);
+
         String usuarioActual = editUser.getText().toString();
 
         AdminSQLiteOpenHelper admin = new AdminSQLiteOpenHelper(this, "admin", null, 1);
@@ -130,6 +232,9 @@ public class Login extends AppCompatActivity {
                                         loginSetters.getPass().contentEquals(editPass.getText())) {
 
                                     // SI COINCIDE EL USUARIO Y LA CLAVE INGRESADA, PASA A LA SIGUIENTE ACTIVITY
+                                    Dialogs dialogs = new Dialogs(getParent());
+                                    dialogs.endProcesando();
+
                                     Intent intent = new Intent(Login.this, Usuario.class);
                                     intent.putExtra("user", editUser.getText().toString());
                                     startActivity(intent);
@@ -137,9 +242,8 @@ public class Login extends AppCompatActivity {
 
                                 } else {
 
-                                    // SI NO COINCIDE EL USUARIO Y LA CLAVE INGRESADA, MUESTRA UN TOAST DE ADVERTENCIA
-                                    Toast.makeText(getApplicationContext(),"Por favor, revise los datos ingresados!",
-                                            Toast.LENGTH_SHORT).show();
+                                    // SI NO COINCIDE EL USUARIO Y LA CLAVE INGRESADA, MUESTRA UN MENSAJE DE ERROR
+                                    dialogError();
                                 }
                             }
 
@@ -150,7 +254,7 @@ public class Login extends AppCompatActivity {
                 }, new Response.ErrorListener() {
 
             public void onErrorResponse(VolleyError error) {
-                Toast.makeText(getApplicationContext(), "Por favor, revise su conexión!", Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(), "Por favor, revise su conexión!", Toast.LENGTH_SHORT).show();
             }
         });
         requestQueue.add(jsonObjectRequest);

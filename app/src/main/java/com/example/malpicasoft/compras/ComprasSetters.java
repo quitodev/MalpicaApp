@@ -2,100 +2,66 @@ package com.example.malpicasoft.compras;
 
 class ComprasSetters {
 
-    private String fechaCompra, fechaIngreso, nroFactura, codigoProv, nombreProv, condicionProv, codigoProd,
-            descripcionProd, cantidadProd, monedaProd, precioUnitProd, impuestos, precioTotalProd;
+    private String fechaFactura, fechaIngreso, fechaModif, horaModif, nroFactura, codigo, razonSocial, condicion,
+            codigoStock, descripcionStock, cantidad, moneda, precioUnit, impuestos, precioTotal;
 
-    String getFechaCompra() {
-        return fechaCompra;
-    }
+    String getFechaFactura() { return fechaFactura; }
 
-    void setFechaCompra(String fechaCompra) {
-        this.fechaCompra = fechaCompra;
-    }
+    void setFechaFactura(String fechaFactura) { this.fechaFactura = fechaFactura; }
 
-    String getFechaIngreso() {
-        return fechaIngreso;
-    }
+    String getFechaIngreso() { return fechaIngreso; }
 
-    void setFechaIngreso(String fechaIngreso) {
-        this.fechaIngreso = fechaIngreso;
-    }
+    void setFechaIngreso(String fechaIngreso) { this.fechaIngreso = fechaIngreso; }
 
-    String getNroFactura() {
-        return nroFactura;
-    }
+    String getFechaModif() { return fechaModif; }
+
+    void setFechaModif(String fechaModif) { this.fechaModif = fechaModif; }
+
+    String getHoraModif() { return horaModif; }
+
+    void setHoraModif(String horaModif) { this.horaModif = horaModif; }
+
+    String getNroFactura() { return nroFactura; }
 
     void setNroFactura(String nroFactura) { this.nroFactura = nroFactura; }
 
-    String getCodigoProv() {
-        return codigoProv;
-    }
+    String getCodigo() { return codigo; }
 
-    void setCodigoProv(String codigoProv) {
-        this.codigoProv = codigoProv;
-    }
+    void setCodigo(String codigo) { this.codigo = codigo; }
 
-    String getNombreProv() {
-        return nombreProv;
-    }
+    String getRazonSocial() { return razonSocial; }
 
-    void setNombreProv(String nombreProv) {
-        this.nombreProv = nombreProv;
-    }
+    void setRazonSocial(String razonSocial) { this.razonSocial = razonSocial; }
 
-    String getCondicionProv() {
-        return condicionProv;
-    }
+    String getCondicion() { return condicion; }
 
-    void setCondicionProv(String condicionProv) {
-        this.condicionProv = condicionProv;
-    }
+    void setCondicion(String condicion) { this.condicion = condicion; }
 
-    String getCodigoProd() {
-        return codigoProd;
-    }
+    String getCodigoStock() { return codigoStock; }
 
-    void setCodigoProd(String codigoProd) {
-        this.codigoProd = codigoProd;
-    }
+    void setCodigoStock(String codigoStock) { this.codigoStock = codigoStock; }
 
-    String getDescripcionProd() {
-        return descripcionProd;
-    }
+    String getDescripcionStock() { return descripcionStock; }
 
-    void setDescripcionProd(String descripcionProd) { this.descripcionProd = descripcionProd; }
+    void setDescripcionStock(String descripcionStock) { this.descripcionStock = descripcionStock; }
 
-    String getCantidadProd() { return cantidadProd; }
+    String getCantidad() { return cantidad; }
 
-    void setCantidadProd(String cantidadProd) { this.cantidadProd = cantidadProd; }
+    void setCantidad(String cantidad) { this.cantidad = cantidad; }
 
-    String getMonedaProd() {
-        return monedaProd;
-    }
+    String getMoneda() { return moneda; }
 
-    void setMonedaProd(String monedaProd) {
-        this.monedaProd = monedaProd;
-    }
+    void setMoneda(String moneda) { this.moneda = moneda; }
 
-    String getPrecioUnitProd() {
-        return precioUnitProd;
-    }
+    String getPrecioUnit() { return precioUnit; }
 
-    void setPrecioUnitProd(String precioUnitProd) {
-        this.precioUnitProd = precioUnitProd;
-    }
+    void setPrecioUnit(String precioUnit) { this.precioUnit = precioUnit; }
 
-    String getImpuestos() {
-        return impuestos;
-    }
+    String getImpuestos() { return impuestos; }
 
-    void setImpuestos(String impuestos) {
-        this.impuestos = impuestos;
-    }
+    void setImpuestos(String impuestos) { this.impuestos = impuestos; }
 
-    String getPrecioTotalProd() {
-        return precioTotalProd;
-    }
+    String getPrecioTotal() { return precioTotal; }
 
-    void setPrecioTotalProd(String precioTotalProd) { this.precioTotalProd = precioTotalProd; }
+    void setPrecioTotal(String precioTotal) { this.precioTotal = precioTotal; }
 }

@@ -31,6 +31,7 @@ import org.json.JSONObject;
 
 import java.text.DateFormat;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Timer;
@@ -40,7 +41,7 @@ public class IngresarClientes extends Fragment {
 
     private RequestQueue requestQueue;
     private JsonObjectRequest jsonObjectRequest;
-    private String datoFechaActual, datoCodigo, datoRazonSocial, datoCondicion, datoDescripcion,
+    private String datoFechaActual, datoHoraActual, datoCodigo, datoRazonSocial, datoCondicion, datoDescripcion,
             datoCuit, datoDireccion, datoLocalidad, datoContacto, datoTipo, datoDia, datoMes, datoAno;
     private int counter;
 
@@ -68,7 +69,7 @@ public class IngresarClientes extends Fragment {
         final EditText editContacto = root.findViewById(R.id.editContacto);
         final EditText editTipo = root.findViewById(R.id.editTipo);
 
-        Button buttonGuardar = root.findViewById(R.id.buttonGuardar);
+        final Button buttonGuardar = root.findViewById(R.id.buttonGuardar);
 
         // EVENTOS DEL BOTÓN GUARDAR
         buttonGuardar.setOnClickListener(new View.OnClickListener() {
@@ -101,7 +102,6 @@ public class IngresarClientes extends Fragment {
 
                     dialogProcesando();
                     registrarCliente();
-                    dialogOk();
 
                 } else {
 
@@ -386,7 +386,11 @@ public class IngresarClientes extends Fragment {
 
     private void dateFragments() {
 
-        // MÉTODO PARA OBTENER EL DÍA ACTUAL
+        // OBTIENE LA FECHA Y HORA ACTUAL
+        Date date = Calendar.getInstance().getTime();
+        String hour = date.toString();
+        datoHoraActual = "" + hour.charAt(11) + hour.charAt(12) + hour.charAt(13) + hour.charAt(14) + hour.charAt(15);
+
         Calendar calendar = Calendar.getInstance();
         String fechaActual = DateFormat.getDateInstance(DateFormat.SHORT).format(calendar.getTime());
 
@@ -418,7 +422,7 @@ public class IngresarClientes extends Fragment {
             public void run() {
                 counter++;
 
-                if(counter == 20) {
+                if(counter == 30) {
                     timer.cancel();
                     dialogs.endProcesando();
                     counter = 0;
@@ -435,9 +439,10 @@ public class IngresarClientes extends Fragment {
             @Override
             public void run() {
                 Dialogs dialogs = new Dialogs(getActivity());
-                dialogs.startError();
+                int layout = R.layout.dialog_error;
+                dialogs.startResultado(layout);
             }
-        }, 2000);
+        }, 3000);
     }
 
     private void dialogErrorCliente(){
@@ -447,9 +452,10 @@ public class IngresarClientes extends Fragment {
             @Override
             public void run() {
                 Dialogs dialogs = new Dialogs(getActivity());
-                dialogs.startErrorCliente();
+                int layout = R.layout.dialog_error_cliente;
+                dialogs.startResultado(layout);
             }
-        }, 2000);
+        }, 3000);
     }
 
     private void dialogOk(){
@@ -460,7 +466,8 @@ public class IngresarClientes extends Fragment {
             @Override
             public void run() {
                 Dialogs dialogs = new Dialogs(getActivity());
-                dialogs.startOk();
+                int layout = R.layout.dialog_ok;
+                dialogs.startResultado(layout);
 
                 EditText editCodigo = getView().findViewById(R.id.editCodigo);
                 EditText editRazonSocial = getView().findViewById(R.id.editRazonSocial);
@@ -506,13 +513,13 @@ public class IngresarClientes extends Fragment {
                 scrollView.setScrollY(0);
                 editCodigo.requestFocusFromTouch();
             }
-        }, 2000);
+        }, 3000);
     }
 
     private void consultarCodigo() {
 
         // CONSULTA POR CÓDIGO SI YA FUE INGRESADO ANTERIORMENTE A LA BASE
-        String URL = "http://malpicas.heliohost.org/malpica/clientes/clientes_consultar_codigo.php?codigo=" + datoCodigo;
+        String URL = "http://malpicas.heliohost.org/malpica/clientes/clientes_consultar_codigo.php?parameter=" + datoCodigo;
         jsonObjectRequest = new JsonObjectRequest(Request.Method.GET,URL,null,
                 new Response.Listener<JSONObject>() {
 
@@ -520,17 +527,17 @@ public class IngresarClientes extends Fragment {
                     public void onResponse(JSONObject response) {
 
                         try {
-                            JSONArray jsonArray = response.getJSONArray("datos");
+                            JSONArray jsonArray = response.getJSONArray("data");
 
                             // RECORRE EL ARRAY DE JSON CON LA CONSULTA Y CON UN SETTER & GETTER MUESTRA LOS RESULTADOS
                             for (int i = 0; i < jsonArray.length(); i++) {
 
                                 JSONObject jsonObject = jsonArray.getJSONObject(i);
-                                ClientesSetters clientesSetters = new ClientesSetters();
+                                ClientesSetters setters = new ClientesSetters();
 
-                                clientesSetters.setCodigo(jsonObject.getString("codigo_cliente"));
+                                setters.setCodigo(jsonObject.getString("codigo"));
 
-                                String codigo = clientesSetters.getCodigo();
+                                String codigo = setters.getCodigo();
 
                                 if(!codigo.equals("No existe")){
 
@@ -558,7 +565,7 @@ public class IngresarClientes extends Fragment {
                 }, new Response.ErrorListener() {
 
             public void onErrorResponse(VolleyError error) {
-                Toast.makeText(getContext(), "Por favor, revise su conexión!", Toast.LENGTH_LONG).show();
+                Toast.makeText(getContext(), "Por favor, revise su conexión!", Toast.LENGTH_SHORT).show();
             }
         });
         requestQueue.add(jsonObjectRequest);
@@ -569,7 +576,7 @@ public class IngresarClientes extends Fragment {
         // CONSULTA POR RAZÓN SOCIAL SI YA FUE INGRESADO ANTERIORMENTE A LA BASE
         String razonSocial = datoRazonSocial.replace(" ","%20");
 
-        String URL = "http://malpicas.heliohost.org/malpica/clientes/clientes_consultar_nombre.php?nombre=" + razonSocial;
+        String URL = "http://malpicas.heliohost.org/malpica/clientes/clientes_consultar_nombre.php?parameter=" + razonSocial;
         jsonObjectRequest = new JsonObjectRequest(Request.Method.GET,URL,null,
                 new Response.Listener<JSONObject>() {
 
@@ -577,19 +584,19 @@ public class IngresarClientes extends Fragment {
                     public void onResponse(JSONObject response) {
 
                         try {
-                            JSONArray jsonArray = response.getJSONArray("datos");
+                            JSONArray jsonArray = response.getJSONArray("data");
 
                             // RECORRE EL ARRAY DE JSON CON LA CONSULTA Y CON UN SETTER & GETTER MUESTRA LOS RESULTADOS
                             for (int i = 0; i < jsonArray.length(); i++) {
 
                                 JSONObject jsonObject = jsonArray.getJSONObject(i);
-                                ClientesSetters clientesSetters = new ClientesSetters();
+                                ClientesSetters setters = new ClientesSetters();
 
-                                clientesSetters.setRazonSocial(jsonObject.getString("nombre_cliente"));
+                                setters.setRazonSocial(jsonObject.getString("razon_social"));
 
-                                String nombre = clientesSetters.getRazonSocial();
+                                String razonSocial = setters.getRazonSocial();
 
-                                if(!nombre.equals("No existe")){
+                                if(!razonSocial.equals("No existe")){
 
                                     // SI YA SE ENCUENTRA REGISTRADO MUESTRA UN MENSAJE DE ERROR
                                     dialogErrorCliente();
@@ -615,7 +622,7 @@ public class IngresarClientes extends Fragment {
                 }, new Response.ErrorListener() {
 
             public void onErrorResponse(VolleyError error) {
-                Toast.makeText(getContext(), "Por favor, revise su conexión!", Toast.LENGTH_LONG).show();
+                Toast.makeText(getContext(), "Por favor, revise su conexión!", Toast.LENGTH_SHORT).show();
             }
         });
         requestQueue.add(jsonObjectRequest);
@@ -624,7 +631,7 @@ public class IngresarClientes extends Fragment {
     private void consultarCuit() {
 
         // CONSULTA POR CUIT SI YA FUE INGRESADO ANTERIORMENTE A LA BASE
-        String URL = "http://malpicas.heliohost.org/malpica/clientes/clientes_consultar_cuit.php?cuit=" + datoCuit;
+        String URL = "http://malpicas.heliohost.org/malpica/clientes/clientes_consultar_cuit.php?parameter=" + datoCuit;
         jsonObjectRequest = new JsonObjectRequest(Request.Method.GET,URL,null,
                 new Response.Listener<JSONObject>() {
 
@@ -632,17 +639,17 @@ public class IngresarClientes extends Fragment {
                     public void onResponse(JSONObject response) {
 
                         try {
-                            JSONArray jsonArray = response.getJSONArray("datos");
+                            JSONArray jsonArray = response.getJSONArray("data");
 
                             // RECORRE EL ARRAY DE JSON CON LA CONSULTA Y CON UN SETTER & GETTER MUESTRA LOS RESULTADOS
                             for (int i = 0; i < jsonArray.length(); i++) {
 
                                 JSONObject jsonObject = jsonArray.getJSONObject(i);
-                                ClientesSetters clientesSetters = new ClientesSetters();
+                                ClientesSetters setters = new ClientesSetters();
 
-                                clientesSetters.setCuit(jsonObject.getString("cuit_cuil"));
+                                setters.setCuit(jsonObject.getString("cuit"));
 
-                                String cuit = clientesSetters.getCuit();
+                                String cuit = setters.getCuit();
 
                                 if(!cuit.equals("No existe")){
 
@@ -670,7 +677,7 @@ public class IngresarClientes extends Fragment {
                 }, new Response.ErrorListener() {
 
             public void onErrorResponse(VolleyError error) {
-                Toast.makeText(getContext(), "Por favor, revise su conexión!", Toast.LENGTH_LONG).show();
+                Toast.makeText(getContext(), "Por favor, revise su conexión!", Toast.LENGTH_SHORT).show();
             }
         });
         requestQueue.add(jsonObjectRequest);
@@ -683,7 +690,7 @@ public class IngresarClientes extends Fragment {
         StringRequest stringRequest = new StringRequest(Request.Method.POST, URL, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
-
+                dialogOk();
             }
         }, new Response.ErrorListener() {
             @Override
@@ -693,27 +700,29 @@ public class IngresarClientes extends Fragment {
         }) {
             @Override
             protected Map<String, String> getParams() {
-                Map<String, String> parametros = new HashMap<>();
+                Map<String, String> parameter = new HashMap<>();
 
-                parametros.put("codigo",datoCodigo);
-                parametros.put("nombre",datoRazonSocial);
-                parametros.put("condicion",datoCondicion);
-                parametros.put("descripcion",datoDescripcion);
-                parametros.put("cuit",datoCuit);
-                parametros.put("direccion",datoDireccion);
-                parametros.put("localidad",datoLocalidad);
-                parametros.put("contacto",datoContacto);
-                parametros.put("tipo",datoTipo);
-                parametros.put("fecha_alta",datoFechaActual);
-                parametros.put("fecha_modif",datoFechaActual);
-                parametros.put("dia_alta",datoDia);
-                parametros.put("mes_alta",datoMes);
-                parametros.put("ano_alta",datoAno);
-                parametros.put("dia_modif",datoDia);
-                parametros.put("mes_modif",datoMes);
-                parametros.put("ano_modif",datoAno);
+                parameter.put("codigo",datoCodigo);
+                parameter.put("razon_social",datoRazonSocial);
+                parameter.put("condicion",datoCondicion);
+                parameter.put("descripcion",datoDescripcion);
+                parameter.put("cuit",datoCuit);
+                parameter.put("direccion",datoDireccion);
+                parameter.put("localidad",datoLocalidad);
+                parameter.put("contacto",datoContacto);
+                parameter.put("tipo",datoTipo);
+                parameter.put("fecha_alta",datoFechaActual);
+                parameter.put("hora_alta",datoHoraActual);
+                parameter.put("fecha_modif",datoFechaActual);
+                parameter.put("hora_modif",datoHoraActual);
+                parameter.put("dia_alta",datoDia);
+                parameter.put("mes_alta",datoMes);
+                parameter.put("ano_alta",datoAno);
+                parameter.put("dia_modif",datoDia);
+                parameter.put("mes_modif",datoMes);
+                parameter.put("ano_modif",datoAno);
 
-                return parametros;
+                return parameter;
             }
         };
         requestQueue.add(stringRequest);

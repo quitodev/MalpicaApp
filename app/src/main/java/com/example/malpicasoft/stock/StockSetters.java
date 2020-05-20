@@ -2,7 +2,23 @@ package com.example.malpicasoft.stock;
 
 class StockSetters {
 
-    private String codigo, descripcion, cantidad, moneda, precioUnit, precioTotal;
+    private String fechaAlta, horaAlta, fechaModif, horaModif, codigo, descripcion, cantidad, moneda, precioUnit, precioTotal;
+
+    String getFechaAlta() { return fechaAlta; }
+
+    void setFechaAlta(String fechaAlta) { this.fechaAlta = fechaAlta; }
+
+    String getHoraAlta() { return horaAlta; }
+
+    void setHoraAlta(String horaAlta) { this.horaAlta = horaAlta; }
+
+    String getFechaModif() { return fechaModif; }
+
+    void setFechaModif(String fechaModif) { this.fechaModif = fechaModif; }
+
+    String getHoraModif() { return horaModif; }
+
+    void setHoraModif(String horaModif) { this.horaModif = horaModif; }
 
     String getCodigo() { return codigo; }
 
