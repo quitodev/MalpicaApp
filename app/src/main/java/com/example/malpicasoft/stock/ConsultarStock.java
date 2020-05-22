@@ -1,15 +1,19 @@
 package com.example.malpicasoft.stock;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
 import android.os.Handler;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.Request;
@@ -36,6 +40,7 @@ public class ConsultarStock extends Fragment {
 
     public ConsultarStock() { }
 
+    @SuppressLint("ClickableViewAccessibility")
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -57,44 +62,60 @@ public class ConsultarStock extends Fragment {
         final EditText editPrecioUnit = root.findViewById(R.id.editPrecioUnit);
         final EditText editPrecioTotal = root.findViewById(R.id.editPrecioTotal);
 
+        final TextView textBuscarCodigo = root.findViewById(R.id.textBuscarCodigo);
+        final TextView textBuscarDescripcion = root.findViewById(R.id.textBuscarDescripcion);
+
         final Button buttonConsultar = root.findViewById(R.id.buttonConsultar);
 
         // EVENTOS DEL BOTÓN CONSULTAR
-        buttonConsultar.setOnClickListener(new View.OnClickListener() {
+        buttonConsultar.setOnTouchListener(new View.OnTouchListener() {
             @Override
-            public void onClick(View v) {
+            public boolean onTouch(View v, MotionEvent event) {
 
-                datoBuscarCodigo = editBuscarCodigo.getText().toString();
-                datoBuscarDescripcion = editBuscarDescripcion.getText().toString();
+                switch(event.getAction()) {
+                    case MotionEvent.ACTION_DOWN:
+                        buttonConsultar.setTextColor(ContextCompat.getColor(getContext(), R.color.colorTextSelected));
+                        buttonConsultar.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_search_yellow, 0, 0, 0);
 
-                // SI LOS CAMPOS NO ESTÁN VACÍOS, REALIZA LA CONSULTA CORRESPONDIENTE
-                if (!datoBuscarCodigo.isEmpty()) {
+                        datoBuscarCodigo = editBuscarCodigo.getText().toString();
+                        datoBuscarDescripcion = editBuscarDescripcion.getText().toString();
 
-                    dialogProcesando();
-                    consultarCodigo();
+                        // SI LOS CAMPOS NO ESTÁN VACÍOS, REALIZA LA CONSULTA CORRESPONDIENTE
+                        if (!datoBuscarCodigo.isEmpty()) {
+
+                            dialogProcesando();
+                            consultarCodigo();
+                        }
+
+                        if (!datoBuscarDescripcion.isEmpty()) {
+
+                            dialogProcesando();
+                            consultarDescripcion();
+                        }
+
+                        if (datoBuscarCodigo.isEmpty() && datoBuscarDescripcion.isEmpty()) {
+
+                            // SI LOS CAMPOS ESTÁN VACÍOS, SE LIMPIAN LOS RESULTADOS ANTERIORES Y MUESTRA UN ERROR
+                            editFechaAlta.setText("");
+                            editFechaModif.setText("");
+                            editCodigo.setText("");
+                            editDescripcion.setText("");
+                            editCantidad.setText("");
+                            editMoneda.setText("");
+                            editPrecioUnit.setText("");
+                            editPrecioTotal.setText("");
+
+                            dialogProcesando();
+                            dialogError();
+                        }
+                        break;
+
+                    case MotionEvent.ACTION_UP:
+                        buttonConsultar.setTextColor(ContextCompat.getColor(getContext(), R.color.colorAccent));
+                        buttonConsultar.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_search_orange, 0, 0, 0);
+                        break;
                 }
-
-                if (!datoBuscarDescripcion.isEmpty()) {
-
-                    dialogProcesando();
-                    consultarDescripcion();
-                }
-
-                if (datoBuscarCodigo.isEmpty() && datoBuscarDescripcion.isEmpty()) {
-
-                    // SI LOS CAMPOS ESTÁN VACÍOS, SE LIMPIAN LOS RESULTADOS ANTERIORES Y MUESTRA UN ERROR
-                    editFechaAlta.setText("");
-                    editFechaModif.setText("");
-                    editCodigo.setText("");
-                    editDescripcion.setText("");
-                    editCantidad.setText("");
-                    editMoneda.setText("");
-                    editPrecioUnit.setText("");
-                    editPrecioTotal.setText("");
-
-                    dialogProcesando();
-                    dialogError();
-                }
+                return true;
             }
         });
 
@@ -102,9 +123,15 @@ public class ConsultarStock extends Fragment {
         editBuscarCodigo.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View view, boolean hasFocus) {
-                if (hasFocus) {
+                if (!hasFocus) {
 
-                    // SI INGRESA AL CAMPO, ELIMINA LOS DATOS INGRESADOS EN LOS OTROS CAMPOS
+                    // SI SALE DEL CAMPO, RECUPERA COLOR DE TEXTO
+                    textBuscarCodigo.setTextColor(ContextCompat.getColor(getContext(), R.color.colorText));
+
+                } else {
+
+                    // SI INGRESA AL CAMPO, CAMBIA COLOR DE TEXTO Y ELIMINA LOS DATOS INGRESADOS EN LOS OTROS CAMPOS
+                    textBuscarCodigo.setTextColor(ContextCompat.getColor(getContext(), R.color.colorTextSelected));
                     editBuscarDescripcion.setText("");
                 }
             }
@@ -112,9 +139,15 @@ public class ConsultarStock extends Fragment {
         editBuscarDescripcion.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View view, boolean hasFocus) {
-                if (hasFocus) {
+                if (!hasFocus) {
 
-                    // SI INGRESA AL CAMPO, ELIMINA LOS DATOS INGRESADOS EN LOS OTROS CAMPOS
+                    // SI SALE DEL CAMPO, RECUPERA COLOR DE TEXTO
+                    textBuscarDescripcion.setTextColor(ContextCompat.getColor(getContext(), R.color.colorText));
+
+                } else {
+
+                    // SI INGRESA AL CAMPO, CAMBIA COLOR DE TEXTO Y ELIMINA LOS DATOS INGRESADOS EN LOS OTROS CAMPOS
+                    textBuscarDescripcion.setTextColor(ContextCompat.getColor(getContext(), R.color.colorTextSelected));
                     editBuscarCodigo.setText("");
                 }
             }
@@ -206,8 +239,8 @@ public class ConsultarStock extends Fragment {
                                 setters.setPrecioUnit(jsonObject.getString("precio_unit"));
                                 setters.setPrecioTotal(jsonObject.getString("precio_total"));
 
-                                String fechaAlta = setters.getFechaAlta() + " " + setters.getHoraAlta();
-                                String fechaModif = setters.getFechaModif() + " " + setters.getHoraModif();
+                                String fechaAlta = setters.getFechaAlta() + ", " + setters.getHoraAlta() + " hs.";
+                                String fechaModif = setters.getFechaModif() + ", " + setters.getHoraModif() + " hs.";
                                 String codigo = setters.getCodigo();
                                 String descripcion = setters.getDescripcion();
                                 String cantidad = setters.getCantidad();
@@ -287,8 +320,8 @@ public class ConsultarStock extends Fragment {
                                 setters.setPrecioUnit(jsonObject.getString("precio_unit"));
                                 setters.setPrecioTotal(jsonObject.getString("precio_total"));
 
-                                String fechaAlta = setters.getFechaAlta() + " " + setters.getHoraAlta();
-                                String fechaModif = setters.getFechaModif() + " " + setters.getHoraModif();
+                                String fechaAlta = setters.getFechaAlta() + ", " + setters.getHoraAlta() + " hs.";
+                                String fechaModif = setters.getFechaModif() + ", " + setters.getHoraModif() + " hs.";
                                 String codigo = setters.getCodigo();
                                 String descripcion = setters.getDescripcion();
                                 String cantidad = setters.getCantidad();

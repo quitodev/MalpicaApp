@@ -20,7 +20,8 @@
         android:layout_marginLeft="0dp"
         android:layout_marginTop="0dp"
         android:layout_marginEnd="0dp"
-        android:layout_marginRight="0dp">
+        android:layout_marginRight="0dp"
+        tools:ignore="UselessParent">
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -210,7 +211,8 @@
                 android:gravity="right"
                 android:text="@string/usuario_pesos"
                 android:textColor="#00FF00"
-                android:textSize="16sp" />
+                android:textSize="16sp"
+                tools:ignore="RtlHardcoded" />
 
             <TextView
                 android:id="@+id/textGastos"
@@ -241,7 +243,8 @@
                 android:gravity="right"
                 android:text="@string/usuario_pesos"
                 android:textColor="#FF0000"
-                android:textSize="16sp" />
+                android:textSize="16sp"
+                tools:ignore="RtlHardcoded" />
 
             <TextView
                 android:id="@+id/textCompras"
@@ -273,7 +276,8 @@
                 android:gravity="right"
                 android:text="@string/usuario_pesos"
                 android:textColor="#FF0000"
-                android:textSize="16sp" />
+                android:textSize="16sp"
+                tools:ignore="RtlHardcoded" />
 
             <TextView
                 android:id="@+id/textDatos"
@@ -310,15 +314,15 @@
                 android:layout_marginEnd="51dp"
                 android:layout_marginRight="51dp"
                 android:background="#00000000"
-                android:ems="10"
                 android:focusable="false"
                 android:fontFamily="sans-serif-light"
                 android:gravity="center_horizontal"
                 android:hint="@string/usuario_comercio"
                 android:inputType="textPersonName"
-                android:text="@string/usuario_comercio"
+                android:maxLength="50"
+                android:text=""
+                android:textColorHint="@color/colorTextHint"
                 android:textColor="@color/colorText"
-                android:textColorLink="@color/colorAccent"
                 android:textSize="16sp"
                 tools:ignore="Autofill" />
 
@@ -337,15 +341,15 @@
                 android:layout_marginEnd="51dp"
                 android:layout_marginRight="51dp"
                 android:background="#00000000"
-                android:ems="10"
                 android:focusable="false"
                 android:fontFamily="sans-serif-light"
                 android:gravity="center_horizontal"
                 android:hint="@string/usuario_direccion"
                 android:inputType="textPersonName"
-                android:text="@string/usuario_direccion"
+                android:maxLength="50"
+                android:text=""
+                android:textColorHint="@color/colorTextHint"
                 android:textColor="@color/colorText"
-                android:textColorLink="@color/colorAccent"
                 android:textSize="16sp"
                 tools:ignore="Autofill" />
 
@@ -364,15 +368,15 @@
                 android:layout_marginEnd="51dp"
                 android:layout_marginRight="51dp"
                 android:background="#00000000"
-                android:ems="10"
                 android:focusable="false"
                 android:fontFamily="sans-serif-light"
                 android:gravity="center_horizontal"
                 android:hint="@string/usuario_localidad"
                 android:inputType="textPersonName"
-                android:text="@string/usuario_localidad"
+                android:maxLength="50"
+                android:text=""
+                android:textColorHint="@color/colorTextHint"
                 android:textColor="@color/colorText"
-                android:textColorLink="@color/colorAccent"
                 android:textSize="16sp"
                 tools:ignore="Autofill" />
 
@@ -391,15 +395,15 @@
                 android:layout_marginEnd="51dp"
                 android:layout_marginRight="51dp"
                 android:background="#00000000"
-                android:ems="10"
                 android:focusable="false"
                 android:fontFamily="sans-serif-light"
                 android:gravity="center_horizontal"
                 android:hint="@string/usuario_cuit"
                 android:inputType="textPersonName"
-                android:text="@string/usuario_cuit"
+                android:maxLength="13"
+                android:text=""
+                android:textColorHint="@color/colorTextHint"
                 android:textColor="@color/colorText"
-                android:textColorLink="@color/colorAccent"
                 android:textSize="16sp"
                 tools:ignore="Autofill" />
 
@@ -418,15 +422,15 @@
                 android:layout_marginEnd="51dp"
                 android:layout_marginRight="51dp"
                 android:background="#00000000"
-                android:ems="10"
                 android:focusable="false"
                 android:fontFamily="sans-serif-light"
                 android:gravity="center_horizontal"
                 android:hint="@string/usuario_condicion"
                 android:inputType="textPersonName"
-                android:text="@string/usuario_condicion"
+                android:maxLength="2"
+                android:text=""
+                android:textColorHint="@color/colorTextHint"
                 android:textColor="@color/colorText"
-                android:textColorLink="@color/colorAccent"
                 android:textSize="16sp"
                 tools:ignore="Autofill" />
 
@@ -445,15 +449,15 @@
                 android:layout_marginEnd="51dp"
                 android:layout_marginRight="51dp"
                 android:background="#00000000"
-                android:ems="10"
                 android:focusable="false"
                 android:fontFamily="sans-serif-light"
                 android:gravity="center_horizontal"
                 android:hint="@string/usuario_email"
                 android:inputType="textWebEmailAddress"
-                android:text="@string/usuario_email"
+                android:maxLength="50"
+                android:text=""
+                android:textColorHint="@color/colorTextHint"
                 android:textColor="@color/colorText"
-                android:textColorLink="@color/colorAccent"
                 android:textSize="16sp"
                 tools:ignore="Autofill" />
 
@@ -472,15 +476,15 @@
                 android:layout_marginEnd="51dp"
                 android:layout_marginRight="51dp"
                 android:background="#00000000"
-                android:ems="10"
                 android:focusable="false"
                 android:fontFamily="sans-serif-light"
                 android:gravity="center_horizontal"
                 android:hint="@string/usuario_telefono"
                 android:inputType="textPersonName"
-                android:text="@string/usuario_telefono"
+                android:maxLength="20"
+                android:text=""
+                android:textColorHint="@color/colorTextHint"
                 android:textColor="@color/colorText"
-                android:textColorLink="@color/colorAccent"
                 android:textSize="16sp"
                 tools:ignore="Autofill" />
 
@@ -492,12 +496,13 @@
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="30dp"
                 android:background="#323232"
-                android:drawableLeft="@drawable/ic_save_black_24dp"
+                android:drawableLeft="@drawable/ic_save_orange"
                 android:fontFamily="sans-serif-light"
                 android:paddingLeft="15dp"
                 android:text="@string/guardar_datos"
                 android:textColor="@color/colorAccent"
-                android:textSize="16sp" />
+                android:textSize="16sp"
+                tools:ignore="RtlHardcoded,RtlSymmetry" />
 
             <Button
                 android:id="@+id/buttonModificar"
@@ -507,12 +512,13 @@
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="30dp"
                 android:background="#323232"
-                android:drawableLeft="@drawable/ic_mode_edit_black_24dp"
+                android:drawableLeft="@drawable/ic_edit_orange"
                 android:fontFamily="sans-serif-light"
                 android:paddingLeft="15dp"
                 android:text="@string/modificar_datos"
                 android:textColor="@color/colorAccent"
-                android:textSize="16sp" />
+                android:textSize="16sp"
+                tools:ignore="RtlHardcoded,RtlSymmetry" />
 
             <EditText
                 android:id="@+id/editVacio"
@@ -522,9 +528,11 @@
                 android:layout_marginTop="35dp"
                 android:background="#00000000"
                 android:focusable="false"
-                android:text=""
                 android:gravity="center_horizontal"
-                android:hint="@string/componentes" />
+                android:hint="@string/componentes"
+                android:inputType="textPersonName"
+                android:text=""
+                tools:ignore="Autofill" />
 
         </RelativeLayout>
     </ScrollView>

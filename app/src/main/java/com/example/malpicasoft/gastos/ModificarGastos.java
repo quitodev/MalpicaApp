@@ -4,15 +4,18 @@ import android.annotation.SuppressLint;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
 import android.os.Handler;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ScrollView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.Request;
@@ -50,6 +53,7 @@ public class ModificarGastos extends Fragment {
     
     public ModificarGastos() { }
 
+    @SuppressLint("ClickableViewAccessibility")
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -76,202 +80,258 @@ public class ModificarGastos extends Fragment {
         final EditText editImpuestos = root.findViewById(R.id.editImpuestos);
         final EditText editPrecioTotal = root.findViewById(R.id.editPrecioTotal);
 
+        final TextView textBuscarFactura = root.findViewById(R.id.textBuscarFactura);
+
         final Button buttonConsultar = root.findViewById(R.id.buttonConsultar);
         final Button buttonModificar = root.findViewById(R.id.buttonModificar);
         final Button buttonGuardar = root.findViewById(R.id.buttonGuardar);
 
         // EVENTOS DEL BOTÓN CONSULTAR
-        buttonConsultar.setOnClickListener(new View.OnClickListener() {
+        buttonConsultar.setOnTouchListener(new View.OnTouchListener() {
             @Override
-            public void onClick(View v) {
+            public boolean onTouch(View v, MotionEvent event) {
 
-                buttonModificar.setVisibility(View.VISIBLE);
+                switch(event.getAction()) {
+                    case MotionEvent.ACTION_DOWN:
+                        buttonConsultar.setTextColor(ContextCompat.getColor(getContext(), R.color.colorTextSelected));
+                        buttonConsultar.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_search_yellow, 0, 0, 0);
 
-                editFechaFactura.setFocusable(false);
-                editFechaIngreso.setFocusable(false);
-                editNroFactura.setFocusable(false);
-                editCodigo.setFocusable(false);
-                editRazonSocial.setFocusable(false);
-                editCondicion.setFocusable(false);
-                editCodigoStock.setFocusable(false);
-                editDescripcionStock.setFocusable(false);
-                editCantidad.setFocusable(false);
-                editPrecioUnit.setFocusable(false);
-                editImpuestos.setFocusable(false);
-                editPrecioTotal.setFocusable(false);
+                        buttonModificar.setVisibility(View.VISIBLE);
 
-                editFechaFactura.setError(null);
-                editFechaIngreso.setError(null);
-                editNroFactura.setError(null);
-                editCodigo.setError(null);
-                editRazonSocial.setError(null);
-                editCondicion.setError(null);
-                editCodigoStock.setError(null);
-                editDescripcionStock.setError(null);
-                editCantidad.setError(null);
-                editPrecioUnit.setError(null);
-                editImpuestos.setError(null);
-                editPrecioTotal.setError(null);
+                        editFechaFactura.setFocusable(false);
+                        editFechaIngreso.setFocusable(false);
+                        editNroFactura.setFocusable(false);
+                        editCodigo.setFocusable(false);
+                        editRazonSocial.setFocusable(false);
+                        editCondicion.setFocusable(false);
+                        editCodigoStock.setFocusable(false);
+                        editDescripcionStock.setFocusable(false);
+                        editCantidad.setFocusable(false);
+                        editPrecioUnit.setFocusable(false);
+                        editImpuestos.setFocusable(false);
+                        editPrecioTotal.setFocusable(false);
 
-                datoBuscarFactura = editBuscarFactura.getText().toString();
+                        editFechaFactura.setError(null);
+                        editFechaIngreso.setError(null);
+                        editNroFactura.setError(null);
+                        editCodigo.setError(null);
+                        editRazonSocial.setError(null);
+                        editCondicion.setError(null);
+                        editCodigoStock.setError(null);
+                        editDescripcionStock.setError(null);
+                        editCantidad.setError(null);
+                        editPrecioUnit.setError(null);
+                        editImpuestos.setError(null);
+                        editPrecioTotal.setError(null);
 
-                if(!datoBuscarFactura.isEmpty()){
+                        datoBuscarFactura = editBuscarFactura.getText().toString();
 
-                    // SI EL CAMPO NO ESTÁ VACÍO, CONSULTA A LA BASE
-                    dialogProcesando();
-                    consultarFactura();
+                        if(!datoBuscarFactura.isEmpty()){
 
-                } else {
+                            // SI EL CAMPO NO ESTÁ VACÍO, CONSULTA A LA BASE
+                            dialogProcesando();
+                            consultarFactura();
 
-                    // SI EL CAMPO ESTÁ VACÍO, MUESTRA UN MENSAJE DE ERROR
-                    editFechaFactura.setText("");
-                    editFechaIngreso.setText("");
-                    editNroFactura.setText("");
-                    editCodigo.setText("");
-                    editRazonSocial.setText("");
-                    editCondicion.setText("");
-                    editCodigoStock.setText("");
-                    editDescripcionStock.setText("");
-                    editCantidad.setText("");
-                    editPrecioUnit.setText("");
-                    editImpuestos.setText("");
-                    editPrecioTotal.setText("");
+                        } else {
 
-                    dialogProcesando();
-                    dialogError();
+                            // SI EL CAMPO ESTÁ VACÍO, MUESTRA UN MENSAJE DE ERROR
+                            editFechaFactura.setText("");
+                            editFechaIngreso.setText("");
+                            editNroFactura.setText("");
+                            editCodigo.setText("");
+                            editRazonSocial.setText("");
+                            editCondicion.setText("");
+                            editCodigoStock.setText("");
+                            editDescripcionStock.setText("");
+                            editCantidad.setText("");
+                            editPrecioUnit.setText("");
+                            editImpuestos.setText("");
+                            editPrecioTotal.setText("");
+
+                            dialogProcesando();
+                            dialogError();
+                        }
+                        break;
+
+                    case MotionEvent.ACTION_UP:
+                        buttonConsultar.setTextColor(ContextCompat.getColor(getContext(), R.color.colorAccent));
+                        buttonConsultar.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_search_orange, 0, 0, 0);
+                        break;
                 }
+                return true;
             }
         });
 
         // EVENTOS DEL BOTÓN MODIFICAR
-        buttonModificar.setOnClickListener(new View.OnClickListener() {
+        buttonModificar.setOnTouchListener(new View.OnTouchListener() {
             @Override
-            public void onClick(View v) {
+            public boolean onTouch(View v, MotionEvent event) {
 
-                datoFechaFactura = editFechaFactura.getText().toString();
+                switch(event.getAction()) {
+                    case MotionEvent.ACTION_DOWN:
+                        buttonModificar.setTextColor(ContextCompat.getColor(getContext(), R.color.colorTextSelected));
+                        buttonModificar.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_edit_yellow, 0, 0, 0);
 
-                if(!datoFechaFactura.isEmpty()){
+                        datoFechaFactura = editFechaFactura.getText().toString();
 
-                    // SI DEVUELVE UNA FACTURA, HABILITA LOS CAMPOS PARA HACER MODIFICACIONES
-                    buttonModificar.setVisibility(View.INVISIBLE);
+                        if(!datoFechaFactura.isEmpty()){
 
-                    Drawable drawable = getResources().getDrawable(R.drawable.ic_check_green);
-                    drawable.setBounds(0, 0, drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight());
+                            // SI DEVUELVE UNA FACTURA, HABILITA LOS CAMPOS PARA HACER MODIFICACIONES
+                            buttonModificar.setVisibility(View.INVISIBLE);
 
-                    editFechaIngreso.setError("Datos correctos!", drawable);
-                    editNroFactura.setError("Datos correctos!", drawable);
-                    editCodigo.setError("Datos correctos!", drawable);
-                    editRazonSocial.setError("Datos correctos!", drawable);
-                    editCondicion.setError("Datos correctos!", drawable);
-                    editCodigoStock.setError("Datos correctos!", drawable);
-                    editDescripcionStock.setError("Datos correctos!", drawable);
-                    editCantidad.setError("Datos correctos!", drawable);
-                    editPrecioUnit.setError("Datos correctos!", drawable);
-                    editImpuestos.setError("Datos correctos!", drawable);
-                    editPrecioTotal.setError("Datos correctos!", drawable);
+                            Drawable drawable = getResources().getDrawable(R.drawable.ic_check_green);
+                            drawable.setBounds(0, 0, drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight());
 
-                    editFechaFactura.setFocusableInTouchMode(true);
-                    editFechaIngreso.setFocusableInTouchMode(true);
-                    editNroFactura.setFocusableInTouchMode(true);
-                    editCodigo.setFocusableInTouchMode(true);
-                    editRazonSocial.setFocusableInTouchMode(true);
-                    editCondicion.setFocusableInTouchMode(true);
-                    editCodigoStock.setFocusableInTouchMode(true);
-                    editDescripcionStock.setFocusableInTouchMode(true);
-                    editCantidad.setFocusableInTouchMode(true);
-                    editPrecioUnit.setFocusableInTouchMode(true);
-                    editImpuestos.setFocusableInTouchMode(true);
-                    editPrecioTotal.setFocusableInTouchMode(true);
+                            editFechaIngreso.setError("Datos correctos!", drawable);
+                            editNroFactura.setError("Datos correctos!", drawable);
+                            editCodigo.setError("Datos correctos!", drawable);
+                            editRazonSocial.setError("Datos correctos!", drawable);
+                            editCondicion.setError("Datos correctos!", drawable);
+                            editCodigoStock.setError("Datos correctos!", drawable);
+                            editDescripcionStock.setError("Datos correctos!", drawable);
+                            editCantidad.setError("Datos correctos!", drawable);
+                            editPrecioUnit.setError("Datos correctos!", drawable);
+                            editImpuestos.setError("Datos correctos!", drawable);
+                            editPrecioTotal.setError("Datos correctos!", drawable);
 
-                    editFechaFactura.requestFocusFromTouch();
+                            editFechaFactura.setFocusableInTouchMode(true);
+                            editFechaIngreso.setFocusableInTouchMode(true);
+                            editNroFactura.setFocusableInTouchMode(true);
+                            editCodigo.setFocusableInTouchMode(true);
+                            editRazonSocial.setFocusableInTouchMode(true);
+                            editCondicion.setFocusableInTouchMode(true);
+                            editCodigoStock.setFocusableInTouchMode(true);
+                            editDescripcionStock.setFocusableInTouchMode(true);
+                            editCantidad.setFocusableInTouchMode(true);
+                            editPrecioUnit.setFocusableInTouchMode(true);
+                            editImpuestos.setFocusableInTouchMode(true);
+                            editPrecioTotal.setFocusableInTouchMode(true);
 
-                    ScrollView scrollView = getView().findViewById(R.id.scroll);
-                    scrollView.setScrollY(0);
+                            editFechaFactura.requestFocusFromTouch();
+
+                            ScrollView scrollView = getView().findViewById(R.id.scroll);
+                            scrollView.setScrollY(0);
+                        }
+                        break;
+
+                    case MotionEvent.ACTION_UP:
+                        buttonModificar.setTextColor(ContextCompat.getColor(getContext(), R.color.colorAccent));
+                        buttonModificar.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_edit_orange, 0, 0, 0);
+                        break;
                 }
+                return true;
             }
         });
 
         // EVENTOS DEL BOTÓN GUARDAR
-        buttonGuardar.setOnClickListener(new View.OnClickListener() {
+        buttonGuardar.setOnTouchListener(new View.OnTouchListener() {
             @Override
-            public void onClick(View v) {
+            public boolean onTouch(View v, MotionEvent event) {
 
-                datoBuscarFactura = editBuscarFactura.getText().toString();
-                datoFechaFactura = editFechaFactura.getText().toString();
-                datoFechaIngreso = editFechaIngreso.getText().toString();
-                datoNroFactura = editNroFactura.getText().toString();
-                datoCodigo = editCodigo.getText().toString();
-                datoRazonSocial = editRazonSocial.getText().toString();
-                datoCondicion = editCondicion.getText().toString();
-                datoCodigoStock = editCodigoStock.getText().toString();
-                datoDescripcionStock = editDescripcionStock.getText().toString();
-                datoCantidad = editCantidad.getText().toString();
-                datoPrecioUnit = editPrecioUnit.getText().toString();
-                datoImpuestos = editImpuestos.getText().toString();
-                datoPrecioTotal = editPrecioTotal.getText().toString();
+                switch(event.getAction()) {
+                    case MotionEvent.ACTION_DOWN:
+                        buttonGuardar.setTextColor(ContextCompat.getColor(getContext(), R.color.colorTextSelected));
+                        buttonGuardar.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_save_yellow, 0, 0, 0);
 
-                editFechaFactura.setFocusable(false);
-                editFechaIngreso.setFocusable(false);
-                editNroFactura.setFocusable(false);
-                editCodigo.setFocusable(false);
-                editRazonSocial.setFocusable(false);
-                editCondicion.setFocusable(false);
-                editCodigoStock.setFocusable(false);
-                editDescripcionStock.setFocusable(false);
-                editCantidad.setFocusable(false);
-                editPrecioUnit.setFocusable(false);
-                editImpuestos.setFocusable(false);
-                editPrecioTotal.setFocusable(false);
+                        datoBuscarFactura = editBuscarFactura.getText().toString();
+                        datoFechaFactura = editFechaFactura.getText().toString();
+                        datoFechaIngreso = editFechaIngreso.getText().toString();
+                        datoNroFactura = editNroFactura.getText().toString();
+                        datoCodigo = editCodigo.getText().toString();
+                        datoRazonSocial = editRazonSocial.getText().toString();
+                        datoCondicion = editCondicion.getText().toString();
+                        datoCodigoStock = editCodigoStock.getText().toString();
+                        datoDescripcionStock = editDescripcionStock.getText().toString();
+                        datoCantidad = editCantidad.getText().toString();
+                        datoPrecioUnit = editPrecioUnit.getText().toString();
+                        datoImpuestos = editImpuestos.getText().toString();
+                        datoPrecioTotal = editPrecioTotal.getText().toString();
 
-                if (editFechaFactura.getError() == "Datos correctos!"
-                        && editFechaIngreso.getError() == "Datos correctos!"
-                        && editNroFactura.getError() == "Datos correctos!"
-                        && editCodigo.getError() == "Datos correctos!"
-                        && editRazonSocial.getError() == "Datos correctos!"
-                        && editCondicion.getError() == "Datos correctos!"
-                        && editCodigoStock.getError() == "Datos correctos!"
-                        && editDescripcionStock.getError() == "Datos correctos!"
-                        && editCantidad.getError() == "Datos correctos!"
-                        && editPrecioUnit.getError() == "Datos correctos!"
-                        && editImpuestos.getError() == "Datos correctos!"
-                        && editPrecioTotal.getError() == "Datos correctos!") {
+                        editFechaFactura.setFocusable(false);
+                        editFechaIngreso.setFocusable(false);
+                        editNroFactura.setFocusable(false);
+                        editCodigo.setFocusable(false);
+                        editRazonSocial.setFocusable(false);
+                        editCondicion.setFocusable(false);
+                        editCodigoStock.setFocusable(false);
+                        editDescripcionStock.setFocusable(false);
+                        editCantidad.setFocusable(false);
+                        editPrecioUnit.setFocusable(false);
+                        editImpuestos.setFocusable(false);
+                        editPrecioTotal.setFocusable(false);
 
-                    // SI TODOS LOS DATOS ESTÁN CORRECTOS, CONTINÚA CON LA MODIFICACIÓN
-                    editPrecioTotal.requestFocusFromTouch();
-                    editPrecioTotal.setError(null);
+                        if (editFechaFactura.getError() == "Datos correctos!"
+                                && editFechaIngreso.getError() == "Datos correctos!"
+                                && editNroFactura.getError() == "Datos correctos!"
+                                && editCodigo.getError() == "Datos correctos!"
+                                && editRazonSocial.getError() == "Datos correctos!"
+                                && editCondicion.getError() == "Datos correctos!"
+                                && editCodigoStock.getError() == "Datos correctos!"
+                                && editDescripcionStock.getError() == "Datos correctos!"
+                                && editCantidad.getError() == "Datos correctos!"
+                                && editPrecioUnit.getError() == "Datos correctos!"
+                                && editImpuestos.getError() == "Datos correctos!"
+                                && editPrecioTotal.getError() == "Datos correctos!") {
 
-                    dialogProcesando();
-                    consultarProveedorBis();
+                            // SI TODOS LOS DATOS ESTÁN CORRECTOS, CONTINÚA CON LA MODIFICACIÓN
+                            editPrecioTotal.requestFocusFromTouch();
+                            editPrecioTotal.setError(null);
 
-                } else {
+                            dialogProcesando();
+                            consultarProveedorBis();
 
-                    // SI ALGÚN DATO ES INCORRECTO, MUESTRA UN MENSAJE DE ERROR
-                    editPrecioTotal.requestFocusFromTouch();
-                    editPrecioTotal.setError(null);
+                        } else {
 
-                    dialogProcesando();
-                    dialogError();
+                            // SI ALGÚN DATO ES INCORRECTO, MUESTRA UN MENSAJE DE ERROR
+                            editPrecioTotal.requestFocusFromTouch();
+                            editPrecioTotal.setError(null);
 
-                    editFechaFactura.setFocusableInTouchMode(true);
-                    editFechaIngreso.setFocusableInTouchMode(true);
-                    editNroFactura.setFocusableInTouchMode(true);
-                    editCodigo.setFocusableInTouchMode(true);
-                    editRazonSocial.setFocusableInTouchMode(true);
-                    editCondicion.setFocusableInTouchMode(true);
-                    editCodigoStock.setFocusableInTouchMode(true);
-                    editDescripcionStock.setFocusableInTouchMode(true);
-                    editCantidad.setFocusableInTouchMode(true);
-                    editPrecioUnit.setFocusableInTouchMode(true);
-                    editImpuestos.setFocusableInTouchMode(true);
-                    editPrecioTotal.setFocusableInTouchMode(true);
+                            dialogProcesando();
+                            dialogError();
 
-                    editPrecioTotal.requestFocusFromTouch();
-                    editPrecioTotal.setError(null);
+                            editFechaFactura.setFocusableInTouchMode(true);
+                            editFechaIngreso.setFocusableInTouchMode(true);
+                            editNroFactura.setFocusableInTouchMode(true);
+                            editCodigo.setFocusableInTouchMode(true);
+                            editRazonSocial.setFocusableInTouchMode(true);
+                            editCondicion.setFocusableInTouchMode(true);
+                            editCodigoStock.setFocusableInTouchMode(true);
+                            editDescripcionStock.setFocusableInTouchMode(true);
+                            editCantidad.setFocusableInTouchMode(true);
+                            editPrecioUnit.setFocusableInTouchMode(true);
+                            editImpuestos.setFocusableInTouchMode(true);
+                            editPrecioTotal.setFocusableInTouchMode(true);
+
+                            editPrecioTotal.requestFocusFromTouch();
+                            editPrecioTotal.setError(null);
+                        }
+                        break;
+
+                    case MotionEvent.ACTION_UP:
+                        buttonGuardar.setTextColor(ContextCompat.getColor(getContext(), R.color.colorAccent));
+                        buttonGuardar.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_save_orange, 0, 0, 0);
+                        break;
                 }
+                return true;
             }
         });
 
         // EVENTOS AL CAMBIAR DE CAMPOS
+        editBuscarFactura.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View view, boolean hasFocus) {
+                if (!hasFocus) {
+
+                    // SI SALE DEL CAMPO, RECUPERA COLOR DE TEXTO
+                    textBuscarFactura.setTextColor(ContextCompat.getColor(getContext(), R.color.colorText));
+
+                } else {
+
+                    // SI INGRESA AL CAMPO, CAMBIA COLOR DE TEXTO
+                    textBuscarFactura.setTextColor(ContextCompat.getColor(getContext(), R.color.colorTextSelected));
+                }
+            }
+        });
         editFechaFactura.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View view, boolean hasFocus) {

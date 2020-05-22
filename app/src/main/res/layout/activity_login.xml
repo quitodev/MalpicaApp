@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -47,17 +48,16 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="220dp"
         android:background="@drawable/app_campos"
-        android:drawableLeft="@drawable/ic_account_circle_black_24dp"
+        android:drawableLeft="@drawable/ic_user_grey"
         android:drawablePadding="10dp"
-        android:ems="10"
-        android:fontFamily="sans-serif-condensed-light"
+                android:fontFamily="sans-serif-condensed-light"
         android:hint="@string/login_user"
         android:inputType="textPersonName"
         android:paddingLeft="15dp"
         android:text="@string/login_user"
-        android:textColor="@color/colorAccent"
+        android:textColor="@color/colorTextHint"
         android:textSize="20sp"
-        tools:ignore="Autofill" />
+        tools:ignore="Autofill,RtlHardcoded,RtlSymmetry" />
 
     <EditText
         android:id="@+id/editPass"
@@ -67,17 +67,16 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="275dp"
         android:background="@drawable/app_campos"
-        android:drawableLeft="@drawable/ic_lock_black_24dp"
+        android:drawableLeft="@drawable/ic_pass_grey"
         android:drawablePadding="10dp"
-        android:ems="10"
-        android:fontFamily="sans-serif-condensed-light"
+                android:fontFamily="sans-serif-condensed-light"
         android:hint="@string/login_pass"
         android:inputType="textPassword"
         android:paddingLeft="15dp"
         android:text="@string/login_pass"
-        android:textColor="@color/colorAccent"
+        android:textColor="@color/colorTextHint"
         android:textSize="20sp"
-        tools:ignore="Autofill" />
+        tools:ignore="Autofill,RtlHardcoded,RtlSymmetry" />
 
     <Button
         android:id="@+id/buttonLogin"
@@ -116,7 +115,7 @@
         android:layout_marginBottom="55dp"
         android:fontFamily="sans-serif-condensed-light"
         android:text="@string/login_version"
-        android:textColor="#8C8C8C"
+        android:textColor="@color/colorTextHint"
         android:textSize="18sp"
         tools:layout_editor_absoluteX="162dp"
         tools:layout_editor_absoluteY="597dp" />

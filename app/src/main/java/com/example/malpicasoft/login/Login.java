@@ -6,8 +6,6 @@ import android.content.Intent;
 
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.graphics.Color;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.MotionEvent;
@@ -18,6 +16,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -34,17 +33,13 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.text.DateFormat;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.Timer;
-import java.util.TimerTask;
 
 public class Login extends AppCompatActivity {
 
     private RequestQueue requestQueue;
     private EditText editUser, editPass;
-    private int counter;
 
     @SuppressLint("ClickableViewAccessibility")
     @Override
@@ -67,13 +62,15 @@ public class Login extends AppCompatActivity {
             public void onFocusChange(View view, boolean hasFocus) {
                 if (hasFocus) {
 
-                    // SI INGRESA AL CAMPO, CAMBIA EL FONDO
-                    editUser.setBackground(getResources().getDrawable(R.drawable.app_campos1));
+                    // SI INGRESA AL CAMPO, CAMBIA COLOR DE ÍCONO Y TEXTO
+                    editUser.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.colorAccent));
+                    editUser.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_user_orange, 0, 0, 0);
 
                 } else {
 
-                    // SI SALE DEL CAMPO, RECUPERA EL FONDO
-                    editUser.setBackground(getResources().getDrawable(R.drawable.app_campos));
+                    // SI SALE DEL CAMPO, RECUPERA COLOR DE ÍCONO Y TEXTO
+                    editUser.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.colorTextHint));
+                    editUser.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_user_grey, 0, 0, 0);
                 }
             }
         });
@@ -84,13 +81,15 @@ public class Login extends AppCompatActivity {
             public void onFocusChange(View view, boolean hasFocus) {
                 if (hasFocus) {
 
-                    // SI INGRESA AL CAMPO, CAMBIA EL FONDO
-                    editPass.setBackground(getResources().getDrawable(R.drawable.app_campos1));
+                    // SI INGRESA AL CAMPO, CAMBIA COLOR DE ÍCONO Y TEXTO
+                    editPass.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.colorAccent));
+                    editPass.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_pass_orange, 0, 0, 0);
 
                 } else {
 
-                    // SI SALE DEL CAMPO, RECUPERA EL FONDO
-                    editPass.setBackground(getResources().getDrawable(R.drawable.app_campos));
+                    // SI SALE DEL CAMPO, RECUPERA COLOR DE ÍCONO Y TEXTO
+                    editPass.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.colorTextHint));
+                    editPass.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_pass_grey, 0, 0, 0);
                 }
             }
         });
@@ -102,11 +101,12 @@ public class Login extends AppCompatActivity {
 
                 switch(event.getAction()) {
                     case MotionEvent.ACTION_DOWN:
-                        textHelp.setTextColor(Color.parseColor("#FF9800"));
+                        textHelp.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.colorTextSelected));
                         mensajeAyuda();
                         break;
+
                     case MotionEvent.ACTION_UP:
-                        textHelp.setTextColor(Color.parseColor("#F44336"));
+                        textHelp.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.colorAccent));
                         break;
                 }
                 return true;
@@ -120,12 +120,13 @@ public class Login extends AppCompatActivity {
 
                 switch(event.getAction()) {
                     case MotionEvent.ACTION_DOWN:
-                        buttonLogin.setTextColor(Color.parseColor("#FF9800"));
+                        buttonLogin.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.colorTextSelected));
                         dialogProcesando();
                         iniciarSesion();
                         break;
+
                     case MotionEvent.ACTION_UP:
-                        buttonLogin.setTextColor(Color.parseColor("#F44336"));
+                        buttonLogin.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.colorAccent));
                         break;
                 }
                 return true;
@@ -136,37 +137,22 @@ public class Login extends AppCompatActivity {
     private void dialogProcesando(){
 
         // DIALOG CON PROGRESS BAR MIENTRAS CONSULTA A LAS TABLAS
-        final Dialogs dialogs = new Dialogs(this);
-        dialogs.startProcesando();
-
-        final Timer timer = new Timer();
-        TimerTask timerTask = new TimerTask() {
-            @Override
-            public void run() {
-                counter++;
-
-                if(counter == 30) {
-                    timer.cancel();
-                    dialogs.endProcesando();
-                    counter = 0;
-                }
-            }
-        };
-        timer.schedule(timerTask,0,100);
+        Dialogs dialogs = new Dialogs(this);
+        int layout = R.layout.dialog_procesando;
+        dialogs.startResultado(layout);
     }
 
-    private void dialogError() {
+    private void mensajeError(){
 
-        // DIALOG CON MENSAJE DE ERROR
+        // TOAST CON MENSAJE DE ERROR
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                Dialogs dialogs = new Dialogs(getParent());
-                int layout = R.layout.dialog_error;
-                dialogs.startResultado(layout);
+                Toast.makeText(getApplicationContext(),"Usuario y/o clave incorrecta!", Toast.LENGTH_SHORT).show();
             }
-        }, 3000);
+        }, 2000);
     }
+
 
     private void mensajeAyuda() {
 
@@ -217,7 +203,7 @@ public class Login extends AppCompatActivity {
                     public void onResponse(JSONObject response) {
 
                         try {
-                            JSONArray jsonArray = response.getJSONArray("datos");
+                            JSONArray jsonArray = response.getJSONArray("data");
 
                             // RECORRE EL ARRAY DE JSON CON LA CONSULTA Y CON UN SETTER & GETTER MUESTRA LOS RESULTADOS
                             for (int i = 0; i < jsonArray.length(); i++) {
@@ -232,9 +218,6 @@ public class Login extends AppCompatActivity {
                                         loginSetters.getPass().contentEquals(editPass.getText())) {
 
                                     // SI COINCIDE EL USUARIO Y LA CLAVE INGRESADA, PASA A LA SIGUIENTE ACTIVITY
-                                    Dialogs dialogs = new Dialogs(getParent());
-                                    dialogs.endProcesando();
-
                                     Intent intent = new Intent(Login.this, Usuario.class);
                                     intent.putExtra("user", editUser.getText().toString());
                                     startActivity(intent);
@@ -243,7 +226,7 @@ public class Login extends AppCompatActivity {
                                 } else {
 
                                     // SI NO COINCIDE EL USUARIO Y LA CLAVE INGRESADA, MUESTRA UN MENSAJE DE ERROR
-                                    dialogError();
+                                    mensajeError();
                                 }
                             }
 

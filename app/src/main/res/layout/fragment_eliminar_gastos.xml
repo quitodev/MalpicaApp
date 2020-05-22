@@ -20,7 +20,8 @@
         android:layout_marginLeft="0dp"
         android:layout_marginTop="0dp"
         android:layout_marginEnd="0dp"
-        android:layout_marginRight="0dp">
+        android:layout_marginRight="0dp"
+        tools:ignore="UselessParent">
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -81,7 +82,6 @@
                 android:layout_marginTop="0dp"
                 android:layout_marginEnd="73dp"
                 android:layout_marginRight="73dp"
-                android:ems="10"
                 android:fontFamily="sans-serif-light"
                 android:gravity="center_horizontal"
                 android:hint="@string/ingresar_nro_factura"
@@ -89,8 +89,7 @@
                 android:maxLength="15"
                 android:text=""
                 android:textColor="@color/colorText"
-                android:textColorHint="#919191"
-                android:textColorLink="@color/colorAccent"
+                android:textColorHint="@color/colorTextHint"
                 android:textSize="18sp"
                 tools:ignore="Autofill" />
 
@@ -102,12 +101,13 @@
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="40dp"
                 android:background="#323232"
-                android:drawableLeft="@drawable/ic_consultar"
+                android:drawableLeft="@drawable/ic_search_orange"
                 android:fontFamily="sans-serif-light"
                 android:paddingLeft="15dp"
                 android:text="@string/consultar_datos"
                 android:textColor="@color/colorAccent"
-                android:textSize="16sp" />
+                android:textSize="16sp"
+                tools:ignore="RtlHardcoded,RtlSymmetry" />
 
             <View
                 android:id="@+id/divider1"
@@ -179,15 +179,13 @@
                 android:layout_marginEnd="51dp"
                 android:layout_marginRight="51dp"
                 android:background="#00000000"
-                android:ems="10"
                 android:focusable="false"
                 android:fontFamily="sans-serif-light"
                 android:hint="@string/muestra_fecha_factura"
                 android:inputType="textPersonName"
                 android:text=""
                 android:textColor="@color/colorText"
-                android:textColorHint="#919191"
-                android:textColorLink="@color/colorAccent"
+                android:textColorHint="@color/colorTextHint"
                 android:textSize="18sp"
                 tools:ignore="Autofill" />
 
@@ -225,15 +223,13 @@
                 android:layout_marginEnd="51dp"
                 android:layout_marginRight="51dp"
                 android:background="#00000000"
-                android:ems="10"
                 android:focusable="false"
                 android:fontFamily="sans-serif-light"
                 android:hint="@string/muestra_fecha_ingreso"
                 android:inputType="textPersonName"
                 android:text=""
                 android:textColor="@color/colorText"
-                android:textColorHint="#919191"
-                android:textColorLink="@color/colorAccent"
+                android:textColorHint="@color/colorTextHint"
                 android:textSize="18sp"
                 tools:ignore="Autofill" />
 
@@ -271,15 +267,13 @@
                 android:layout_marginEnd="51dp"
                 android:layout_marginRight="51dp"
                 android:background="#00000000"
-                android:ems="10"
                 android:focusable="false"
                 android:fontFamily="sans-serif-light"
                 android:hint="@string/muestra_fecha_modif"
                 android:inputType="textPersonName"
                 android:text=""
                 android:textColor="@color/colorText"
-                android:textColorHint="#919191"
-                android:textColorLink="@color/colorAccent"
+                android:textColorHint="@color/colorTextHint"
                 android:textSize="18sp"
                 tools:ignore="Autofill" />
 
@@ -317,15 +311,13 @@
                 android:layout_marginEnd="51dp"
                 android:layout_marginRight="51dp"
                 android:background="#00000000"
-                android:ems="10"
                 android:focusable="false"
                 android:fontFamily="sans-serif-light"
                 android:hint="@string/muestra_nro_factura"
                 android:inputType="textPersonName"
                 android:text=""
                 android:textColor="@color/colorText"
-                android:textColorHint="#919191"
-                android:textColorLink="@color/colorAccent"
+                android:textColorHint="@color/colorTextHint"
                 android:textSize="18sp"
                 tools:ignore="Autofill" />
 
@@ -382,15 +374,13 @@
                 android:layout_marginEnd="51dp"
                 android:layout_marginRight="51dp"
                 android:background="#00000000"
-                android:ems="10"
                 android:focusable="false"
                 android:fontFamily="sans-serif-light"
                 android:hint="@string/muestra_codigo"
                 android:inputType="textPersonName"
                 android:text=""
-                android:textColorHint="#919191"
+                android:textColorHint="@color/colorTextHint"
                 android:textColor="@color/colorText"
-                android:textColorLink="@color/colorAccent"
                 android:textSize="18sp"
                 tools:ignore="Autofill" />
 
@@ -427,15 +417,13 @@
                 android:layout_marginEnd="51dp"
                 android:layout_marginRight="51dp"
                 android:background="#00000000"
-                android:ems="10"
                 android:focusable="false"
                 android:fontFamily="sans-serif-light"
                 android:hint="@string/muestra_razon_social"
                 android:inputType="textPersonName"
                 android:text=""
-                android:textColorHint="#919191"
+                android:textColorHint="@color/colorTextHint"
                 android:textColor="@color/colorText"
-                android:textColorLink="@color/colorAccent"
                 android:textSize="18sp"
                 tools:ignore="Autofill" />
 
@@ -472,15 +460,13 @@
                 android:layout_marginEnd="51dp"
                 android:layout_marginRight="51dp"
                 android:background="#00000000"
-                android:ems="10"
                 android:focusable="false"
                 android:fontFamily="sans-serif-light"
                 android:hint="@string/muestra_condicion"
                 android:inputType="textPersonName"
                 android:text=""
-                android:textColorHint="#919191"
+                android:textColorHint="@color/colorTextHint"
                 android:textColor="@color/colorText"
-                android:textColorLink="@color/colorAccent"
                 android:textSize="18sp"
                 tools:ignore="Autofill" />
 
@@ -537,15 +523,13 @@
                 android:layout_marginEnd="51dp"
                 android:layout_marginRight="51dp"
                 android:background="#00000000"
-                android:ems="10"
                 android:focusable="false"
                 android:fontFamily="sans-serif-light"
                 android:hint="@string/muestra_codigo"
                 android:inputType="textPersonName"
                 android:text=""
-                android:textColorHint="#919191"
+                android:textColorHint="@color/colorTextHint"
                 android:textColor="@color/colorText"
-                android:textColorLink="@color/colorAccent"
                 android:textSize="18sp"
                 tools:ignore="Autofill" />
 
@@ -582,15 +566,13 @@
                 android:layout_marginEnd="51dp"
                 android:layout_marginRight="51dp"
                 android:background="#00000000"
-                android:ems="10"
                 android:focusable="false"
                 android:fontFamily="sans-serif-light"
                 android:hint="@string/muestra_descripcion"
                 android:inputType="textPersonName"
                 android:text=""
-                android:textColorHint="#919191"
+                android:textColorHint="@color/colorTextHint"
                 android:textColor="@color/colorText"
-                android:textColorLink="@color/colorAccent"
                 android:textSize="18sp"
                 tools:ignore="Autofill" />
 
@@ -627,15 +609,13 @@
                 android:layout_marginEnd="51dp"
                 android:layout_marginRight="51dp"
                 android:background="#00000000"
-                android:ems="10"
                 android:focusable="false"
                 android:fontFamily="sans-serif-light"
                 android:hint="@string/muestra_cantidad"
                 android:inputType="textPersonName"
                 android:text=""
-                android:textColorHint="#919191"
+                android:textColorHint="@color/colorTextHint"
                 android:textColor="@color/colorText"
-                android:textColorLink="@color/colorAccent"
                 android:textSize="18sp"
                 tools:ignore="Autofill" />
 
@@ -672,15 +652,13 @@
                 android:layout_marginEnd="51dp"
                 android:layout_marginRight="51dp"
                 android:background="#00000000"
-                android:ems="10"
                 android:focusable="false"
                 android:fontFamily="sans-serif-light"
                 android:hint="@string/muestra_precio_unit"
                 android:inputType="textPersonName"
                 android:text=""
-                android:textColorHint="#919191"
+                android:textColorHint="@color/colorTextHint"
                 android:textColor="@color/colorText"
-                android:textColorLink="@color/colorAccent"
                 android:textSize="18sp"
                 tools:ignore="Autofill" />
 
@@ -717,15 +695,13 @@
                 android:layout_marginEnd="51dp"
                 android:layout_marginRight="51dp"
                 android:background="#00000000"
-                android:ems="10"
                 android:focusable="false"
                 android:fontFamily="sans-serif-light"
                 android:hint="@string/muestra_impuestos"
                 android:inputType="textPersonName"
                 android:text=""
-                android:textColorHint="#919191"
+                android:textColorHint="@color/colorTextHint"
                 android:textColor="@color/colorText"
-                android:textColorLink="@color/colorAccent"
                 android:textSize="18sp"
                 tools:ignore="Autofill" />
 
@@ -762,15 +738,13 @@
                 android:layout_marginEnd="51dp"
                 android:layout_marginRight="51dp"
                 android:background="#00000000"
-                android:ems="10"
                 android:focusable="false"
                 android:fontFamily="sans-serif-light"
                 android:hint="@string/muestra_precio_total"
                 android:inputType="textPersonName"
                 android:text=""
-                android:textColorHint="#919191"
+                android:textColorHint="@color/colorTextHint"
                 android:textColor="@color/colorText"
-                android:textColorLink="@color/colorAccent"
                 android:textSize="18sp"
                 tools:ignore="Autofill" />
 
@@ -782,12 +756,13 @@
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="40dp"
                 android:background="#323232"
-                android:drawableLeft="@drawable/ic_eliminar"
+                android:drawableLeft="@drawable/ic_delete_orange"
                 android:fontFamily="sans-serif-light"
                 android:paddingLeft="15dp"
                 android:text="@string/eliminar_datos"
                 android:textColor="@color/colorAccent"
-                android:textSize="16sp" />
+                android:textSize="16sp"
+                tools:ignore="RtlHardcoded,RtlSymmetry" />
 
             <EditText
                 android:id="@+id/editVacio"
@@ -797,9 +772,11 @@
                 android:layout_marginTop="35dp"
                 android:background="#00000000"
                 android:focusable="false"
-                android:text=""
                 android:gravity="center_horizontal"
-                android:hint="@string/componentes" />
+                android:hint="@string/componentes"
+                android:inputType="textPersonName"
+                android:text=""
+                tools:ignore="Autofill" />
 
         </RelativeLayout>
     </ScrollView>

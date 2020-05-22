@@ -4,10 +4,12 @@ import android.annotation.SuppressLint;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
 import android.os.Handler;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -47,6 +49,7 @@ public class IngresarProveedores extends Fragment {
 
     public IngresarProveedores() { }
 
+    @SuppressLint("ClickableViewAccessibility")
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -72,56 +75,69 @@ public class IngresarProveedores extends Fragment {
         final Button buttonGuardar = root.findViewById(R.id.buttonGuardar);
 
         // EVENTOS DEL BOTÓN GUARDAR
-        buttonGuardar.setOnClickListener(new View.OnClickListener() {
+        buttonGuardar.setOnTouchListener(new View.OnTouchListener() {
             @Override
-            public void onClick(View v) {
+            public boolean onTouch(View v, MotionEvent event) {
 
-                editCodigo.setFocusable(false);
-                editRazonSocial.setFocusable(false);
-                editCondicion.setFocusable(false);
-                editDescripcion.setFocusable(false);
-                editCuit.setFocusable(false);
-                editDireccion.setFocusable(false);
-                editLocalidad.setFocusable(false);
-                editContacto.setFocusable(false);
-                editTipo.setFocusable(false);
+                switch(event.getAction()) {
+                    case MotionEvent.ACTION_DOWN:
+                        buttonGuardar.setTextColor(ContextCompat.getColor(getContext(), R.color.colorTextSelected));
+                        buttonGuardar.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_save_yellow, 0, 0, 0);
 
-                if (editCodigo.getError() == "Datos correctos!"
-                        && editRazonSocial.getError() == "Datos correctos!"
-                        && editCondicion.getError() == "Datos correctos!"
-                        && editDescripcion.getError() == "Datos correctos!"
-                        && editCuit.getError() == "Datos correctos!"
-                        && editDireccion.getError() == "Datos correctos!"
-                        && editLocalidad.getError() == "Datos correctos!"
-                        && editContacto.getError() == "Datos correctos!"
-                        && editTipo.getError() == "Datos correctos!") {
+                        editCodigo.setFocusable(false);
+                        editRazonSocial.setFocusable(false);
+                        editCondicion.setFocusable(false);
+                        editDescripcion.setFocusable(false);
+                        editCuit.setFocusable(false);
+                        editDireccion.setFocusable(false);
+                        editLocalidad.setFocusable(false);
+                        editContacto.setFocusable(false);
+                        editTipo.setFocusable(false);
 
-                    // SI TODOS LOS DATOS ESTÁN OK, PASA A REGISTRARLO
-                    editTipo.requestFocusFromTouch();
-                    editTipo.setError(null);
+                        if (editCodigo.getError() == "Datos correctos!"
+                                && editRazonSocial.getError() == "Datos correctos!"
+                                && editCondicion.getError() == "Datos correctos!"
+                                && editDescripcion.getError() == "Datos correctos!"
+                                && editCuit.getError() == "Datos correctos!"
+                                && editDireccion.getError() == "Datos correctos!"
+                                && editLocalidad.getError() == "Datos correctos!"
+                                && editContacto.getError() == "Datos correctos!"
+                                && editTipo.getError() == "Datos correctos!") {
 
-                    dialogProcesando();
-                    registrarProveedor();
+                            // SI TODOS LOS DATOS ESTÁN OK, PASA A REGISTRARLO
+                            editTipo.requestFocusFromTouch();
+                            editTipo.setError(null);
 
-                } else {
+                            dialogProcesando();
+                            registrarProveedor();
 
-                    // SI ALGÚN DATO ES INCORRECTO, MUESTRA UN MENSAJE DE ERROR
-                    editTipo.requestFocusFromTouch();
-                    editTipo.setError(null);
+                        } else {
 
-                    dialogProcesando();
-                    dialogError();
+                            // SI ALGÚN DATO ES INCORRECTO, MUESTRA UN MENSAJE DE ERROR
+                            editTipo.requestFocusFromTouch();
+                            editTipo.setError(null);
 
-                    editCodigo.setFocusableInTouchMode(true);
-                    editRazonSocial.setFocusableInTouchMode(true);
-                    editCondicion.setFocusableInTouchMode(true);
-                    editDescripcion.setFocusableInTouchMode(true);
-                    editCuit.setFocusableInTouchMode(true);
-                    editDireccion.setFocusableInTouchMode(true);
-                    editLocalidad.setFocusableInTouchMode(true);
-                    editContacto.setFocusableInTouchMode(true);
-                    editTipo.setFocusableInTouchMode(true);
+                            dialogProcesando();
+                            dialogError();
+
+                            editCodigo.setFocusableInTouchMode(true);
+                            editRazonSocial.setFocusableInTouchMode(true);
+                            editCondicion.setFocusableInTouchMode(true);
+                            editDescripcion.setFocusableInTouchMode(true);
+                            editCuit.setFocusableInTouchMode(true);
+                            editDireccion.setFocusableInTouchMode(true);
+                            editLocalidad.setFocusableInTouchMode(true);
+                            editContacto.setFocusableInTouchMode(true);
+                            editTipo.setFocusableInTouchMode(true);
+                        }
+                        break;
+
+                    case MotionEvent.ACTION_UP:
+                        buttonGuardar.setTextColor(ContextCompat.getColor(getContext(), R.color.colorAccent));
+                        buttonGuardar.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_save_orange, 0, 0, 0);
+                        break;
                 }
+                return true;
             }
         });
 

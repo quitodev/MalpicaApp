@@ -1,17 +1,21 @@
 package com.example.malpicasoft.stock;
 
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.os.Bundle;
 
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
 import android.os.Handler;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ScrollView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.Request;
@@ -41,6 +45,7 @@ public class EliminarStock extends Fragment {
 
     public EliminarStock() { }
 
+    @SuppressLint("ClickableViewAccessibility")
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -62,64 +67,127 @@ public class EliminarStock extends Fragment {
         final EditText editPrecioUnit = root.findViewById(R.id.editPrecioUnit);
         final EditText editPrecioTotal = root.findViewById(R.id.editPrecioTotal);
 
+        final TextView textBuscarCodigo = root.findViewById(R.id.textBuscarCodigo);
+        final TextView textBuscarDescripcion = root.findViewById(R.id.textBuscarDescripcion);
+
         final Button buttonConsultar = root.findViewById(R.id.buttonConsultar);
         final Button buttonEliminar = root.findViewById(R.id.buttonEliminar);
 
         // EVENTOS DEL BOTÓN CONSULTAR
-        buttonConsultar.setOnClickListener(new View.OnClickListener() {
+        buttonConsultar.setOnTouchListener(new View.OnTouchListener() {
             @Override
-            public void onClick(View v) {
+            public boolean onTouch(View v, MotionEvent event) {
 
-                datoBuscarCodigo = editBuscarCodigo.getText().toString();
-                datoBuscarDescripcion = editBuscarDescripcion.getText().toString();
+                switch(event.getAction()) {
+                    case MotionEvent.ACTION_DOWN:
+                        buttonConsultar.setTextColor(ContextCompat.getColor(getContext(), R.color.colorTextSelected));
+                        buttonConsultar.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_search_yellow, 0, 0, 0);
 
-                // SI LOS CAMPOS NO ESTÁN VACÍOS, REALIZA LA CONSULTA CORRESPONDIENTE
-                if (!datoBuscarCodigo.isEmpty()) {
+                        datoBuscarCodigo = editBuscarCodigo.getText().toString();
+                        datoBuscarDescripcion = editBuscarDescripcion.getText().toString();
 
-                    dialogProcesando();
-                    consultarCodigo();
+                        // SI LOS CAMPOS NO ESTÁN VACÍOS, REALIZA LA CONSULTA CORRESPONDIENTE
+                        if (!datoBuscarCodigo.isEmpty()) {
+
+                            dialogProcesando();
+                            consultarCodigo();
+                        }
+
+                        if (!datoBuscarDescripcion.isEmpty()) {
+
+                            dialogProcesando();
+                            consultarDescripcion();
+                        }
+
+                        if (datoBuscarCodigo.isEmpty() && datoBuscarDescripcion.isEmpty()) {
+
+                            // SI LOS CAMPOS ESTÁN VACÍOS, SE LIMPIAN LOS RESULTADOS ANTERIORES Y MUESTRA UN ERROR
+                            editFechaAlta.setText("");
+                            editFechaModif.setText("");
+                            editCodigo.setText("");
+                            editDescripcion.setText("");
+                            editCantidad.setText("");
+                            editMoneda.setText("");
+                            editPrecioUnit.setText("");
+                            editPrecioTotal.setText("");
+
+                            dialogProcesando();
+                            dialogError();
+                        }
+                        break;
+
+                    case MotionEvent.ACTION_UP:
+                        buttonConsultar.setTextColor(ContextCompat.getColor(getContext(), R.color.colorAccent));
+                        buttonConsultar.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_search_orange, 0, 0, 0);
+                        break;
                 }
-
-                if (!datoBuscarDescripcion.isEmpty()) {
-
-                    dialogProcesando();
-                    consultarDescripcion();
-                }
-
-                if (datoBuscarCodigo.isEmpty() && datoBuscarDescripcion.isEmpty()) {
-
-                    // SI LOS CAMPOS ESTÁN VACÍOS, SE LIMPIAN LOS RESULTADOS ANTERIORES Y MUESTRA UN ERROR
-                    editFechaAlta.setText("");
-                    editFechaModif.setText("");
-                    editCodigo.setText("");
-                    editDescripcion.setText("");
-                    editCantidad.setText("");
-                    editMoneda.setText("");
-                    editPrecioUnit.setText("");
-                    editPrecioTotal.setText("");
-
-                    dialogProcesando();
-                    dialogError();
-                }
+                return true;
             }
         });
 
         // EVENTOS DEL BOTÓN ELIMINAR
-        buttonEliminar.setOnClickListener(new View.OnClickListener() {
+        buttonEliminar.setOnTouchListener(new View.OnTouchListener() {
             @Override
-            public void onClick(View v) {
+            public boolean onTouch(View v, MotionEvent event) {
 
-                // SI LOS CAMPOS NO ESTÁN VACÍOS, REALIZA LA CONSULTA CORRESPONDIENTE
-                if (!datoBuscarCodigo.isEmpty()) {
+                switch(event.getAction()) {
+                    case MotionEvent.ACTION_DOWN:
+                        buttonEliminar.setTextColor(ContextCompat.getColor(getContext(), R.color.colorTextSelected));
+                        buttonEliminar.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_delete_yellow, 0, 0, 0);
 
-                    // MUESTRA UN DIALOG DE CONFIRMACIÓN ANTES DE ELIMINARLO
-                    dialogEliminar();
+                        // SI LOS CAMPOS NO ESTÁN VACÍOS, REALIZA LA CONSULTA CORRESPONDIENTE
+                        if (!datoBuscarCodigo.isEmpty()) {
+
+                            // MUESTRA UN DIALOG DE CONFIRMACIÓN ANTES DE ELIMINARLO
+                            dialogEliminar();
+                        }
+
+                        if (!datoBuscarDescripcion.isEmpty()) {
+
+                            // MUESTRA UN DIALOG DE CONFIRMACIÓN ANTES DE ELIMINARLO
+                            dialogEliminar();
+                        }
+                        break;
+
+                    case MotionEvent.ACTION_UP:
+                        buttonEliminar.setTextColor(ContextCompat.getColor(getContext(), R.color.colorAccent));
+                        buttonEliminar.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_delete_orange, 0, 0, 0);
+                        break;
                 }
+                return true;
+            }
+        });
 
-                if (!datoBuscarDescripcion.isEmpty()) {
+        // EVENTOS AL CAMBIAR DE CAMPOS
+        editBuscarCodigo.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View view, boolean hasFocus) {
+                if (!hasFocus) {
 
-                    // MUESTRA UN DIALOG DE CONFIRMACIÓN ANTES DE ELIMINARLO
-                    dialogEliminar();
+                    // SI SALE DEL CAMPO, RECUPERA COLOR DE TEXTO
+                    textBuscarCodigo.setTextColor(ContextCompat.getColor(getContext(), R.color.colorText));
+
+                } else {
+
+                    // SI INGRESA AL CAMPO, CAMBIA COLOR DE TEXTO Y ELIMINA LOS DATOS INGRESADOS EN LOS OTROS CAMPOS
+                    textBuscarCodigo.setTextColor(ContextCompat.getColor(getContext(), R.color.colorTextSelected));
+                    editBuscarDescripcion.setText("");
+                }
+            }
+        });
+        editBuscarDescripcion.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View view, boolean hasFocus) {
+                if (!hasFocus) {
+
+                    // SI SALE DEL CAMPO, RECUPERA COLOR DE TEXTO
+                    textBuscarDescripcion.setTextColor(ContextCompat.getColor(getContext(), R.color.colorText));
+
+                } else {
+
+                    // SI INGRESA AL CAMPO, CAMBIA COLOR DE TEXTO Y ELIMINA LOS DATOS INGRESADOS EN LOS OTROS CAMPOS
+                    textBuscarDescripcion.setTextColor(ContextCompat.getColor(getContext(), R.color.colorTextSelected));
+                    editBuscarCodigo.setText("");
                 }
             }
         });
@@ -217,6 +285,7 @@ public class EliminarStock extends Fragment {
         }, 3000);
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     private void dialogEliminar(){
 
         // DIALOG CON CONFIRMACIÓN DE ELIMINACIÓN
@@ -227,17 +296,29 @@ public class EliminarStock extends Fragment {
         builder.setView(view);
         builder.setCancelable(true);
 
-        Button buttonContinuar = view.findViewById(R.id.buttonContinuar);
+        final Button buttonContinuar = view.findViewById(R.id.buttonContinuar);
 
         final AlertDialog alertDialog = builder.create();
         alertDialog.show();
 
-        buttonContinuar.setOnClickListener(new View.OnClickListener() {
+        buttonContinuar.setOnTouchListener(new View.OnTouchListener() {
             @Override
-            public void onClick(View v) {
-                alertDialog.dismiss();
-                dialogProcesando();
-                consultarCompras();
+            public boolean onTouch(View v, MotionEvent event) {
+
+                switch(event.getAction()) {
+                    case MotionEvent.ACTION_DOWN:
+                        buttonContinuar.setTextColor(ContextCompat.getColor(getContext(), R.color.colorTextSelected));
+
+                        alertDialog.dismiss();
+                        dialogProcesando();
+                        consultarCompras();
+                        break;
+
+                    case MotionEvent.ACTION_UP:
+                        buttonContinuar.setTextColor(ContextCompat.getColor(getContext(), R.color.colorAccent));
+                        break;
+                }
+                return true;
             }
         });
     }
@@ -306,8 +387,8 @@ public class EliminarStock extends Fragment {
                                 setters.setPrecioUnit(jsonObject.getString("precio_unit"));
                                 setters.setPrecioTotal(jsonObject.getString("precio_total"));
 
-                                String fechaAlta = setters.getFechaAlta() + " " + setters.getHoraAlta();
-                                String fechaModif = setters.getFechaModif() + " " + setters.getHoraModif();
+                                String fechaAlta = setters.getFechaAlta() + ", " + setters.getHoraAlta() + " hs.";
+                                String fechaModif = setters.getFechaModif() + ", " + setters.getHoraModif() + " hs.";
                                 String codigo = setters.getCodigo();
                                 String descripcion = setters.getDescripcion();
                                 String cantidad = setters.getCantidad();
@@ -389,8 +470,8 @@ public class EliminarStock extends Fragment {
                                 setters.setPrecioUnit(jsonObject.getString("precio_unit"));
                                 setters.setPrecioTotal(jsonObject.getString("precio_total"));
 
-                                String fechaAlta = setters.getFechaAlta() + " " + setters.getHoraAlta();
-                                String fechaModif = setters.getFechaModif() + " " + setters.getHoraModif();
+                                String fechaAlta = setters.getFechaAlta() + ", " + setters.getHoraAlta() + " hs.";
+                                String fechaModif = setters.getFechaModif() + ", " + setters.getHoraModif() + " hs.";
                                 String codigo = setters.getCodigo();
                                 String descripcion = setters.getDescripcion();
                                 String cantidad = setters.getCantidad();
@@ -471,6 +552,7 @@ public class EliminarStock extends Fragment {
                                 } else {
 
                                     // SI NO DEVUELVE EL CÓDIGO, CONSULTA LAS VENTAS
+                                    dialogProcesando();
                                     consultarVentas();
                                 }
                             }
@@ -518,7 +600,57 @@ public class EliminarStock extends Fragment {
 
                                 } else {
 
+                                    // SI NO DEVUELVE EL CÓDIGO, CONSULTA LOS GASTOS
+                                    dialogProcesando();
+                                    consultarGastos();
+                                }
+                            }
+
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }, new Response.ErrorListener() {
+
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(getContext(), "Por favor, revise su conexión!", Toast.LENGTH_SHORT).show();
+            }
+        });
+        requestQueue.add(jsonObjectRequest);
+    }
+
+    private void consultarGastos() {
+
+        // CONSULTA EL PRODUCTO EN LA BASE DE GASTOS POR SU CÓDIGO
+        String URL = "http://malpicas.heliohost.org/malpica/stock/stock_consultar_gastos.php?parameter=" + datoCodigo;
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, URL, null,
+                new Response.Listener<JSONObject>() {
+
+                    @Override
+                    public void onResponse(JSONObject response) {
+
+                        try {
+                            JSONArray jsonArray = response.getJSONArray("data");
+
+                            // RECORRE EL ARRAY DE JSON CON LA CONSULTA Y DEVUELVE LOS RESULTADOS
+                            for (int i = 0; i < jsonArray.length(); i++) {
+
+                                JSONObject jsonObject = jsonArray.getJSONObject(i);
+                                StockSetters setters = new StockSetters();
+
+                                setters.setCodigo(jsonObject.getString("codigo_stock"));
+
+                                String codigo = setters.getCodigo();
+
+                                if (!codigo.equals("No existe")){
+
+                                    // SI DEVUELVE EL CÓDIGO, MUESTRA UN MENSAJE AVISANDO QUE NO SE ELIMINÓ POR TENER OPERACIONES
+                                    dialogErrorOps();
+
+                                } else {
+
                                     // SI NO DEVUELVE EL CÓDIGO, ENTONCES SE ELIMINA EL PRODUCTO
+                                    dialogProcesando();
                                     eliminarProducto();
                                 }
                             }
@@ -535,7 +667,7 @@ public class EliminarStock extends Fragment {
         });
         requestQueue.add(jsonObjectRequest);
     }
-    
+
     private void eliminarProducto() {
 
         // ELIMINA AL PRODUCTO DE LA BASE DE DATOS

@@ -1,17 +1,21 @@
 package com.example.malpicasoft.ventas;
 
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.os.Bundle;
 
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
 import android.os.Handler;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ScrollView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.Request;
@@ -45,6 +49,7 @@ public class EliminarVentas extends Fragment {
     
     public EliminarVentas() { }
 
+    @SuppressLint("ClickableViewAccessibility")
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -70,58 +75,103 @@ public class EliminarVentas extends Fragment {
         final EditText editImpuestos = root.findViewById(R.id.editImpuestos);
         final EditText editPrecioTotal = root.findViewById(R.id.editPrecioTotal);
 
+        final TextView textBuscarFactura = root.findViewById(R.id.textBuscarFactura);
+
         final Button buttonConsultar = root.findViewById(R.id.buttonConsultar);
         final Button buttonEliminar = root.findViewById(R.id.buttonEliminar);
 
         dateFragments();
 
         // EVENTOS DEL BOTÓN CONSULTAR
-        buttonConsultar.setOnClickListener(new View.OnClickListener() {
+        buttonConsultar.setOnTouchListener(new View.OnTouchListener() {
             @Override
-            public void onClick(View v) {
+            public boolean onTouch(View v, MotionEvent event) {
 
-                datoBuscarFactura = editBuscarFactura.getText().toString();
+                switch(event.getAction()) {
+                    case MotionEvent.ACTION_DOWN:
+                        buttonConsultar.setTextColor(ContextCompat.getColor(getContext(), R.color.colorTextSelected));
+                        buttonConsultar.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_search_yellow, 0, 0, 0);
 
-                if(!datoBuscarFactura.isEmpty()){
+                        datoBuscarFactura = editBuscarFactura.getText().toString();
 
-                    // SI SE INGRESÓ UNA FACTURA, CONSULTA A LAS TABLAS
-                    dialogProcesando();
-                    consultarFactura();
+                        if(!datoBuscarFactura.isEmpty()){
 
-                } else {
+                            // SI SE INGRESÓ UNA FACTURA, CONSULTA A LAS TABLAS
+                            dialogProcesando();
+                            consultarFactura();
 
-                    // SI NO SE INGRESÓ UNA FACTURA, LIMPIA CAMPOS Y MUESTRA UN ERROR
-                    editFechaFactura.setText("");
-                    editFechaIngreso.setText("");
-                    editFechaModif.setText("");
-                    editNroFactura.setText("");
-                    editCodigo.setText("");
-                    editRazonSocial.setText("");
-                    editCondicion.setText("");
-                    editCodigoStock.setText("");
-                    editDescripcionStock.setText("");
-                    editCantidad.setText("");
-                    editPrecioUnit.setText("");
-                    editImpuestos.setText("");
-                    editPrecioTotal.setText("");
+                        } else {
 
-                    dialogProcesando();
-                    dialogError();
+                            // SI NO SE INGRESÓ UNA FACTURA, LIMPIA CAMPOS Y MUESTRA UN ERROR
+                            editFechaFactura.setText("");
+                            editFechaIngreso.setText("");
+                            editFechaModif.setText("");
+                            editNroFactura.setText("");
+                            editCodigo.setText("");
+                            editRazonSocial.setText("");
+                            editCondicion.setText("");
+                            editCodigoStock.setText("");
+                            editDescripcionStock.setText("");
+                            editCantidad.setText("");
+                            editPrecioUnit.setText("");
+                            editImpuestos.setText("");
+                            editPrecioTotal.setText("");
+
+                            dialogProcesando();
+                            dialogError();
+                        }
+                        break;
+
+                    case MotionEvent.ACTION_UP:
+                        buttonConsultar.setTextColor(ContextCompat.getColor(getContext(), R.color.colorAccent));
+                        buttonConsultar.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_search_orange, 0, 0, 0);
+                        break;
                 }
+                return true;
             }
         });
 
         // EVENTOS DEL BOTÓN ELIMINAR
-        buttonEliminar.setOnClickListener(new View.OnClickListener() {
+        buttonEliminar.setOnTouchListener(new View.OnTouchListener() {
             @Override
-            public void onClick(View v) {
+            public boolean onTouch(View v, MotionEvent event) {
 
-                datoBuscarFactura = editBuscarFactura.getText().toString();
+                switch(event.getAction()) {
+                    case MotionEvent.ACTION_DOWN:
+                        buttonEliminar.setTextColor(ContextCompat.getColor(getContext(), R.color.colorTextSelected));
+                        buttonEliminar.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_delete_yellow, 0, 0, 0);
 
-                if(!datoBuscarFactura.isEmpty()){
+                        datoBuscarFactura = editBuscarFactura.getText().toString();
 
-                    // MUESTRA UN DIALOG DE CONFIRMACIÓN ANTES DE ELIMINAR LA FACTURA
-                    dialogEliminar();
+                        if(!datoBuscarFactura.isEmpty()){
+
+                            // MUESTRA UN DIALOG DE CONFIRMACIÓN ANTES DE ELIMINAR LA FACTURA
+                            dialogEliminar();
+                        }
+                        break;
+
+                    case MotionEvent.ACTION_UP:
+                        buttonEliminar.setTextColor(ContextCompat.getColor(getContext(), R.color.colorAccent));
+                        buttonEliminar.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_delete_orange, 0, 0, 0);
+                        break;
+                }
+                return true;
+            }
+        });
+
+        // EVENTOS AL CAMBIAR DE CAMPOS
+        editBuscarFactura.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View view, boolean hasFocus) {
+                if (!hasFocus) {
+
+                    // SI SALE DEL CAMPO, RECUPERA COLOR DE TEXTO
+                    textBuscarFactura.setTextColor(ContextCompat.getColor(getContext(), R.color.colorText));
+
+                } else {
+
+                    // SI INGRESA AL CAMPO, CAMBIA COLOR DE TEXTO
+                    textBuscarFactura.setTextColor(ContextCompat.getColor(getContext(), R.color.colorTextSelected));
                 }
             }
         });
@@ -221,6 +271,7 @@ public class EliminarVentas extends Fragment {
         }, 3000);
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     private void dialogEliminar(){
 
         // DIALOG CON CONFIRMACIÓN DE ELIMINACIÓN
@@ -231,18 +282,30 @@ public class EliminarVentas extends Fragment {
         builder.setView(view);
         builder.setCancelable(true);
 
-        Button buttonContinuar = view.findViewById(R.id.buttonContinuar);
+        final Button buttonContinuar = view.findViewById(R.id.buttonContinuar);
 
         final AlertDialog alertDialog = builder.create();
         alertDialog.show();
 
-        buttonContinuar.setOnClickListener(new View.OnClickListener() {
+        buttonContinuar.setOnTouchListener(new View.OnTouchListener() {
             @Override
-            public void onClick(View v) {
-                alertDialog.dismiss();
-                dialogProcesando();
-                consultarProducto();
-                eliminarFactura();
+            public boolean onTouch(View v, MotionEvent event) {
+
+                switch(event.getAction()) {
+                    case MotionEvent.ACTION_DOWN:
+                        buttonContinuar.setTextColor(ContextCompat.getColor(getContext(), R.color.colorTextSelected));
+
+                        alertDialog.dismiss();
+                        dialogProcesando();
+                        consultarProducto();
+                        eliminarFactura();
+                        break;
+
+                    case MotionEvent.ACTION_UP:
+                        buttonContinuar.setTextColor(ContextCompat.getColor(getContext(), R.color.colorAccent));
+                        break;
+                }
+                return true;
             }
         });
     }
@@ -294,7 +357,7 @@ public class EliminarVentas extends Fragment {
     private void consultarFactura() {
 
         // CONSULTA LA FACTURA INGRESADA EN LA BASE DE DATOS
-        String URL = "http://malpicas.heliohost.org/malpica/ventas/ventas_buscar_factura.php?parameter=" + datoBuscarFactura;
+        String URL = "http://malpicas.heliohost.org/malpica/ventas/ventas_consultar_factura.php?parameter=" + datoBuscarFactura;
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, URL, null,
                 new Response.Listener<JSONObject>() {
 
@@ -327,7 +390,7 @@ public class EliminarVentas extends Fragment {
 
                                 String fechaFactura = setters.getFechaFactura();
                                 String fechaIngreso = setters.getFechaIngreso();
-                                String fechaModif = setters.getFechaModif() + " " + setters.getHoraModif();
+                                String fechaModif = setters.getFechaModif() + ", " + setters.getHoraModif() + " hs.";
                                 String nroFactura = setters.getNroFactura();
                                 String codigo = setters.getCodigo();
                                 String razonSocial = setters.getRazonSocial();

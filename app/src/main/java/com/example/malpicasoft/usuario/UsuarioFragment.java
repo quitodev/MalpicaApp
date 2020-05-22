@@ -2,9 +2,11 @@ package com.example.malpicasoft.usuario;
 
 import android.annotation.SuppressLint;
 import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -14,6 +16,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
 import com.android.volley.Request;
@@ -47,6 +50,8 @@ public class UsuarioFragment extends Fragment {
     private int counter;
     private double totalVentas, totalCompras, totalGastos, totalBalance;
 
+    @SuppressLint("ClickableViewAccessibility")
+    @Override
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
 
@@ -73,48 +78,180 @@ public class UsuarioFragment extends Fragment {
         final Button buttonGuardar = root.findViewById(R.id.buttonGuardar);
 
         // EVENTOS DEL BOTÓN MODIFICAR
-        buttonModificar.setOnClickListener(new View.OnClickListener() {
+        buttonModificar.setOnTouchListener(new View.OnTouchListener() {
             @Override
-            public void onClick(View v) {
-                editComercio.setFocusableInTouchMode(true);
-                editDireccion.setFocusableInTouchMode(true);
-                editLocalidad.setFocusableInTouchMode(true);
-                editCuit.setFocusableInTouchMode(true);
-                editCondicion.setFocusableInTouchMode(true);
-                editEmail.setFocusableInTouchMode(true);
-                editTelefono.setFocusableInTouchMode(true);
+            public boolean onTouch(View v, MotionEvent event) {
 
-                editComercio.requestFocusFromTouch();
+                switch(event.getAction()) {
+                    case MotionEvent.ACTION_DOWN:
+                        buttonModificar.setTextColor(ContextCompat.getColor(getContext(), R.color.colorTextSelected));
+                        buttonModificar.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_edit_yellow, 0, 0, 0);
 
-                buttonModificar.setVisibility(View.INVISIBLE);
+                        editComercio.setFocusableInTouchMode(true);
+                        editDireccion.setFocusableInTouchMode(true);
+                        editLocalidad.setFocusableInTouchMode(true);
+                        editCuit.setFocusableInTouchMode(true);
+                        editCondicion.setFocusableInTouchMode(true);
+                        editEmail.setFocusableInTouchMode(true);
+                        editTelefono.setFocusableInTouchMode(true);
+
+                        editComercio.requestFocusFromTouch();
+
+                        buttonModificar.setVisibility(View.INVISIBLE);
+                        break;
+
+                    case MotionEvent.ACTION_UP:
+                        buttonModificar.setTextColor(ContextCompat.getColor(getContext(), R.color.colorAccent));
+                        buttonModificar.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_edit_orange, 0, 0, 0);
+                        break;
+                }
+                return true;
             }
         });
 
         // EVENTOS DEL BOTÓN GUARDAR
-        buttonGuardar.setOnClickListener(new View.OnClickListener() {
+        buttonGuardar.setOnTouchListener(new View.OnTouchListener() {
             @Override
-            public void onClick(View v) {
+            public boolean onTouch(View v, MotionEvent event) {
 
-                dialogProcesando();
-                modificarDatos();
+                switch(event.getAction()) {
+                    case MotionEvent.ACTION_DOWN:
+                        buttonGuardar.setTextColor(ContextCompat.getColor(getContext(), R.color.colorTextSelected));
+                        buttonGuardar.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_search_yellow, 0, 0, 0);
 
-                editComercio.setFocusableInTouchMode(false);
-                editDireccion.setFocusableInTouchMode(false);
-                editLocalidad.setFocusableInTouchMode(false);
-                editCuit.setFocusableInTouchMode(false);
-                editCondicion.setFocusableInTouchMode(false);
-                editEmail.setFocusableInTouchMode(false);
-                editTelefono.setFocusableInTouchMode(false);
+                        dialogProcesando();
+                        modificarDatos();
 
-                editComercio.setFocusable(false);
-                editDireccion.setFocusable(false);
-                editLocalidad.setFocusable(false);
-                editCuit.setFocusable(false);
-                editCondicion.setFocusable(false);
-                editEmail.setFocusable(false);
-                editTelefono.setFocusable(false);
+                        editComercio.setFocusableInTouchMode(false);
+                        editDireccion.setFocusableInTouchMode(false);
+                        editLocalidad.setFocusableInTouchMode(false);
+                        editCuit.setFocusableInTouchMode(false);
+                        editCondicion.setFocusableInTouchMode(false);
+                        editEmail.setFocusableInTouchMode(false);
+                        editTelefono.setFocusableInTouchMode(false);
 
-                buttonModificar.setVisibility(View.VISIBLE);
+                        editComercio.setFocusable(false);
+                        editDireccion.setFocusable(false);
+                        editLocalidad.setFocusable(false);
+                        editCuit.setFocusable(false);
+                        editCondicion.setFocusable(false);
+                        editEmail.setFocusable(false);
+                        editTelefono.setFocusable(false);
+                        break;
+
+                    case MotionEvent.ACTION_UP:
+                        buttonGuardar.setTextColor(ContextCompat.getColor(getContext(), R.color.colorAccent));
+                        buttonGuardar.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_search_orange, 0, 0, 0);
+                        break;
+                }
+                return true;
+            }
+        });
+
+        // EVENTOS AL CAMBIAR DE CAMPOS
+        editComercio.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View view, boolean hasFocus) {
+                if (!hasFocus) {
+
+                    // SI SALE DEL CAMPO, RECUPERA COLOR DE TEXTO
+                    editComercio.setTextColor(ContextCompat.getColor(getContext(), R.color.colorText));
+
+                } else {
+
+                    // SI INGRESA AL CAMPO, CAMBIA COLOR DE TEXTO
+                    editComercio.setTextColor(ContextCompat.getColor(getContext(), R.color.colorTextSelected));
+                }
+            }
+        });
+        editDireccion.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View view, boolean hasFocus) {
+                if (!hasFocus) {
+
+                    // SI SALE DEL CAMPO, RECUPERA COLOR DE TEXTO
+                    editDireccion.setTextColor(ContextCompat.getColor(getContext(), R.color.colorText));
+
+                } else {
+
+                    // SI INGRESA AL CAMPO, CAMBIA COLOR DE TEXTO
+                    editDireccion.setTextColor(ContextCompat.getColor(getContext(), R.color.colorTextSelected));
+                }
+            }
+        });
+        editLocalidad.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View view, boolean hasFocus) {
+                if (!hasFocus) {
+
+                    // SI SALE DEL CAMPO, RECUPERA COLOR DE TEXTO
+                    editLocalidad.setTextColor(ContextCompat.getColor(getContext(), R.color.colorText));
+
+                } else {
+
+                    // SI INGRESA AL CAMPO, CAMBIA COLOR DE TEXTO
+                    editLocalidad.setTextColor(ContextCompat.getColor(getContext(), R.color.colorTextSelected));
+                }
+            }
+        });
+        editCuit.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View view, boolean hasFocus) {
+                if (!hasFocus) {
+
+                    // SI SALE DEL CAMPO, RECUPERA COLOR DE TEXTO
+                    editCuit.setTextColor(ContextCompat.getColor(getContext(), R.color.colorText));
+
+                } else {
+
+                    // SI INGRESA AL CAMPO, CAMBIA COLOR DE TEXTO
+                    editCuit.setTextColor(ContextCompat.getColor(getContext(), R.color.colorTextSelected));
+                }
+            }
+        });
+        editCondicion.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View view, boolean hasFocus) {
+                if (!hasFocus) {
+
+                    // SI SALE DEL CAMPO, RECUPERA COLOR DE TEXTO
+                    editCondicion.setTextColor(ContextCompat.getColor(getContext(), R.color.colorText));
+
+                } else {
+
+                    // SI INGRESA AL CAMPO, CAMBIA COLOR DE TEXTO
+                    editCondicion.setTextColor(ContextCompat.getColor(getContext(), R.color.colorTextSelected));
+                }
+            }
+        });
+        editEmail.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View view, boolean hasFocus) {
+                if (!hasFocus) {
+
+                    // SI SALE DEL CAMPO, RECUPERA COLOR DE TEXTO
+                    editEmail.setTextColor(ContextCompat.getColor(getContext(), R.color.colorText));
+
+                } else {
+
+                    // SI INGRESA AL CAMPO, CAMBIA COLOR DE TEXTO
+                    editEmail.setTextColor(ContextCompat.getColor(getContext(), R.color.colorTextSelected));
+                }
+            }
+        });
+        editTelefono.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View view, boolean hasFocus) {
+                if (!hasFocus) {
+
+                    // SI SALE DEL CAMPO, RECUPERA COLOR DE TEXTO
+                    editTelefono.setTextColor(ContextCompat.getColor(getContext(), R.color.colorText));
+
+                } else {
+
+                    // SI INGRESA AL CAMPO, CAMBIA COLOR DE TEXTO
+                    editTelefono.setTextColor(ContextCompat.getColor(getContext(), R.color.colorTextSelected));
+                }
             }
         });
 
@@ -169,6 +306,19 @@ public class UsuarioFragment extends Fragment {
         timer.schedule(timerTask,0,100);
     }
 
+    private void dialogError(){
+
+        // DIALOG CON MENSAJE DE ERROR
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                Dialogs dialogs = new Dialogs(getActivity());
+                int layout = R.layout.dialog_error;
+                dialogs.startResultado(layout);
+            }
+        }, 3000);
+    }
+
     private void dialogOk(){
 
         // DIALOG CON CONFIRMACIÓN DE OPERACIÓN REALIZADA CON ÉXITO
@@ -203,6 +353,9 @@ public class UsuarioFragment extends Fragment {
                 editCondicion.setError(null);
                 editEmail.setError(null);
                 editTelefono.setError(null);
+
+                Button buttonModificar = getView().findViewById(R.id.buttonModificar);
+                buttonModificar.setVisibility(View.VISIBLE);
 
                 ScrollView scrollView = getView().findViewById(R.id.scroll);
                 scrollView.setScrollY(0);
@@ -495,40 +648,52 @@ public class UsuarioFragment extends Fragment {
         final EditText editEmail = getView().findViewById(R.id.editEmail);
         final EditText editTelefono = getView().findViewById(R.id.editTelefono);
 
-        String URL = "http://malpicas.heliohost.org/malpica/usuario/usuario_actualizar_datos.php";
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, URL, new Response.Listener<String>() {
-            @Override
-            public void onResponse(String response) {
-                dialogOk();
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                Toast.makeText(getContext(),error.toString(), Toast.LENGTH_LONG).show();
-            }
-        }) {
-            @Override
-            protected Map<String, String> getParams() {
-                Map<String, String> parameter = new HashMap<>();
+        if(!editComercio.getText().toString().isEmpty() && !editDireccion.getText().toString().isEmpty() &&
+                !editLocalidad.getText().toString().isEmpty() && editCuit.getText().toString().length() == 13 &&
+                editCuit.getText().toString().contains("-") && editCondicion.getText().toString().length() == 2 &&
+                !editEmail.getText().toString().isEmpty() && !editTelefono.getText().toString().isEmpty()) {
 
-                parameter.put("usuario",datoUsuario);
-                parameter.put("comercio",editComercio.getText().toString());
-                parameter.put("direccion",editDireccion.getText().toString());
-                parameter.put("localidad",editLocalidad.getText().toString());
-                parameter.put("cuit",editCuit.getText().toString());
-                parameter.put("condicion",editCondicion.getText().toString());
-                parameter.put("email",editEmail.getText().toString());
-                parameter.put("telefono",editTelefono.getText().toString());
-                parameter.put("fecha_modif",datoFechaActual);
-                parameter.put("hora_modif",datoHoraActual);
-                parameter.put("dia_modif",datoDia);
-                parameter.put("mes_modif",datoMes);
-                parameter.put("ano_modif",datoAno);
+            // SI SE INGRESAN LOS DATOS CORRECTAMENTE REALIZA LA MODIFICACIÓN
+            String URL = "http://malpicas.heliohost.org/malpica/usuario/usuario_actualizar_datos.php";
+            StringRequest stringRequest = new StringRequest(Request.Method.POST, URL, new Response.Listener<String>() {
+                @Override
+                public void onResponse(String response) {
+                    dialogOk();
+                }
+            }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    Toast.makeText(getContext(),error.toString(), Toast.LENGTH_LONG).show();
+                }
+            }) {
+                @Override
+                protected Map<String, String> getParams() {
+                    Map<String, String> parameter = new HashMap<>();
 
-                return parameter;
-            }
-        };
-        requestQueue.add(stringRequest);
+                    parameter.put("usuario",datoUsuario);
+                    parameter.put("comercio",editComercio.getText().toString());
+                    parameter.put("direccion",editDireccion.getText().toString());
+                    parameter.put("localidad",editLocalidad.getText().toString());
+                    parameter.put("cuit",editCuit.getText().toString());
+                    parameter.put("condicion",editCondicion.getText().toString());
+                    parameter.put("email",editEmail.getText().toString());
+                    parameter.put("telefono",editTelefono.getText().toString());
+                    parameter.put("fecha_modif",datoFechaActual);
+                    parameter.put("hora_modif",datoHoraActual);
+                    parameter.put("dia_modif",datoDia);
+                    parameter.put("mes_modif",datoMes);
+                    parameter.put("ano_modif",datoAno);
+
+                    return parameter;
+                }
+            };
+            requestQueue.add(stringRequest);
+
+        } else {
+
+            // SI NO SE INGRESAN LOS DATOS CORRECTAMENTE MUESTRA UN MENSAJE DE ERROR
+            dialogError();
+        }
     }
 
     private void actualizarIngreso(){
@@ -550,8 +715,12 @@ public class UsuarioFragment extends Fragment {
             protected Map<String, String> getParams() {
                 Map<String, String> parameter = new HashMap<>();
 
+                parameter.put("usuario",datoUsuario);
                 parameter.put("fecha_ingreso",datoFechaActual);
                 parameter.put("hora_ingreso",datoHoraActual);
+                parameter.put("dia_ingreso",datoDia);
+                parameter.put("mes_ingreso",datoMes);
+                parameter.put("ano_ingreso",datoAno);
 
                 return parameter;
             }

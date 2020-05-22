@@ -1,17 +1,21 @@
 package com.example.malpicasoft.clientes;
 
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.os.Bundle;
 
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
 import android.os.Handler;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ScrollView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.Request;
@@ -41,6 +45,7 @@ public class EliminarClientes extends Fragment {
 
     public EliminarClientes() { }
 
+    @SuppressLint("ClickableViewAccessibility")
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -66,80 +71,164 @@ public class EliminarClientes extends Fragment {
         final EditText editContacto = root.findViewById(R.id.editContacto);
         final EditText editTipo = root.findViewById(R.id.editTipo);
 
+        final TextView textBuscarCodigo = root.findViewById(R.id.textBuscarCodigo);
+        final TextView textBuscarRazon = root.findViewById(R.id.textBuscarRazon);
+        final TextView textBuscarCuit = root.findViewById(R.id.textBuscarCuit);
+
         final Button buttonConsultar = root.findViewById(R.id.buttonConsultar);
         final Button buttonEliminar = root.findViewById(R.id.buttonEliminar);
 
         // EVENTOS DEL BOTÓN CONSULTAR
-        buttonConsultar.setOnClickListener(new View.OnClickListener() {
+        buttonConsultar.setOnTouchListener(new View.OnTouchListener() {
             @Override
-            public void onClick(View v) {
+            public boolean onTouch(View v, MotionEvent event) {
 
-                datoBuscarCodigo = editBuscarCodigo.getText().toString();
-                datoBuscarRazon = editBuscarRazon.getText().toString();
-                datoBuscarCuit = editBuscarCuit.getText().toString();
+                switch(event.getAction()) {
+                    case MotionEvent.ACTION_DOWN:
+                        buttonConsultar.setTextColor(ContextCompat.getColor(getContext(), R.color.colorTextSelected));
+                        buttonConsultar.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_search_yellow, 0, 0, 0);
 
-                // SI LOS CAMPOS NO ESTÁN VACÍOS, REALIZA LA CONSULTA CORRESPONDIENTE
-                if (!datoBuscarCodigo.isEmpty()) {
+                        datoBuscarCodigo = editBuscarCodigo.getText().toString();
+                        datoBuscarRazon = editBuscarRazon.getText().toString();
+                        datoBuscarCuit = editBuscarCuit.getText().toString();
 
-                    dialogProcesando();
-                    consultarCodigo();
+                        // SI LOS CAMPOS NO ESTÁN VACÍOS, REALIZA LA CONSULTA CORRESPONDIENTE
+                        if (!datoBuscarCodigo.isEmpty()) {
+
+                            dialogProcesando();
+                            consultarCodigo();
+                        }
+
+                        if (!datoBuscarRazon.isEmpty()) {
+
+                            dialogProcesando();
+                            consultarNombre();
+                        }
+
+                        if (!datoBuscarCuit.isEmpty()) {
+
+                            dialogProcesando();
+                            consultarCuit();
+                        }
+
+                        if (datoBuscarCodigo.isEmpty() && datoBuscarRazon.isEmpty() && datoBuscarCuit.isEmpty()) {
+
+                            // SI LOS CAMPOS ESTÁN VACÍOS, SE LIMPIAN LOS RESULTADOS ANTERIORES Y MUESTRA UN ERROR
+                            editFechaAlta.setText("");
+                            editFechaModif.setText("");
+                            editCodigo.setText("");
+                            editRazonSocial.setText("");
+                            editCondicion.setText("");
+                            editDescripcion.setText("");
+                            editCuit.setText("");
+                            editDireccion.setText("");
+                            editLocalidad.setText("");
+                            editContacto.setText("");
+                            editTipo.setText("");
+
+                            dialogProcesando();
+                            dialogError();
+                        }
+
+                        break;
+
+                    case MotionEvent.ACTION_UP:
+                        buttonConsultar.setTextColor(ContextCompat.getColor(getContext(), R.color.colorAccent));
+                        buttonConsultar.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_search_orange, 0, 0, 0);
+                        break;
                 }
-
-                if (!datoBuscarRazon.isEmpty()) {
-
-                    dialogProcesando();
-                    consultarNombre();
-                }
-
-                if (!datoBuscarCuit.isEmpty()) {
-
-                    dialogProcesando();
-                    consultarCuit();
-                }
-
-                if (datoBuscarCodigo.isEmpty() && datoBuscarRazon.isEmpty() && datoBuscarCuit.isEmpty()) {
-
-                    // SI LOS CAMPOS ESTÁN VACÍOS, SE LIMPIAN LOS RESULTADOS ANTERIORES Y MUESTRA UN ERROR
-                    editFechaAlta.setText("");
-                    editFechaModif.setText("");
-                    editCodigo.setText("");
-                    editRazonSocial.setText("");
-                    editCondicion.setText("");
-                    editDescripcion.setText("");
-                    editCuit.setText("");
-                    editDireccion.setText("");
-                    editLocalidad.setText("");
-                    editContacto.setText("");
-                    editTipo.setText("");
-
-                    dialogProcesando();
-                    dialogError();
-                }
+                return true;
             }
         });
 
         // EVENTOS DEL BOTÓN ELIMINAR
-        buttonEliminar.setOnClickListener(new View.OnClickListener() {
+        buttonEliminar.setOnTouchListener(new View.OnTouchListener() {
             @Override
-            public void onClick(View v) {
+            public boolean onTouch(View v, MotionEvent event) {
 
-                // SI LOS CAMPOS NO ESTÁN VACÍOS, REALIZA LA CONSULTA CORRESPONDIENTE
-                if (!datoBuscarCodigo.isEmpty()) {
+                switch(event.getAction()) {
+                    case MotionEvent.ACTION_DOWN:
+                        buttonEliminar.setTextColor(ContextCompat.getColor(getContext(), R.color.colorTextSelected));
+                        buttonEliminar.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_delete_yellow, 0, 0, 0);
 
-                    // MUESTRA UN DIALOG DE CONFIRMACIÓN ANTES DE ELIMINARLO
-                    dialogEliminar();
+                        // SI LOS CAMPOS NO ESTÁN VACÍOS, REALIZA LA CONSULTA CORRESPONDIENTE
+                        if (!datoBuscarCodigo.isEmpty()) {
+
+                            // MUESTRA UN DIALOG DE CONFIRMACIÓN ANTES DE ELIMINARLO
+                            dialogEliminar();
+                        }
+
+                        if (!datoBuscarRazon.isEmpty()) {
+
+                            // MUESTRA UN DIALOG DE CONFIRMACIÓN ANTES DE ELIMINARLO
+                            dialogEliminar();
+                        }
+
+                        if (!datoBuscarCuit.isEmpty()) {
+
+                            // MUESTRA UN DIALOG DE CONFIRMACIÓN ANTES DE ELIMINARLO
+                            dialogEliminar();
+                        }
+                        break;
+
+                    case MotionEvent.ACTION_UP:
+                        buttonEliminar.setTextColor(ContextCompat.getColor(getContext(), R.color.colorAccent));
+                        buttonEliminar.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_delete_orange, 0, 0, 0);
+                        break;
                 }
+                return true;
+            }
+        });
 
-                if (!datoBuscarRazon.isEmpty()) {
+        // EVENTOS AL CAMBIAR DE CAMPOS
+        editBuscarCodigo.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View view, boolean hasFocus) {
+                if (!hasFocus) {
 
-                    // MUESTRA UN DIALOG DE CONFIRMACIÓN ANTES DE ELIMINARLO
-                    dialogEliminar();
+                    // SI SALE DEL CAMPO, RECUPERA COLOR DE TEXTO
+                    textBuscarCodigo.setTextColor(ContextCompat.getColor(getContext(), R.color.colorText));
+
+                } else {
+
+                    // SI INGRESA AL CAMPO, CAMBIA COLOR DE TEXTO Y ELIMINA LOS DATOS INGRESADOS EN LOS OTROS CAMPOS
+                    textBuscarCodigo.setTextColor(ContextCompat.getColor(getContext(), R.color.colorTextSelected));
+                    editBuscarRazon.setText("");
+                    editBuscarCuit.setText("");
                 }
+            }
+        });
+        editBuscarRazon.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View view, boolean hasFocus) {
+                if (!hasFocus) {
 
-                if (!datoBuscarCuit.isEmpty()) {
+                    // SI SALE DEL CAMPO, RECUPERA COLOR DE TEXTO
+                    textBuscarRazon.setTextColor(ContextCompat.getColor(getContext(), R.color.colorText));
 
-                    // MUESTRA UN DIALOG DE CONFIRMACIÓN ANTES DE ELIMINARLO
-                    dialogEliminar();
+                } else {
+
+                    // SI INGRESA AL CAMPO, CAMBIA COLOR DE TEXTO Y ELIMINA LOS DATOS INGRESADOS EN LOS OTROS CAMPOS
+                    textBuscarRazon.setTextColor(ContextCompat.getColor(getContext(), R.color.colorTextSelected));
+                    editBuscarCodigo.setText("");
+                    editBuscarCuit.setText("");
+                }
+            }
+        });
+        editBuscarCuit.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View view, boolean hasFocus) {
+                if (!hasFocus) {
+
+                    // SI SALE DEL CAMPO, RECUPERA COLOR DE TEXTO
+                    textBuscarCuit.setTextColor(ContextCompat.getColor(getContext(), R.color.colorText));
+
+                } else {
+
+                    // SI INGRESA AL CAMPO, CAMBIA COLOR DE TEXTO Y ELIMINA LOS DATOS INGRESADOS EN LOS OTROS CAMPOS
+                    textBuscarCuit.setTextColor(ContextCompat.getColor(getContext(), R.color.colorTextSelected));
+                    editBuscarCodigo.setText("");
+                    editBuscarRazon.setText("");
                 }
             }
         });
@@ -249,6 +338,7 @@ public class EliminarClientes extends Fragment {
         }, 3000);
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     private void dialogEliminar(){
 
         // DIALOG CON CONFIRMACIÓN DE ELIMINACIÓN
@@ -259,17 +349,29 @@ public class EliminarClientes extends Fragment {
         builder.setView(view);
         builder.setCancelable(true);
 
-        Button buttonContinuar = view.findViewById(R.id.buttonContinuar);
+        final Button buttonContinuar = view.findViewById(R.id.buttonContinuar);
 
         final AlertDialog alertDialog = builder.create();
         alertDialog.show();
 
-        buttonContinuar.setOnClickListener(new View.OnClickListener() {
+        buttonContinuar.setOnTouchListener(new View.OnTouchListener() {
             @Override
-            public void onClick(View v) {
-                alertDialog.dismiss();
-                dialogProcesando();
-                consultarVentas();
+            public boolean onTouch(View v, MotionEvent event) {
+
+                switch(event.getAction()) {
+                    case MotionEvent.ACTION_DOWN:
+                        buttonContinuar.setTextColor(ContextCompat.getColor(getContext(), R.color.colorTextSelected));
+
+                        alertDialog.dismiss();
+                        dialogProcesando();
+                        consultarVentas();
+                        break;
+
+                    case MotionEvent.ACTION_UP:
+                        buttonContinuar.setTextColor(ContextCompat.getColor(getContext(), R.color.colorAccent));
+                        break;
+                }
+                return true;
             }
         });
     }
@@ -347,8 +449,8 @@ public class EliminarClientes extends Fragment {
                                 setters.setContacto(jsonObject.getString("contacto"));
                                 setters.setTipo(jsonObject.getString("tipo"));
 
-                                String fechaAlta = setters.getFechaAlta() + " " + setters.getHoraAlta();
-                                String fechaModif = setters.getFechaModif() + " " + setters.getHoraModif();
+                                String fechaAlta = setters.getFechaAlta() + ", " + setters.getHoraAlta() + " hs.";
+                                String fechaModif = setters.getFechaModif() + ", " + setters.getHoraModif() + " hs.";
                                 String codigo = setters.getCodigo();
                                 String razonSocial = setters.getRazonSocial();
                                 String condicion = setters.getCondicion();
@@ -452,8 +554,8 @@ public class EliminarClientes extends Fragment {
                                 setters.setContacto(jsonObject.getString("contacto"));
                                 setters.setTipo(jsonObject.getString("tipo"));
 
-                                String fechaAlta = setters.getFechaAlta() + " " + setters.getHoraAlta();
-                                String fechaModif = setters.getFechaModif() + " " + setters.getHoraModif();
+                                String fechaAlta = setters.getFechaAlta() + ", " + setters.getHoraAlta() + " hs.";
+                                String fechaModif = setters.getFechaModif() + ", " + setters.getHoraModif() + " hs.";
                                 String codigo = setters.getCodigo();
                                 String razonSocial = setters.getRazonSocial();
                                 String condicion = setters.getCondicion();
@@ -555,8 +657,8 @@ public class EliminarClientes extends Fragment {
                                 setters.setContacto(jsonObject.getString("contacto"));
                                 setters.setTipo(jsonObject.getString("tipo"));
 
-                                String fechaAlta = setters.getFechaAlta() + " " + setters.getHoraAlta();
-                                String fechaModif = setters.getFechaModif() + " " + setters.getHoraModif();
+                                String fechaAlta = setters.getFechaAlta() + ", " + setters.getHoraAlta() + " hs.";
+                                String fechaModif = setters.getFechaModif() + ", " + setters.getHoraModif() + " hs.";
                                 String codigo = setters.getCodigo();
                                 String razonSocial = setters.getRazonSocial();
                                 String condicion = setters.getCondicion();
@@ -628,7 +730,7 @@ public class EliminarClientes extends Fragment {
     private void consultarVentas() {
 
         // CONSULTA EL CLIENTE EN LA BASE DE VENTAS POR SU CÓDIGO
-        String URL = "http://malpicas.heliohost.org/malpica/clientes/clientes_consultar_factura.php?parameter=" + datoCodigo;
+        String URL = "http://malpicas.heliohost.org/malpica/clientes/clientes_consultar_ventas.php?parameter=" + datoCodigo;
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, URL, null,
                 new Response.Listener<JSONObject>() {
 

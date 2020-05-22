@@ -20,7 +20,8 @@
         android:layout_marginLeft="0dp"
         android:layout_marginTop="0dp"
         android:layout_marginEnd="0dp"
-        android:layout_marginRight="0dp">
+        android:layout_marginRight="0dp"
+        tools:ignore="UselessParent">
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -80,15 +81,13 @@
                 android:layout_marginEnd="51dp"
                 android:layout_marginRight="51dp"
                 android:drawablePadding="5dp"
-                android:ems="10"
                 android:fontFamily="sans-serif-light"
                 android:hint="@string/ingresar_codigo"
                 android:inputType="textPersonName"
                 android:maxLength="12"
                 android:text=""
-                android:textColorHint="#919191"
+                android:textColorHint="@color/colorTextHint"
                 android:textColor="@color/colorText"
-                android:textColorLink="@color/colorAccent"
                 android:textSize="18sp"
                 tools:ignore="Autofill" />
 
@@ -125,15 +124,13 @@
                 android:layout_marginEnd="51dp"
                 android:layout_marginRight="51dp"
                 android:drawablePadding="5dp"
-                android:ems="10"
                 android:fontFamily="sans-serif-light"
                 android:hint="@string/ingresar_razon_social"
                 android:inputType="textPersonName"
                 android:maxLength="50"
                 android:text=""
-                android:textColorHint="#919191"
+                android:textColorHint="@color/colorTextHint"
                 android:textColor="@color/colorText"
-                android:textColorLink="@color/colorAccent"
                 android:textSize="18sp"
                 tools:ignore="Autofill" />
 
@@ -170,15 +167,13 @@
                 android:layout_marginEnd="51dp"
                 android:layout_marginRight="51dp"
                 android:drawablePadding="5dp"
-                android:ems="10"
                 android:fontFamily="sans-serif-light"
                 android:hint="@string/ingresar_condicion"
                 android:inputType="textPersonName"
                 android:maxLength="2"
                 android:text=""
-                android:textColorHint="#919191"
+                android:textColorHint="@color/colorTextHint"
                 android:textColor="@color/colorText"
-                android:textColorLink="@color/colorAccent"
                 android:textSize="18sp"
                 tools:ignore="Autofill" />
 
@@ -215,15 +210,13 @@
                 android:layout_marginEnd="51dp"
                 android:layout_marginRight="51dp"
                 android:drawablePadding="5dp"
-                android:ems="10"
                 android:fontFamily="sans-serif-light"
                 android:hint="@string/ingresar_descripcion"
                 android:inputType="textPersonName"
                 android:maxLength="50"
                 android:text=""
-                android:textColorHint="#919191"
+                android:textColorHint="@color/colorTextHint"
                 android:textColor="@color/colorText"
-                android:textColorLink="@color/colorAccent"
                 android:textSize="18sp"
                 tools:ignore="Autofill" />
 
@@ -260,15 +253,13 @@
                 android:layout_marginEnd="51dp"
                 android:layout_marginRight="51dp"
                 android:drawablePadding="5dp"
-                android:ems="10"
                 android:fontFamily="sans-serif-light"
                 android:hint="@string/ingresar_cuit"
                 android:inputType="textPersonName"
                 android:maxLength="13"
                 android:text=""
-                android:textColorHint="#919191"
+                android:textColorHint="@color/colorTextHint"
                 android:textColor="@color/colorText"
-                android:textColorLink="@color/colorAccent"
                 android:textSize="18sp"
                 tools:ignore="Autofill" />
 
@@ -305,15 +296,13 @@
                 android:layout_marginEnd="51dp"
                 android:layout_marginRight="51dp"
                 android:drawablePadding="5dp"
-                android:ems="10"
                 android:fontFamily="sans-serif-light"
                 android:hint="@string/ingresar_direccion"
                 android:inputType="textPersonName"
                 android:maxLength="50"
                 android:text=""
-                android:textColorHint="#919191"
+                android:textColorHint="@color/colorTextHint"
                 android:textColor="@color/colorText"
-                android:textColorLink="@color/colorAccent"
                 android:textSize="18sp"
                 tools:ignore="Autofill" />
 
@@ -350,15 +339,13 @@
                 android:layout_marginEnd="51dp"
                 android:layout_marginRight="51dp"
                 android:drawablePadding="5dp"
-                android:ems="10"
                 android:fontFamily="sans-serif-light"
                 android:hint="@string/ingresar_localidad"
                 android:inputType="textPersonName"
                 android:maxLength="50"
                 android:text=""
-                android:textColorHint="#919191"
+                android:textColorHint="@color/colorTextHint"
                 android:textColor="@color/colorText"
-                android:textColorLink="@color/colorAccent"
                 android:textSize="18sp"
                 tools:ignore="Autofill" />
 
@@ -395,15 +382,13 @@
                 android:layout_marginEnd="51dp"
                 android:layout_marginRight="51dp"
                 android:drawablePadding="5dp"
-                android:ems="10"
                 android:fontFamily="sans-serif-light"
                 android:hint="@string/ingresar_contacto"
                 android:inputType="textPersonName"
                 android:maxLength="50"
                 android:text=""
-                android:textColorHint="#919191"
+                android:textColorHint="@color/colorTextHint"
                 android:textColor="@color/colorText"
-                android:textColorLink="@color/colorAccent"
                 android:textSize="18sp"
                 tools:ignore="Autofill" />
 
@@ -440,15 +425,13 @@
                 android:layout_marginEnd="51dp"
                 android:layout_marginRight="51dp"
                 android:drawablePadding="5dp"
-                android:ems="10"
                 android:fontFamily="sans-serif-light"
                 android:hint="@string/ingresar_tipo"
                 android:inputType="textPersonName"
                 android:maxLength="10"
                 android:text=""
-                android:textColorHint="#919191"
+                android:textColorHint="@color/colorTextHint"
                 android:textColor="@color/colorText"
-                android:textColorLink="@color/colorAccent"
                 android:textSize="18sp"
                 tools:ignore="Autofill" />
 
@@ -460,12 +443,13 @@
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="40dp"
                 android:background="#323232"
-                android:drawableLeft="@drawable/ic_save_black_24dp"
+                android:drawableLeft="@drawable/ic_save_orange"
                 android:fontFamily="sans-serif-light"
                 android:paddingLeft="15dp"
                 android:text="@string/guardar_datos"
                 android:textColor="@color/colorAccent"
-                android:textSize="16sp" />
+                android:textSize="16sp"
+                tools:ignore="RtlHardcoded,RtlSymmetry" />
 
             <EditText
                 android:id="@+id/editVacio"
@@ -475,9 +459,11 @@
                 android:layout_marginTop="35dp"
                 android:background="#00000000"
                 android:focusable="false"
-                android:text=""
                 android:gravity="center_horizontal"
-                android:hint="@string/componentes" />
+                android:hint="@string/componentes"
+                android:inputType="textPersonName"
+                android:text=""
+                tools:ignore="Autofill" />
 
         </RelativeLayout>
     </ScrollView>

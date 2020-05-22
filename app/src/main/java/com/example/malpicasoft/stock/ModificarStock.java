@@ -4,15 +4,18 @@ import android.annotation.SuppressLint;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
 import android.os.Handler;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ScrollView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.Request;
@@ -47,6 +50,7 @@ public class ModificarStock extends Fragment {
     private int counter, cantidad;
     private double precioUnit, precioTotal;
 
+    @SuppressLint("ClickableViewAccessibility")
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -68,154 +72,228 @@ public class ModificarStock extends Fragment {
         final EditText editPrecioUnit = root.findViewById(R.id.editPrecioUnit);
         final EditText editPrecioTotal = root.findViewById(R.id.editPrecioTotal);
 
+        final TextView textBuscarCodigo = root.findViewById(R.id.textBuscarCodigo);
+        final TextView textBuscarDescripcion = root.findViewById(R.id.textBuscarDescripcion);
+
         final Button buttonConsultar = root.findViewById(R.id.buttonConsultar);
         final Button buttonModificar = root.findViewById(R.id.buttonModificar);
         final Button buttonGuardar = root.findViewById(R.id.buttonGuardar);
 
         // EVENTOS DEL BOTÓN CONSULTAR
-        buttonConsultar.setOnClickListener(new View.OnClickListener() {
+        buttonConsultar.setOnTouchListener(new View.OnTouchListener() {
             @Override
-            public void onClick(View v) {
+            public boolean onTouch(View v, MotionEvent event) {
 
-                buttonModificar.setVisibility(View.VISIBLE);
+                switch(event.getAction()) {
+                    case MotionEvent.ACTION_DOWN:
+                        buttonConsultar.setTextColor(ContextCompat.getColor(getContext(), R.color.colorTextSelected));
+                        buttonConsultar.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_search_yellow, 0, 0, 0);
 
-                editCodigo.setFocusable(false);
-                editDescripcion.setFocusable(false);
-                editCantidad.setFocusable(false);
-                editMoneda.setFocusable(false);
-                editPrecioUnit.setFocusable(false);
-                editPrecioTotal.setFocusable(false);
+                        buttonModificar.setVisibility(View.VISIBLE);
 
-                editCodigo.setError(null);
-                editDescripcion.setError(null);
-                editCantidad.setError(null);
-                editMoneda.setError(null);
-                editPrecioUnit.setError(null);
-                editPrecioTotal.setError(null);
+                        editCodigo.setFocusable(false);
+                        editDescripcion.setFocusable(false);
+                        editCantidad.setFocusable(false);
+                        editMoneda.setFocusable(false);
+                        editPrecioUnit.setFocusable(false);
+                        editPrecioTotal.setFocusable(false);
 
-                datoBuscarCodigo = editBuscarCodigo.getText().toString();
-                datoBuscarDescripcion = editBuscarDescripcion.getText().toString();
+                        editCodigo.setError(null);
+                        editDescripcion.setError(null);
+                        editCantidad.setError(null);
+                        editMoneda.setError(null);
+                        editPrecioUnit.setError(null);
+                        editPrecioTotal.setError(null);
 
-                // SI LOS CAMPOS NO ESTÁN VACÍOS, REALIZA LA CONSULTA CORRESPONDIENTE
-                if (!datoBuscarCodigo.isEmpty()) {
+                        datoBuscarCodigo = editBuscarCodigo.getText().toString();
+                        datoBuscarDescripcion = editBuscarDescripcion.getText().toString();
 
-                    dialogProcesando();
-                    consultarCodigo();
+                        // SI LOS CAMPOS NO ESTÁN VACÍOS, REALIZA LA CONSULTA CORRESPONDIENTE
+                        if (!datoBuscarCodigo.isEmpty()) {
+
+                            dialogProcesando();
+                            consultarCodigo();
+                        }
+
+                        if (!datoBuscarDescripcion.isEmpty()) {
+
+                            dialogProcesando();
+                            consultarDescripcion();
+                        }
+
+                        if (datoBuscarCodigo.isEmpty() && datoBuscarDescripcion.isEmpty()) {
+
+                            // SI LOS CAMPOS ESTÁN VACÍOS, SE LIMPIAN LOS RESULTADOS ANTERIORES Y MUESTRA UN ERROR
+                            editCodigo.setText("");
+                            editDescripcion.setText("");
+                            editCantidad.setText("");
+                            editMoneda.setText("");
+                            editPrecioUnit.setText("");
+                            editPrecioTotal.setText("");
+
+                            dialogProcesando();
+                            dialogError();
+                        }
+                        break;
+
+                    case MotionEvent.ACTION_UP:
+                        buttonConsultar.setTextColor(ContextCompat.getColor(getContext(), R.color.colorAccent));
+                        buttonConsultar.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_search_orange, 0, 0, 0);
+                        break;
                 }
-
-                if (!datoBuscarDescripcion.isEmpty()) {
-
-                    dialogProcesando();
-                    consultarDescripcion();
-                }
-
-                if (datoBuscarCodigo.isEmpty() && datoBuscarDescripcion.isEmpty()) {
-
-                    // SI LOS CAMPOS ESTÁN VACÍOS, SE LIMPIAN LOS RESULTADOS ANTERIORES Y MUESTRA UN ERROR
-                    editCodigo.setText("");
-                    editDescripcion.setText("");
-                    editCantidad.setText("");
-                    editMoneda.setText("");
-                    editPrecioUnit.setText("");
-                    editPrecioTotal.setText("");
-
-                    dialogProcesando();
-                    dialogError();
-                }
+                return true;
             }
         });
 
         // EVENTOS DEL BOTÓN MODIFICAR
-        buttonModificar.setOnClickListener(new View.OnClickListener() {
+        buttonModificar.setOnTouchListener(new View.OnTouchListener() {
             @Override
-            public void onClick(View v) {
+            public boolean onTouch(View v, MotionEvent event) {
 
-                datoCodigo = editCodigo.getText().toString();
+                switch(event.getAction()) {
+                    case MotionEvent.ACTION_DOWN:
+                        buttonModificar.setTextColor(ContextCompat.getColor(getContext(), R.color.colorTextSelected));
+                        buttonModificar.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_edit_yellow, 0, 0, 0);
 
-                if(!datoCodigo.isEmpty()){
+                        datoCodigo = editCodigo.getText().toString();
 
-                    // SI DEVUELVE UN CÓDIGO, HABILITA LOS CAMPOS PARA HACER MODIFICACIONES
-                    buttonModificar.setVisibility(View.INVISIBLE);
+                        if(!datoCodigo.isEmpty()){
 
-                    Drawable drawable = getResources().getDrawable(R.drawable.ic_check_green);
-                    drawable.setBounds(0, 0, drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight());
+                            // SI DEVUELVE UN CÓDIGO, HABILITA LOS CAMPOS PARA HACER MODIFICACIONES
+                            buttonModificar.setVisibility(View.INVISIBLE);
 
-                    editDescripcion.setError("Datos correctos!", drawable);
-                    editCantidad.setError("Datos correctos!", drawable);
-                    editMoneda.setError("Datos correctos!", drawable);
-                    editPrecioUnit.setError("Datos correctos!", drawable);
-                    editPrecioTotal.setError("Datos correctos!", drawable);
+                            Drawable drawable = getResources().getDrawable(R.drawable.ic_check_green);
+                            drawable.setBounds(0, 0, drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight());
 
-                    editCodigo.setFocusableInTouchMode(true);
-                    editDescripcion.setFocusableInTouchMode(true);
-                    editCantidad.setFocusableInTouchMode(true);
-                    editMoneda.setFocusableInTouchMode(true);
-                    editPrecioUnit.setFocusableInTouchMode(true);
-                    editPrecioTotal.setFocusableInTouchMode(true);
+                            editDescripcion.setError("Datos correctos!", drawable);
+                            editCantidad.setError("Datos correctos!", drawable);
+                            editMoneda.setError("Datos correctos!", drawable);
+                            editPrecioUnit.setError("Datos correctos!", drawable);
+                            editPrecioTotal.setError("Datos correctos!", drawable);
 
-                    editCodigo.requestFocusFromTouch();
+                            editCodigo.setFocusableInTouchMode(true);
+                            editDescripcion.setFocusableInTouchMode(true);
+                            editCantidad.setFocusableInTouchMode(true);
+                            editMoneda.setFocusableInTouchMode(true);
+                            editPrecioUnit.setFocusableInTouchMode(true);
+                            editPrecioTotal.setFocusableInTouchMode(true);
 
-                    ScrollView scrollView = getView().findViewById(R.id.scroll);
-                    scrollView.setScrollY(0);
+                            editCodigo.requestFocusFromTouch();
+
+                            ScrollView scrollView = getView().findViewById(R.id.scroll);
+                            scrollView.setScrollY(0);
+                        }
+                        break;
+
+                    case MotionEvent.ACTION_UP:
+                        buttonModificar.setTextColor(ContextCompat.getColor(getContext(), R.color.colorAccent));
+                        buttonModificar.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_edit_orange, 0, 0, 0);
+                        break;
                 }
+                return true;
             }
         });
 
         // EVENTOS DEL BOTÓN GUARDAR
-        buttonGuardar.setOnClickListener(new View.OnClickListener() {
+        buttonGuardar.setOnTouchListener(new View.OnTouchListener() {
             @Override
-            public void onClick(View v) {
+            public boolean onTouch(View v, MotionEvent event) {
 
-                datoBuscarCodigo = editBuscarCodigo.getText().toString();
-                datoBuscarDescripcion = editBuscarDescripcion.getText().toString();
-                datoCodigo = editCodigo.getText().toString();
-                datoDescripcion = editDescripcion.getText().toString();
-                datoCantidad = editCantidad.getText().toString();
-                datoMoneda = editMoneda.getText().toString();
-                datoPrecioUnit = editPrecioUnit.getText().toString();
-                datoPrecioTotal = editPrecioTotal.getText().toString();
+                switch(event.getAction()) {
+                    case MotionEvent.ACTION_DOWN:
+                        buttonGuardar.setTextColor(ContextCompat.getColor(getContext(), R.color.colorTextSelected));
+                        buttonGuardar.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_save_yellow, 0, 0, 0);
 
-                editCodigo.setFocusable(false);
-                editDescripcion.setFocusable(false);
-                editCantidad.setFocusable(false);
-                editMoneda.setFocusable(false);
-                editPrecioUnit.setFocusable(false);
-                editPrecioTotal.setFocusable(false);
+                        datoBuscarCodigo = editBuscarCodigo.getText().toString();
+                        datoBuscarDescripcion = editBuscarDescripcion.getText().toString();
+                        datoCodigo = editCodigo.getText().toString();
+                        datoDescripcion = editDescripcion.getText().toString();
+                        datoCantidad = editCantidad.getText().toString();
+                        datoMoneda = editMoneda.getText().toString();
+                        datoPrecioUnit = editPrecioUnit.getText().toString();
+                        datoPrecioTotal = editPrecioTotal.getText().toString();
 
-                if (editCodigo.getError() == "Datos correctos!"
-                        && editDescripcion.getError() == "Datos correctos!"
-                        && editCantidad.getError() == "Datos correctos!"
-                        && editMoneda.getError() == "Datos correctos!"
-                        && editPrecioUnit.getError() == "Datos correctos!"
-                        && editPrecioTotal.getError() == "Datos correctos!") {
+                        editCodigo.setFocusable(false);
+                        editDescripcion.setFocusable(false);
+                        editCantidad.setFocusable(false);
+                        editMoneda.setFocusable(false);
+                        editPrecioUnit.setFocusable(false);
+                        editPrecioTotal.setFocusable(false);
 
-                    // SI TODOS LOS DATOS ESTÁN OK, PASA A REGISTRARLO
-                    editPrecioTotal.requestFocusFromTouch();
-                    editPrecioTotal.setError(null);
+                        if (editCodigo.getError() == "Datos correctos!"
+                                && editDescripcion.getError() == "Datos correctos!"
+                                && editCantidad.getError() == "Datos correctos!"
+                                && editMoneda.getError() == "Datos correctos!"
+                                && editPrecioUnit.getError() == "Datos correctos!"
+                                && editPrecioTotal.getError() == "Datos correctos!") {
 
-                    dialogProcesando();
-                    modificarProducto();
+                            // SI TODOS LOS DATOS ESTÁN OK, PASA A REGISTRARLO
+                            editPrecioTotal.requestFocusFromTouch();
+                            editPrecioTotal.setError(null);
 
-                } else {
+                            dialogProcesando();
+                            modificarProducto();
 
-                    // SI ALGÚN DATO ES INCORRECTO, MUESTRA UN MENSAJE DE ERROR
-                    editPrecioTotal.requestFocusFromTouch();
-                    editPrecioTotal.setError(null);
+                        } else {
 
-                    dialogProcesando();
-                    dialogError();
+                            // SI ALGÚN DATO ES INCORRECTO, MUESTRA UN MENSAJE DE ERROR
+                            editPrecioTotal.requestFocusFromTouch();
+                            editPrecioTotal.setError(null);
 
-                    editCodigo.setFocusableInTouchMode(true);
-                    editDescripcion.setFocusableInTouchMode(true);
-                    editCantidad.setFocusableInTouchMode(true);
-                    editMoneda.setFocusableInTouchMode(true);
-                    editPrecioUnit.setFocusableInTouchMode(true);
-                    editPrecioTotal.setFocusableInTouchMode(true);
+                            dialogProcesando();
+                            dialogError();
+
+                            editCodigo.setFocusableInTouchMode(true);
+                            editDescripcion.setFocusableInTouchMode(true);
+                            editCantidad.setFocusableInTouchMode(true);
+                            editMoneda.setFocusableInTouchMode(true);
+                            editPrecioUnit.setFocusableInTouchMode(true);
+                            editPrecioTotal.setFocusableInTouchMode(true);
+                        }
+                        break;
+
+                    case MotionEvent.ACTION_UP:
+                        buttonGuardar.setTextColor(ContextCompat.getColor(getContext(), R.color.colorAccent));
+                        buttonGuardar.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_save_orange, 0, 0, 0);
+                        break;
                 }
+                return true;
             }
         });
 
         // EVENTOS AL CAMBIAR DE CAMPOS
+        editBuscarCodigo.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View view, boolean hasFocus) {
+                if (!hasFocus) {
+
+                    // SI SALE DEL CAMPO, RECUPERA COLOR DE TEXTO
+                    textBuscarCodigo.setTextColor(ContextCompat.getColor(getContext(), R.color.colorText));
+
+                } else {
+
+                    // SI INGRESA AL CAMPO, CAMBIA COLOR DE TEXTO Y ELIMINA LOS DATOS INGRESADOS EN LOS OTROS CAMPOS
+                    textBuscarCodigo.setTextColor(ContextCompat.getColor(getContext(), R.color.colorTextSelected));
+                    editBuscarDescripcion.setText("");
+                }
+            }
+        });
+        editBuscarDescripcion.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View view, boolean hasFocus) {
+                if (!hasFocus) {
+
+                    // SI SALE DEL CAMPO, RECUPERA COLOR DE TEXTO
+                    textBuscarDescripcion.setTextColor(ContextCompat.getColor(getContext(), R.color.colorText));
+
+                } else {
+
+                    // SI INGRESA AL CAMPO, CAMBIA COLOR DE TEXTO Y ELIMINA LOS DATOS INGRESADOS EN LOS OTROS CAMPOS
+                    textBuscarDescripcion.setTextColor(ContextCompat.getColor(getContext(), R.color.colorTextSelected));
+                    editBuscarCodigo.setText("");
+                }
+            }
+        });
         editCodigo.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View view, boolean hasFocus) {

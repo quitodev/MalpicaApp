@@ -4,10 +4,12 @@ import android.annotation.SuppressLint;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
 import android.os.Handler;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -49,6 +51,7 @@ public class IngresarStock extends Fragment {
 
     public IngresarStock() { }
 
+    @SuppressLint("ClickableViewAccessibility")
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -71,47 +74,60 @@ public class IngresarStock extends Fragment {
         final Button buttonGuardar = root.findViewById(R.id.buttonGuardar);
 
         // EVENTOS DEL BOTÓN GUARDAR
-        buttonGuardar.setOnClickListener(new View.OnClickListener() {
+        buttonGuardar.setOnTouchListener(new View.OnTouchListener() {
             @Override
-            public void onClick(View v) {
+            public boolean onTouch(View v, MotionEvent event) {
 
-                editCodigo.setFocusable(false);
-                editDescripcion.setFocusable(false);
-                editCantidad.setFocusable(false);
-                editMoneda.setFocusable(false);
-                editPrecioUnit.setFocusable(false);
-                editPrecioTotal.setFocusable(false);
+                switch(event.getAction()) {
+                    case MotionEvent.ACTION_DOWN:
+                        buttonGuardar.setTextColor(ContextCompat.getColor(getContext(), R.color.colorTextSelected));
+                        buttonGuardar.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_search_yellow, 0, 0, 0);
 
-                if (editCodigo.getError() == "Datos correctos!"
-                        && editDescripcion.getError() == "Datos correctos!"
-                        && editCantidad.getError() == "Datos correctos!"
-                        && editMoneda.getError() == "Datos correctos!"
-                        && editPrecioUnit.getError() == "Datos correctos!"
-                        && editPrecioTotal.getError() == "Datos correctos!") {
+                        editCodigo.setFocusable(false);
+                        editDescripcion.setFocusable(false);
+                        editCantidad.setFocusable(false);
+                        editMoneda.setFocusable(false);
+                        editPrecioUnit.setFocusable(false);
+                        editPrecioTotal.setFocusable(false);
 
-                    // SI TODOS LOS DATOS ESTÁN OK, PASA A REGISTRARLO
-                    editPrecioTotal.requestFocusFromTouch();
-                    editPrecioTotal.setError(null);
+                        if (editCodigo.getError() == "Datos correctos!"
+                                && editDescripcion.getError() == "Datos correctos!"
+                                && editCantidad.getError() == "Datos correctos!"
+                                && editMoneda.getError() == "Datos correctos!"
+                                && editPrecioUnit.getError() == "Datos correctos!"
+                                && editPrecioTotal.getError() == "Datos correctos!") {
 
-                    dialogProcesando();
-                    registrarProducto();
+                            // SI TODOS LOS DATOS ESTÁN OK, PASA A REGISTRARLO
+                            editPrecioTotal.requestFocusFromTouch();
+                            editPrecioTotal.setError(null);
 
-                } else {
+                            dialogProcesando();
+                            registrarProducto();
 
-                    // SI ALGÚN DATO ES INCORRECTO, MUESTRA UN MENSAJE DE ERROR
-                    editPrecioTotal.requestFocusFromTouch();
-                    editPrecioTotal.setError(null);
+                        } else {
 
-                    dialogProcesando();
-                    dialogError();
+                            // SI ALGÚN DATO ES INCORRECTO, MUESTRA UN MENSAJE DE ERROR
+                            editPrecioTotal.requestFocusFromTouch();
+                            editPrecioTotal.setError(null);
 
-                    editCodigo.setFocusableInTouchMode(true);
-                    editDescripcion.setFocusableInTouchMode(true);
-                    editCantidad.setFocusableInTouchMode(true);
-                    editMoneda.setFocusableInTouchMode(true);
-                    editPrecioUnit.setFocusableInTouchMode(true);
-                    editPrecioTotal.setFocusableInTouchMode(true);
+                            dialogProcesando();
+                            dialogError();
+
+                            editCodigo.setFocusableInTouchMode(true);
+                            editDescripcion.setFocusableInTouchMode(true);
+                            editCantidad.setFocusableInTouchMode(true);
+                            editMoneda.setFocusableInTouchMode(true);
+                            editPrecioUnit.setFocusableInTouchMode(true);
+                            editPrecioTotal.setFocusableInTouchMode(true);
+                        }
+                        break;
+
+                    case MotionEvent.ACTION_UP:
+                        buttonGuardar.setTextColor(ContextCompat.getColor(getContext(), R.color.colorAccent));
+                        buttonGuardar.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_search_orange, 0, 0, 0);
+                        break;
                 }
+                return true;
             }
         });
 

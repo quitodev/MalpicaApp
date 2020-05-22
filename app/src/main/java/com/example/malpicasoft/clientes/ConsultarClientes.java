@@ -1,15 +1,19 @@
 package com.example.malpicasoft.clientes;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
 import android.os.Handler;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.Request;
@@ -36,6 +40,7 @@ public class ConsultarClientes extends Fragment {
 
     public ConsultarClientes() { }
 
+    @SuppressLint("ClickableViewAccessibility")
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -61,54 +66,71 @@ public class ConsultarClientes extends Fragment {
         final EditText editContacto = root.findViewById(R.id.editContacto);
         final EditText editTipo = root.findViewById(R.id.editTipo);
 
+        final TextView textBuscarCodigo = root.findViewById(R.id.textBuscarCodigo);
+        final TextView textBuscarRazon = root.findViewById(R.id.textBuscarRazon);
+        final TextView textBuscarCuit = root.findViewById(R.id.textBuscarCuit);
+
         final Button buttonConsultar = root.findViewById(R.id.buttonConsultar);
 
         // EVENTOS DEL BOTÓN CONSULTAR
-        buttonConsultar.setOnClickListener(new View.OnClickListener() {
+        buttonConsultar.setOnTouchListener(new View.OnTouchListener() {
             @Override
-            public void onClick(View v) {
+            public boolean onTouch(View v, MotionEvent event) {
 
-                datoBuscarCodigo = editBuscarCodigo.getText().toString();
-                datoBuscarRazon = editBuscarRazon.getText().toString();
-                datoBuscarCuit = editBuscarCuit.getText().toString();
+                switch(event.getAction()) {
+                    case MotionEvent.ACTION_DOWN:
+                        buttonConsultar.setTextColor(ContextCompat.getColor(getContext(), R.color.colorTextSelected));
+                        buttonConsultar.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_search_yellow, 0, 0, 0);
 
-                // SI LOS CAMPOS NO ESTÁN VACÍOS, REALIZA LA CONSULTA CORRESPONDIENTE
-                if (!datoBuscarCodigo.isEmpty()) {
+                        datoBuscarCodigo = editBuscarCodigo.getText().toString();
+                        datoBuscarRazon = editBuscarRazon.getText().toString();
+                        datoBuscarCuit = editBuscarCuit.getText().toString();
 
-                    dialogProcesando();
-                    consultarCodigo();
+                        // SI LOS CAMPOS NO ESTÁN VACÍOS, REALIZA LA CONSULTA CORRESPONDIENTE
+                        if (!datoBuscarCodigo.isEmpty()) {
+
+                            dialogProcesando();
+                            consultarCodigo();
+                        }
+
+                        if (!datoBuscarRazon.isEmpty()) {
+
+                            dialogProcesando();
+                            consultarNombre();
+                        }
+
+                        if (!datoBuscarCuit.isEmpty()) {
+
+                            dialogProcesando();
+                            consultarCuit();
+                        }
+
+                        if (datoBuscarCodigo.isEmpty() && datoBuscarRazon.isEmpty() && datoBuscarCuit.isEmpty()) {
+
+                            // SI LOS CAMPOS ESTÁN VACÍOS, SE LIMPIAN LOS RESULTADOS ANTERIORES Y MUESTRA UN ERROR
+                            editFechaAlta.setText("");
+                            editFechaModif.setText("");
+                            editCodigo.setText("");
+                            editRazonSocial.setText("");
+                            editCondicion.setText("");
+                            editDescripcion.setText("");
+                            editCuit.setText("");
+                            editDireccion.setText("");
+                            editLocalidad.setText("");
+                            editContacto.setText("");
+                            editTipo.setText("");
+
+                            dialogProcesando();
+                            dialogError();
+                        }
+                        break;
+
+                    case MotionEvent.ACTION_UP:
+                        buttonConsultar.setTextColor(ContextCompat.getColor(getContext(), R.color.colorAccent));
+                        buttonConsultar.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_search_orange, 0, 0, 0);
+                        break;
                 }
-
-                if (!datoBuscarRazon.isEmpty()) {
-
-                    dialogProcesando();
-                    consultarNombre();
-                }
-
-                if (!datoBuscarCuit.isEmpty()) {
-
-                    dialogProcesando();
-                    consultarCuit();
-                }
-
-                if (datoBuscarCodigo.isEmpty() && datoBuscarRazon.isEmpty() && datoBuscarCuit.isEmpty()) {
-
-                    // SI LOS CAMPOS ESTÁN VACÍOS, SE LIMPIAN LOS RESULTADOS ANTERIORES Y MUESTRA UN ERROR
-                    editFechaAlta.setText("");
-                    editFechaModif.setText("");
-                    editCodigo.setText("");
-                    editRazonSocial.setText("");
-                    editCondicion.setText("");
-                    editDescripcion.setText("");
-                    editCuit.setText("");
-                    editDireccion.setText("");
-                    editLocalidad.setText("");
-                    editContacto.setText("");
-                    editTipo.setText("");
-
-                    dialogProcesando();
-                    dialogError();
-                }
+                return true;
             }
         });
 
@@ -116,9 +138,15 @@ public class ConsultarClientes extends Fragment {
         editBuscarCodigo.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View view, boolean hasFocus) {
-                if (hasFocus) {
+                if (!hasFocus) {
 
-                    // SI INGRESA AL CAMPO, ELIMINA LOS DATOS INGRESADOS EN LOS OTROS CAMPOS
+                    // SI SALE DEL CAMPO, RECUPERA COLOR DE TEXTO
+                    textBuscarCodigo.setTextColor(ContextCompat.getColor(getContext(), R.color.colorText));
+
+                } else {
+
+                    // SI INGRESA AL CAMPO, CAMBIA COLOR DE TEXTO Y ELIMINA LOS DATOS INGRESADOS EN LOS OTROS CAMPOS
+                    textBuscarCodigo.setTextColor(ContextCompat.getColor(getContext(), R.color.colorTextSelected));
                     editBuscarRazon.setText("");
                     editBuscarCuit.setText("");
                 }
@@ -127,9 +155,15 @@ public class ConsultarClientes extends Fragment {
         editBuscarRazon.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View view, boolean hasFocus) {
-                if (hasFocus) {
+                if (!hasFocus) {
 
-                    // SI INGRESA AL CAMPO, ELIMINA LOS DATOS INGRESADOS EN LOS OTROS CAMPOS
+                    // SI SALE DEL CAMPO, RECUPERA COLOR DE TEXTO
+                    textBuscarRazon.setTextColor(ContextCompat.getColor(getContext(), R.color.colorText));
+
+                } else {
+
+                    // SI INGRESA AL CAMPO, CAMBIA COLOR DE TEXTO Y ELIMINA LOS DATOS INGRESADOS EN LOS OTROS CAMPOS
+                    textBuscarRazon.setTextColor(ContextCompat.getColor(getContext(), R.color.colorTextSelected));
                     editBuscarCodigo.setText("");
                     editBuscarCuit.setText("");
                 }
@@ -138,9 +172,15 @@ public class ConsultarClientes extends Fragment {
         editBuscarCuit.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View view, boolean hasFocus) {
-                if (hasFocus) {
+                if (!hasFocus) {
 
-                    // SI INGRESA AL CAMPO, ELIMINA LOS DATOS INGRESADOS EN LOS OTROS CAMPOS
+                    // SI SALE DEL CAMPO, RECUPERA COLOR DE TEXTO
+                    textBuscarCuit.setTextColor(ContextCompat.getColor(getContext(), R.color.colorText));
+
+                } else {
+
+                    // SI INGRESA AL CAMPO, CAMBIA COLOR DE TEXTO Y ELIMINA LOS DATOS INGRESADOS EN LOS OTROS CAMPOS
+                    textBuscarCuit.setTextColor(ContextCompat.getColor(getContext(), R.color.colorTextSelected));
                     editBuscarCodigo.setText("");
                     editBuscarRazon.setText("");
                 }
@@ -242,8 +282,8 @@ public class ConsultarClientes extends Fragment {
                                 setters.setContacto(jsonObject.getString("contacto"));
                                 setters.setTipo(jsonObject.getString("tipo"));
 
-                                String fechaAlta = setters.getFechaAlta() + " " + setters.getHoraAlta();
-                                String fechaModif = setters.getFechaModif() + " " + setters.getHoraModif();
+                                String fechaAlta = setters.getFechaAlta() + ", " + setters.getHoraAlta() + " hs.";
+                                String fechaModif = setters.getFechaModif() + ", " + setters.getHoraModif() + " hs.";
                                 String codigo = setters.getCodigo();
                                 String razonSocial = setters.getRazonSocial();
                                 String condicion = setters.getCondicion();
@@ -345,8 +385,8 @@ public class ConsultarClientes extends Fragment {
                                 setters.setContacto(jsonObject.getString("contacto"));
                                 setters.setTipo(jsonObject.getString("tipo"));
 
-                                String fechaAlta = setters.getFechaAlta() + " " + setters.getHoraAlta();
-                                String fechaModif = setters.getFechaModif() + " " + setters.getHoraModif();
+                                String fechaAlta = setters.getFechaAlta() + ", " + setters.getHoraAlta() + " hs.";
+                                String fechaModif = setters.getFechaModif() + ", " + setters.getHoraModif() + " hs.";
                                 String codigo = setters.getCodigo();
                                 String razonSocial = setters.getRazonSocial();
                                 String condicion = setters.getCondicion();
@@ -446,8 +486,8 @@ public class ConsultarClientes extends Fragment {
                                 setters.setContacto(jsonObject.getString("contacto"));
                                 setters.setTipo(jsonObject.getString("tipo"));
 
-                                String fechaAlta = setters.getFechaAlta() + " " + setters.getHoraAlta();
-                                String fechaModif = setters.getFechaModif() + " " + setters.getHoraModif();
+                                String fechaAlta = setters.getFechaAlta() + ", " + setters.getHoraAlta() + " hs.";
+                                String fechaModif = setters.getFechaModif() + ", " + setters.getHoraModif() + " hs.";
                                 String codigo = setters.getCodigo();
                                 String razonSocial = setters.getRazonSocial();
                                 String condicion = setters.getCondicion();

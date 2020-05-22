@@ -24,6 +24,7 @@ import com.example.malpicasoft.SlidePagerAdapter;
 import com.example.malpicasoft.clientes.Clientes;
 import com.example.malpicasoft.compras.Compras;
 import com.example.malpicasoft.gastos.Gastos;
+import com.example.malpicasoft.login.Login;
 import com.example.malpicasoft.stock.Stock;
 import com.example.malpicasoft.usuario.Usuario;
 import com.example.malpicasoft.ventas.Ventas;
@@ -164,6 +165,8 @@ public class Proveedores extends AppCompatActivity implements NavigationView.OnN
 
         } else if(item.getItemId() == R.id.itemSalir) {
 
+            Intent intent = new Intent(Proveedores.this, Login.class);
+            startActivity(intent);
             finish();
         }
 

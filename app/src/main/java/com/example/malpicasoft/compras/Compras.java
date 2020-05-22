@@ -23,6 +23,7 @@ import com.example.malpicasoft.R;
 import com.example.malpicasoft.SlidePagerAdapter;
 import com.example.malpicasoft.clientes.Clientes;
 import com.example.malpicasoft.gastos.Gastos;
+import com.example.malpicasoft.login.Login;
 import com.example.malpicasoft.proveedores.Proveedores;
 import com.example.malpicasoft.stock.Stock;
 import com.example.malpicasoft.usuario.Usuario;
@@ -164,6 +165,8 @@ public class Compras extends AppCompatActivity implements NavigationView.OnNavig
 
         } else if(item.getItemId() == R.id.itemSalir) {
 
+            Intent intent = new Intent(Compras.this, Login.class);
+            startActivity(intent);
             finish();
         }
 

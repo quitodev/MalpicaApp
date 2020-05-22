@@ -4,15 +4,18 @@ import android.annotation.SuppressLint;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
 import android.os.Handler;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ScrollView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.Request;
@@ -48,6 +51,7 @@ public class ModificarClientes extends Fragment {
 
     public ModificarClientes() { }
 
+    @SuppressLint("ClickableViewAccessibility")
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -73,189 +77,283 @@ public class ModificarClientes extends Fragment {
         final EditText editContacto = root.findViewById(R.id.editContacto);
         final EditText editTipo = root.findViewById(R.id.editTipo);
 
+        final TextView textBuscarCodigo = root.findViewById(R.id.textBuscarCodigo);
+        final TextView textBuscarRazon = root.findViewById(R.id.textBuscarRazon);
+        final TextView textBuscarCuit = root.findViewById(R.id.textBuscarCuit);
+
         final Button buttonConsultar = root.findViewById(R.id.buttonConsultar);
         final Button buttonModificar = root.findViewById(R.id.buttonModificar);
         final Button buttonGuardar = root.findViewById(R.id.buttonGuardar);
 
         // EVENTOS DEL BOTÓN CONSULTAR
-        buttonConsultar.setOnClickListener(new View.OnClickListener() {
+        buttonConsultar.setOnTouchListener(new View.OnTouchListener() {
             @Override
-            public void onClick(View v) {
-                
-                buttonModificar.setVisibility(View.VISIBLE);
+            public boolean onTouch(View v, MotionEvent event) {
 
-                editCodigo.setFocusable(false);
-                editRazonSocial.setFocusable(false);
-                editCondicion.setFocusable(false);
-                editDescripcion.setFocusable(false);
-                editCuit.setFocusable(false);
-                editDireccion.setFocusable(false);
-                editLocalidad.setFocusable(false);
-                editContacto.setFocusable(false);
-                editTipo.setFocusable(false);
+                switch(event.getAction()) {
+                    case MotionEvent.ACTION_DOWN:
+                        buttonConsultar.setTextColor(ContextCompat.getColor(getContext(), R.color.colorTextSelected));
+                        buttonConsultar.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_search_yellow, 0, 0, 0);
 
-                editCodigo.setError(null);
-                editRazonSocial.setError(null);
-                editCondicion.setError(null);
-                editDescripcion.setError(null);
-                editCuit.setError(null);
-                editDireccion.setError(null);
-                editLocalidad.setError(null);
-                editContacto.setError(null);
-                editTipo.setError(null);
+                        buttonModificar.setVisibility(View.VISIBLE);
 
-                datoBuscarCodigo = editBuscarCodigo.getText().toString();
-                datoBuscarRazon = editBuscarRazon.getText().toString();
-                datoBuscarCuit = editBuscarCuit.getText().toString();
+                        editCodigo.setFocusable(false);
+                        editRazonSocial.setFocusable(false);
+                        editCondicion.setFocusable(false);
+                        editDescripcion.setFocusable(false);
+                        editCuit.setFocusable(false);
+                        editDireccion.setFocusable(false);
+                        editLocalidad.setFocusable(false);
+                        editContacto.setFocusable(false);
+                        editTipo.setFocusable(false);
 
-                // SI LOS CAMPOS NO ESTÁN VACÍOS, REALIZA LA CONSULTA CORRESPONDIENTE
-                if (!datoBuscarCodigo.isEmpty()) {
+                        editCodigo.setError(null);
+                        editRazonSocial.setError(null);
+                        editCondicion.setError(null);
+                        editDescripcion.setError(null);
+                        editCuit.setError(null);
+                        editDireccion.setError(null);
+                        editLocalidad.setError(null);
+                        editContacto.setError(null);
+                        editTipo.setError(null);
 
-                    dialogProcesando();
-                    consultarCodigo();
+                        datoBuscarCodigo = editBuscarCodigo.getText().toString();
+                        datoBuscarRazon = editBuscarRazon.getText().toString();
+                        datoBuscarCuit = editBuscarCuit.getText().toString();
+
+                        // SI LOS CAMPOS NO ESTÁN VACÍOS, REALIZA LA CONSULTA CORRESPONDIENTE
+                        if (!datoBuscarCodigo.isEmpty()) {
+
+                            dialogProcesando();
+                            consultarCodigo();
+                        }
+
+                        if (!datoBuscarRazon.isEmpty()) {
+
+                            dialogProcesando();
+                            consultarNombre();
+                        }
+
+                        if (!datoBuscarCuit.isEmpty()) {
+
+                            dialogProcesando();
+                            consultarCuit();
+                        }
+
+                        if (datoBuscarCodigo.isEmpty() && datoBuscarRazon.isEmpty() && datoBuscarCuit.isEmpty()) {
+
+                            // SI LOS CAMPOS ESTÁN VACÍOS, SE LIMPIAN LOS RESULTADOS ANTERIORES Y MUESTRA UN ERROR
+                            editCodigo.setText("");
+                            editRazonSocial.setText("");
+                            editCondicion.setText("");
+                            editDescripcion.setText("");
+                            editCuit.setText("");
+                            editDireccion.setText("");
+                            editLocalidad.setText("");
+                            editContacto.setText("");
+                            editTipo.setText("");
+
+                            dialogProcesando();
+                            dialogError();
+                        }
+                        break;
+
+                    case MotionEvent.ACTION_UP:
+                        buttonConsultar.setTextColor(ContextCompat.getColor(getContext(), R.color.colorAccent));
+                        buttonConsultar.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_search_orange, 0, 0, 0);
+                        break;
                 }
-
-                if (!datoBuscarRazon.isEmpty()) {
-
-                    dialogProcesando();
-                    consultarNombre();
-                }
-
-                if (!datoBuscarCuit.isEmpty()) {
-
-                    dialogProcesando();
-                    consultarCuit();
-                }
-
-                if (datoBuscarCodigo.isEmpty() && datoBuscarRazon.isEmpty() && datoBuscarCuit.isEmpty()) {
-
-                    // SI LOS CAMPOS ESTÁN VACÍOS, SE LIMPIAN LOS RESULTADOS ANTERIORES Y MUESTRA UN ERROR
-                    editCodigo.setText("");
-                    editRazonSocial.setText("");
-                    editCondicion.setText("");
-                    editDescripcion.setText("");
-                    editCuit.setText("");
-                    editDireccion.setText("");
-                    editLocalidad.setText("");
-                    editContacto.setText("");
-                    editTipo.setText("");
-
-                    dialogProcesando();
-                    dialogError();
-                }
+                return true;
             }
         });
 
         // EVENTOS DEL BOTÓN MODIFICAR
-        buttonModificar.setOnClickListener(new View.OnClickListener() {
+        buttonModificar.setOnTouchListener(new View.OnTouchListener() {
             @Override
-            public void onClick(View v) {
+            public boolean onTouch(View v, MotionEvent event) {
 
-                datoCodigo = editCodigo.getText().toString();
+                switch(event.getAction()) {
+                    case MotionEvent.ACTION_DOWN:
+                        buttonModificar.setTextColor(ContextCompat.getColor(getContext(), R.color.colorTextSelected));
+                        buttonModificar.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_edit_yellow, 0, 0, 0);
 
-                if(!datoCodigo.isEmpty()){
+                        datoCodigo = editCodigo.getText().toString();
 
-                    // SI DEVUELVE UNA FACTURA, HABILITA LOS CAMPOS PARA HACER MODIFICACIONES
-                    buttonModificar.setVisibility(View.INVISIBLE);
+                        if(!datoCodigo.isEmpty()){
 
-                    Drawable drawable = getResources().getDrawable(R.drawable.ic_check_green);
-                    drawable.setBounds(0, 0, drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight());
+                            // SI DEVUELVE UNA FACTURA, HABILITA LOS CAMPOS PARA HACER MODIFICACIONES
+                            buttonModificar.setVisibility(View.INVISIBLE);
 
-                    editRazonSocial.setError("Datos correctos!", drawable);
-                    editCondicion.setError("Datos correctos!", drawable);
-                    editDescripcion.setError("Datos correctos!", drawable);
-                    editCuit.setError("Datos correctos!", drawable);
-                    editDireccion.setError("Datos correctos!", drawable);
-                    editLocalidad.setError("Datos correctos!", drawable);
-                    editContacto.setError("Datos correctos!", drawable);
-                    editTipo.setError("Datos correctos!", drawable);
+                            Drawable drawable = getResources().getDrawable(R.drawable.ic_check_green);
+                            drawable.setBounds(0, 0, drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight());
 
-                    editCodigo.setFocusableInTouchMode(true);
-                    editRazonSocial.setFocusableInTouchMode(true);
-                    editCondicion.setFocusableInTouchMode(true);
-                    editDescripcion.setFocusableInTouchMode(true);
-                    editCuit.setFocusableInTouchMode(true);
-                    editDireccion.setFocusableInTouchMode(true);
-                    editLocalidad.setFocusableInTouchMode(true);
-                    editContacto.setFocusableInTouchMode(true);
-                    editTipo.setFocusableInTouchMode(true);
+                            editRazonSocial.setError("Datos correctos!", drawable);
+                            editCondicion.setError("Datos correctos!", drawable);
+                            editDescripcion.setError("Datos correctos!", drawable);
+                            editCuit.setError("Datos correctos!", drawable);
+                            editDireccion.setError("Datos correctos!", drawable);
+                            editLocalidad.setError("Datos correctos!", drawable);
+                            editContacto.setError("Datos correctos!", drawable);
+                            editTipo.setError("Datos correctos!", drawable);
 
-                    editCodigo.requestFocusFromTouch();
+                            editCodigo.setFocusableInTouchMode(true);
+                            editRazonSocial.setFocusableInTouchMode(true);
+                            editCondicion.setFocusableInTouchMode(true);
+                            editDescripcion.setFocusableInTouchMode(true);
+                            editCuit.setFocusableInTouchMode(true);
+                            editDireccion.setFocusableInTouchMode(true);
+                            editLocalidad.setFocusableInTouchMode(true);
+                            editContacto.setFocusableInTouchMode(true);
+                            editTipo.setFocusableInTouchMode(true);
 
-                    ScrollView scrollView = getView().findViewById(R.id.scroll);
-                    scrollView.setScrollY(0);
+                            editCodigo.requestFocusFromTouch();
+
+                            ScrollView scrollView = getView().findViewById(R.id.scroll);
+                            scrollView.setScrollY(0);
+                        }
+                        break;
+
+                    case MotionEvent.ACTION_UP:
+                        buttonModificar.setTextColor(ContextCompat.getColor(getContext(), R.color.colorAccent));
+                        buttonModificar.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_edit_orange, 0, 0, 0);
+                        break;
                 }
+                return true;
             }
         });
 
         // EVENTOS DEL BOTÓN GUARDAR
-        buttonGuardar.setOnClickListener(new View.OnClickListener() {
+        buttonGuardar.setOnTouchListener(new View.OnTouchListener() {
             @Override
-            public void onClick(View v) {
+            public boolean onTouch(View v, MotionEvent event) {
 
-                datoBuscarCodigo = editBuscarCodigo.getText().toString();
-                datoBuscarRazon = editBuscarRazon.getText().toString();
-                datoBuscarCuit = editBuscarCuit.getText().toString();
-                datoCodigo = editCodigo.getText().toString();
-                datoRazonSocial = editRazonSocial.getText().toString();
-                datoCondicion = editCondicion.getText().toString();
-                datoDescripcion = editDescripcion.getText().toString();
-                datoCuit = editCuit.getText().toString();
-                datoDireccion = editDireccion.getText().toString();
-                datoLocalidad = editLocalidad.getText().toString();
-                datoContacto = editContacto.getText().toString();
-                datoTipo = editTipo.getText().toString();
+                switch(event.getAction()) {
+                    case MotionEvent.ACTION_DOWN:
+                        buttonGuardar.setTextColor(ContextCompat.getColor(getContext(), R.color.colorTextSelected));
+                        buttonGuardar.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_save_yellow, 0, 0, 0);
 
-                editCodigo.setFocusable(false);
-                editRazonSocial.setFocusable(false);
-                editCondicion.setFocusable(false);
-                editDescripcion.setFocusable(false);
-                editCuit.setFocusable(false);
-                editDireccion.setFocusable(false);
-                editLocalidad.setFocusable(false);
-                editContacto.setFocusable(false);
-                editTipo.setFocusable(false);
+                        datoBuscarCodigo = editBuscarCodigo.getText().toString();
+                        datoBuscarRazon = editBuscarRazon.getText().toString();
+                        datoBuscarCuit = editBuscarCuit.getText().toString();
+                        datoCodigo = editCodigo.getText().toString();
+                        datoRazonSocial = editRazonSocial.getText().toString();
+                        datoCondicion = editCondicion.getText().toString();
+                        datoDescripcion = editDescripcion.getText().toString();
+                        datoCuit = editCuit.getText().toString();
+                        datoDireccion = editDireccion.getText().toString();
+                        datoLocalidad = editLocalidad.getText().toString();
+                        datoContacto = editContacto.getText().toString();
+                        datoTipo = editTipo.getText().toString();
 
-                if (editCodigo.getError() == "Datos correctos!"
-                        && editRazonSocial.getError() == "Datos correctos!"
-                        && editCondicion.getError() == "Datos correctos!"
-                        && editDescripcion.getError() == "Datos correctos!"
-                        && editCuit.getError() == "Datos correctos!"
-                        && editDireccion.getError() == "Datos correctos!"
-                        && editLocalidad.getError() == "Datos correctos!"
-                        && editContacto.getError() == "Datos correctos!"
-                        && editTipo.getError() == "Datos correctos!") {
+                        editCodigo.setFocusable(false);
+                        editRazonSocial.setFocusable(false);
+                        editCondicion.setFocusable(false);
+                        editDescripcion.setFocusable(false);
+                        editCuit.setFocusable(false);
+                        editDireccion.setFocusable(false);
+                        editLocalidad.setFocusable(false);
+                        editContacto.setFocusable(false);
+                        editTipo.setFocusable(false);
 
-                    // SI TODOS LOS DATOS ESTÁN OK, PASA A REGISTRARLO
-                    editTipo.requestFocusFromTouch();
-                    editTipo.setError(null);
+                        if (editCodigo.getError() == "Datos correctos!"
+                                && editRazonSocial.getError() == "Datos correctos!"
+                                && editCondicion.getError() == "Datos correctos!"
+                                && editDescripcion.getError() == "Datos correctos!"
+                                && editCuit.getError() == "Datos correctos!"
+                                && editDireccion.getError() == "Datos correctos!"
+                                && editLocalidad.getError() == "Datos correctos!"
+                                && editContacto.getError() == "Datos correctos!"
+                                && editTipo.getError() == "Datos correctos!") {
 
-                    dialogProcesando();
-                    modificarCliente();
+                            // SI TODOS LOS DATOS ESTÁN OK, PASA A REGISTRARLO
+                            editTipo.requestFocusFromTouch();
+                            editTipo.setError(null);
 
-                } else {
+                            dialogProcesando();
+                            modificarCliente();
 
-                    // SI ALGÚN DATO ES INCORRECTO, MUESTRA UN MENSAJE DE ERROR
-                    editTipo.requestFocusFromTouch();
-                    editTipo.setError(null);
+                        } else {
 
-                    dialogProcesando();
-                    dialogError();
+                            // SI ALGÚN DATO ES INCORRECTO, MUESTRA UN MENSAJE DE ERROR
+                            editTipo.requestFocusFromTouch();
+                            editTipo.setError(null);
 
-                    editCodigo.setFocusableInTouchMode(true);
-                    editRazonSocial.setFocusableInTouchMode(true);
-                    editCondicion.setFocusableInTouchMode(true);
-                    editDescripcion.setFocusableInTouchMode(true);
-                    editCuit.setFocusableInTouchMode(true);
-                    editDireccion.setFocusableInTouchMode(true);
-                    editLocalidad.setFocusableInTouchMode(true);
-                    editContacto.setFocusableInTouchMode(true);
-                    editTipo.setFocusableInTouchMode(true);
+                            dialogProcesando();
+                            dialogError();
+
+                            editCodigo.setFocusableInTouchMode(true);
+                            editRazonSocial.setFocusableInTouchMode(true);
+                            editCondicion.setFocusableInTouchMode(true);
+                            editDescripcion.setFocusableInTouchMode(true);
+                            editCuit.setFocusableInTouchMode(true);
+                            editDireccion.setFocusableInTouchMode(true);
+                            editLocalidad.setFocusableInTouchMode(true);
+                            editContacto.setFocusableInTouchMode(true);
+                            editTipo.setFocusableInTouchMode(true);
+                        }
+                        break;
+
+                    case MotionEvent.ACTION_UP:
+                        buttonGuardar.setTextColor(ContextCompat.getColor(getContext(), R.color.colorAccent));
+                        buttonGuardar.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_save_orange, 0, 0, 0);
+                        break;
                 }
+                return true;
             }
         });
 
         // EVENTOS AL CAMBIAR DE CAMPOS
+        editBuscarCodigo.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View view, boolean hasFocus) {
+                if (!hasFocus) {
+
+                    // SI SALE DEL CAMPO, RECUPERA COLOR DE TEXTO
+                    textBuscarCodigo.setTextColor(ContextCompat.getColor(getContext(), R.color.colorText));
+
+                } else {
+
+                    // SI INGRESA AL CAMPO, CAMBIA COLOR DE TEXTO Y ELIMINA LOS DATOS INGRESADOS EN LOS OTROS CAMPOS
+                    textBuscarCodigo.setTextColor(ContextCompat.getColor(getContext(), R.color.colorTextSelected));
+                    editBuscarRazon.setText("");
+                    editBuscarCuit.setText("");
+                }
+            }
+        });
+        editBuscarRazon.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View view, boolean hasFocus) {
+                if (!hasFocus) {
+
+                    // SI SALE DEL CAMPO, RECUPERA COLOR DE TEXTO
+                    textBuscarRazon.setTextColor(ContextCompat.getColor(getContext(), R.color.colorText));
+
+                } else {
+
+                    // SI INGRESA AL CAMPO, CAMBIA COLOR DE TEXTO Y ELIMINA LOS DATOS INGRESADOS EN LOS OTROS CAMPOS
+                    textBuscarRazon.setTextColor(ContextCompat.getColor(getContext(), R.color.colorTextSelected));
+                    editBuscarCodigo.setText("");
+                    editBuscarCuit.setText("");
+                }
+            }
+        });
+        editBuscarCuit.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View view, boolean hasFocus) {
+                if (!hasFocus) {
+
+                    // SI SALE DEL CAMPO, RECUPERA COLOR DE TEXTO
+                    textBuscarCuit.setTextColor(ContextCompat.getColor(getContext(), R.color.colorText));
+
+                } else {
+
+                    // SI INGRESA AL CAMPO, CAMBIA COLOR DE TEXTO Y ELIMINA LOS DATOS INGRESADOS EN LOS OTROS CAMPOS
+                    textBuscarCuit.setTextColor(ContextCompat.getColor(getContext(), R.color.colorTextSelected));
+                    editBuscarCodigo.setText("");
+                    editBuscarRazon.setText("");
+                }
+            }
+        });
         editCodigo.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View view, boolean hasFocus) {
