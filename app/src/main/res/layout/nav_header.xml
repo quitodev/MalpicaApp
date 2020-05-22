@@ -14,7 +14,7 @@
         android:layout_marginLeft="10dp"
         android:layout_marginTop="35dp"
         android:contentDescription="@string/componentes"
-        app:srcCompat="@drawable/app_logo" />
+        app:srcCompat="@drawable/app_logo"/>
 
     <TextView
         android:id="@+id/textUser"
@@ -26,7 +26,7 @@
         android:fontFamily="sans-serif-condensed-light"
         android:text="@string/nav_header_user"
         android:textColor="#AEAEAE"
-        android:textSize="20sp" />
+        android:textSize="20sp"/>
 
     <TextView
         android:id="@+id/textHour"
@@ -38,5 +38,5 @@
         android:fontFamily="sans-serif-condensed-light"
         android:text="@string/nav_header_date"
         android:textColor="#AEAEAE"
-        android:textSize="16sp" />
+        android:textSize="16sp"/>
 </RelativeLayout>

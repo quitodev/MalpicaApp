@@ -46,7 +46,7 @@
                 android:gravity="center_horizontal"
                 android:text="@string/clientes_consultar"
                 android:textColor="@color/colorAccent"
-                android:textSize="24sp" />
+                android:textSize="24sp"/>
 
             <TextView
                 android:id="@+id/textBuscarCodigo"
@@ -66,7 +66,7 @@
                 android:fontFamily="sans-serif-light"
                 android:text="@string/buscar_codigo"
                 android:textColor="@color/colorText"
-                android:textSize="18sp" />
+                android:textSize="18sp"/>
 
             <EditText
                 android:id="@+id/editBuscarCodigo"
@@ -89,7 +89,7 @@
                 android:textColorHint="@color/colorTextHint"
                 android:textColor="@color/colorText"
                 android:textSize="18sp"
-                tools:ignore="Autofill" />
+                tools:ignore="Autofill"/>
 
             <TextView
                 android:id="@+id/textBuscarRazon"
@@ -109,7 +109,7 @@
                 android:fontFamily="sans-serif-light"
                 android:text="@string/buscar_razon_social"
                 android:textColor="@color/colorText"
-                android:textSize="18sp" />
+                android:textSize="18sp"/>
 
             <EditText
                 android:id="@+id/editBuscarRazon"
@@ -132,7 +132,7 @@
                 android:textColorHint="@color/colorTextHint"
                 android:textColor="@color/colorText"
                 android:textSize="18sp"
-                tools:ignore="Autofill" />
+                tools:ignore="Autofill"/>
 
             <TextView
                 android:id="@+id/textBuscarCuit"
@@ -152,7 +152,7 @@
                 android:fontFamily="sans-serif-light"
                 android:text="@string/buscar_cuit"
                 android:textColor="@color/colorText"
-                android:textSize="18sp" />
+                android:textSize="18sp"/>
 
             <EditText
                 android:id="@+id/editBuscarCuit"
@@ -175,7 +175,7 @@
                 android:textColorHint="@color/colorTextHint"
                 android:textColor="@color/colorText"
                 android:textSize="18sp"
-                tools:ignore="Autofill" />
+                tools:ignore="Autofill"/>
 
             <Button
                 android:id="@+id/buttonConsultar"
@@ -191,7 +191,7 @@
                 android:text="@string/consultar_datos"
                 android:textColor="@color/colorAccent"
                 android:textSize="16sp"
-                tools:ignore="RtlHardcoded,RtlSymmetry" />
+                tools:ignore="RtlHardcoded,RtlSymmetry"/>
 
             <View
                 android:id="@+id/divider1"
@@ -207,7 +207,7 @@
                 android:layout_marginTop="40dp"
                 android:layout_marginEnd="31dp"
                 android:layout_marginRight="31dp"
-                android:background="@color/colorAccent" />
+                android:background="@color/colorAccent"/>
 
             <TextView
                 android:id="@+id/textResultados"
@@ -227,7 +227,7 @@
                 android:fontFamily="sans-serif-light"
                 android:text="@string/resultados"
                 android:textColor="@color/colorAccent"
-                android:textSize="20sp" />
+                android:textSize="20sp"/>
 
             <TextView
                 android:id="@+id/textFechaAlta"
@@ -246,7 +246,7 @@
                 android:fontFamily="sans-serif-light"
                 android:text="@string/fecha_alta"
                 android:textColor="@color/colorAccent"
-                android:textSize="16sp" />
+                android:textSize="16sp"/>
 
             <EditText
                 android:id="@+id/editFechaAlta"
@@ -271,7 +271,7 @@
                 android:textColorHint="@color/colorTextHint"
                 android:textColor="@color/colorText"
                 android:textSize="18sp"
-                tools:ignore="Autofill" />
+                tools:ignore="Autofill"/>
 
             <TextView
                 android:id="@+id/textFechaModif"
@@ -290,7 +290,7 @@
                 android:fontFamily="sans-serif-light"
                 android:text="@string/fecha_modif"
                 android:textColor="@color/colorAccent"
-                android:textSize="16sp" />
+                android:textSize="16sp"/>
 
             <EditText
                 android:id="@+id/editFechaModif"
@@ -315,7 +315,7 @@
                 android:textColorHint="@color/colorTextHint"
                 android:textColor="@color/colorText"
                 android:textSize="18sp"
-                tools:ignore="Autofill" />
+                tools:ignore="Autofill"/>
 
             <TextView
                 android:id="@+id/textCodigo"
@@ -334,7 +334,7 @@
                 android:fontFamily="sans-serif-light"
                 android:text="@string/codigo"
                 android:textColor="@color/colorAccent"
-                android:textSize="16sp" />
+                android:textSize="16sp"/>
 
             <EditText
                 android:id="@+id/editCodigo"
@@ -359,7 +359,7 @@
                 android:textColorHint="@color/colorTextHint"
                 android:textColor="@color/colorText"
                 android:textSize="18sp"
-                tools:ignore="Autofill" />
+                tools:ignore="Autofill"/>
 
             <TextView
                 android:id="@+id/textRazonSocial"
@@ -378,7 +378,7 @@
                 android:fontFamily="sans-serif-light"
                 android:text="@string/razon_social"
                 android:textColor="@color/colorAccent"
-                android:textSize="16sp" />
+                android:textSize="16sp"/>
 
             <EditText
                 android:id="@+id/editRazonSocial"
@@ -403,7 +403,7 @@
                 android:textColorHint="@color/colorTextHint"
                 android:textColor="@color/colorText"
                 android:textSize="18sp"
-                tools:ignore="Autofill" />
+                tools:ignore="Autofill"/>
 
             <TextView
                 android:id="@+id/textCondicion"
@@ -422,7 +422,7 @@
                 android:fontFamily="sans-serif-light"
                 android:text="@string/condicion"
                 android:textColor="@color/colorAccent"
-                android:textSize="16sp" />
+                android:textSize="16sp"/>
 
             <EditText
                 android:id="@+id/editCondicion"
@@ -447,7 +447,7 @@
                 android:textColorHint="@color/colorTextHint"
                 android:textColor="@color/colorText"
                 android:textSize="18sp"
-                tools:ignore="Autofill" />
+                tools:ignore="Autofill"/>
 
             <TextView
                 android:id="@+id/textDescripcion"
@@ -466,7 +466,7 @@
                 android:fontFamily="sans-serif-light"
                 android:text="@string/descripcion"
                 android:textColor="@color/colorAccent"
-                android:textSize="16sp" />
+                android:textSize="16sp"/>
 
             <EditText
                 android:id="@+id/editDescripcion"
@@ -491,7 +491,7 @@
                 android:textColorHint="@color/colorTextHint"
                 android:textColor="@color/colorText"
                 android:textSize="18sp"
-                tools:ignore="Autofill" />
+                tools:ignore="Autofill"/>
 
             <TextView
                 android:id="@+id/textCuit"
@@ -510,7 +510,7 @@
                 android:fontFamily="sans-serif-light"
                 android:text="@string/cuit"
                 android:textColor="@color/colorAccent"
-                android:textSize="16sp" />
+                android:textSize="16sp"/>
 
             <EditText
                 android:id="@+id/editCuit"
@@ -535,7 +535,7 @@
                 android:textColorHint="@color/colorTextHint"
                 android:textColor="@color/colorText"
                 android:textSize="18sp"
-                tools:ignore="Autofill" />
+                tools:ignore="Autofill"/>
 
             <TextView
                 android:id="@+id/textDireccion"
@@ -554,7 +554,7 @@
                 android:fontFamily="sans-serif-light"
                 android:text="@string/direccion"
                 android:textColor="@color/colorAccent"
-                android:textSize="16sp" />
+                android:textSize="16sp"/>
 
             <EditText
                 android:id="@+id/editDireccion"
@@ -579,7 +579,7 @@
                 android:textColorHint="@color/colorTextHint"
                 android:textColor="@color/colorText"
                 android:textSize="18sp"
-                tools:ignore="Autofill" />
+                tools:ignore="Autofill"/>
 
             <TextView
                 android:id="@+id/textLocalidad"
@@ -598,7 +598,7 @@
                 android:fontFamily="sans-serif-light"
                 android:text="@string/localidad"
                 android:textColor="@color/colorAccent"
-                android:textSize="16sp" />
+                android:textSize="16sp"/>
 
             <EditText
                 android:id="@+id/editLocalidad"
@@ -623,7 +623,7 @@
                 android:textColorHint="@color/colorTextHint"
                 android:textColor="@color/colorText"
                 android:textSize="18sp"
-                tools:ignore="Autofill" />
+                tools:ignore="Autofill"/>
 
             <TextView
                 android:id="@+id/textContacto"
@@ -642,7 +642,7 @@
                 android:fontFamily="sans-serif-light"
                 android:text="@string/contacto"
                 android:textColor="@color/colorAccent"
-                android:textSize="16sp" />
+                android:textSize="16sp"/>
 
             <EditText
                 android:id="@+id/editContacto"
@@ -667,7 +667,7 @@
                 android:textColorHint="@color/colorTextHint"
                 android:textColor="@color/colorText"
                 android:textSize="18sp"
-                tools:ignore="Autofill" />
+                tools:ignore="Autofill"/>
 
             <TextView
                 android:id="@+id/textTipo"
@@ -686,7 +686,7 @@
                 android:fontFamily="sans-serif-light"
                 android:text="@string/tipo_cliente"
                 android:textColor="@color/colorAccent"
-                android:textSize="16sp" />
+                android:textSize="16sp"/>
 
             <EditText
                 android:id="@+id/editTipo"
@@ -711,7 +711,7 @@
                 android:textColorHint="@color/colorTextHint"
                 android:textColor="@color/colorText"
                 android:textSize="18sp"
-                tools:ignore="Autofill" />
+                tools:ignore="Autofill"/>
 
             <EditText
                 android:id="@+id/editVacio"
@@ -725,7 +725,7 @@
                 android:hint="@string/componentes"
                 android:inputType="textPersonName"
                 android:text=""
-                tools:ignore="Autofill" />
+                tools:ignore="Autofill"/>
 
         </RelativeLayout>
     </ScrollView>

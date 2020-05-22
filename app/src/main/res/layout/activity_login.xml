@@ -10,20 +10,20 @@
 
     <ImageView
         android:id="@+id/imageBack"
-        android:layout_width="wrap_content"
-        android:layout_height="675dp"
+        android:layout_width="379dp"
+        android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
         android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
         android:layout_alignParentBottom="true"
-        android:layout_centerInParent="true"
-        android:layout_marginStart="11dp"
-        android:layout_marginLeft="20dp"
+        android:layout_centerVertical="true"
+        android:layout_marginStart="16dp"
+        android:layout_marginLeft="16dp"
         android:layout_marginTop="22dp"
-        android:layout_marginEnd="14dp"
-        android:layout_marginRight="14dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginRight="16dp"
         android:layout_marginBottom="22dp"
         android:contentDescription="@string/componentes"
         app:srcCompat="@drawable/app_cuadro"
@@ -38,7 +38,7 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="55dp"
         android:contentDescription="@string/componentes"
-        app:srcCompat="@drawable/app_logo" />
+        app:srcCompat="@drawable/app_logo"/>
 
     <EditText
         android:id="@+id/editUser"
@@ -50,14 +50,14 @@
         android:background="@drawable/app_campos"
         android:drawableLeft="@drawable/ic_user_grey"
         android:drawablePadding="10dp"
-                android:fontFamily="sans-serif-condensed-light"
+        android:fontFamily="sans-serif-condensed-light"
         android:hint="@string/login_user"
         android:inputType="textPersonName"
         android:paddingLeft="15dp"
         android:text="@string/login_user"
         android:textColor="@color/colorTextHint"
         android:textSize="20sp"
-        tools:ignore="Autofill,RtlHardcoded,RtlSymmetry" />
+        tools:ignore="Autofill,RtlHardcoded,RtlSymmetry"/>
 
     <EditText
         android:id="@+id/editPass"
@@ -69,14 +69,14 @@
         android:background="@drawable/app_campos"
         android:drawableLeft="@drawable/ic_pass_grey"
         android:drawablePadding="10dp"
-                android:fontFamily="sans-serif-condensed-light"
+        android:fontFamily="sans-serif-condensed-light"
         android:hint="@string/login_pass"
         android:inputType="textPassword"
         android:paddingLeft="15dp"
         android:text="@string/login_pass"
         android:textColor="@color/colorTextHint"
         android:textSize="20sp"
-        tools:ignore="Autofill,RtlHardcoded,RtlSymmetry" />
+        tools:ignore="Autofill,RtlHardcoded,RtlSymmetry"/>
 
     <Button
         android:id="@+id/buttonLogin"
@@ -90,7 +90,7 @@
         android:fontFamily="sans-serif-condensed-light"
         android:text="@string/login_iniciar"
         android:textColor="@color/colorAccent"
-        android:textSize="18sp" />
+        android:textSize="18sp"/>
 
     <TextView
         android:id="@+id/textHelp"
@@ -104,7 +104,7 @@
         android:textColor="@color/colorAccent"
         android:textSize="18sp"
         tools:layout_editor_absoluteX="133dp"
-        tools:layout_editor_absoluteY="549dp" />
+        tools:layout_editor_absoluteY="549dp"/>
 
     <TextView
         android:id="@+id/textVersion"
@@ -118,6 +118,6 @@
         android:textColor="@color/colorTextHint"
         android:textSize="18sp"
         tools:layout_editor_absoluteX="162dp"
-        tools:layout_editor_absoluteY="597dp" />
+        tools:layout_editor_absoluteY="597dp"/>
 
 </RelativeLayout>

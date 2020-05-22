@@ -18,7 +18,7 @@
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/app_confirm" />
+        app:srcCompat="@drawable/app_confirm"/>
 
     <TextView
         android:id="@+id/textEliminar"
@@ -31,7 +31,7 @@
         android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageEliminar" />
+        app:layout_constraintTop_toBottomOf="@+id/imageEliminar"/>
 
     <TextView
         android:id="@+id/textEliminar1"
@@ -44,7 +44,7 @@
         android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textEliminar" />
+        app:layout_constraintTop_toBottomOf="@+id/textEliminar"/>
 
     <Button
         android:id="@+id/buttonContinuar"
@@ -58,6 +58,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textEliminar1" />
+        app:layout_constraintTop_toBottomOf="@+id/textEliminar1"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

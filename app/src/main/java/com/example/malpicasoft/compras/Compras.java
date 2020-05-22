@@ -14,9 +14,11 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.malpicasoft.AdminSQLiteOpenHelper;
 import com.example.malpicasoft.R;
@@ -170,6 +172,25 @@ public class Compras extends AppCompatActivity implements NavigationView.OnNavig
             finish();
         }
 
+        return false;
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+
+        // INFLA MENÚ DE TOOLBAR
+        getMenuInflater().inflate(R.menu.toolbar_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+
+        // TOAST CON MENSAJE DE AYUDA
+        if(item.getItemId() == R.id.itemAyuda) {
+            Toast.makeText(this,"Por favor, envíenos un correo electrónico a malpica-soft@outlook.com y le " +
+                    "responderemos a la brevedad!", Toast.LENGTH_LONG).show();
+        }
         return false;
     }
 }

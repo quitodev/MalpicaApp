@@ -16,7 +16,8 @@
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:titleTextColor="@color/colorPrimaryDark" />
+        app:titleTextColor="@color/colorPrimaryDark"
+        app:menu="@menu/toolbar_menu"/>
 
     <androidx.viewpager.widget.ViewPager
         android:id="@+id/viewPager"
@@ -24,7 +25,7 @@
         android:layout_height="673dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/toolbar" />
+        app:layout_constraintTop_toBottomOf="@+id/toolbar"/>
 
     <TextView
         android:id="@+id/textTitle"
@@ -38,7 +39,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.583"
         app:layout_constraintStart_toStartOf="@+id/toolbar"
-        app:layout_constraintTop_toTopOf="@+id/toolbar" />
+        app:layout_constraintTop_toTopOf="@+id/toolbar"/>
 
     <ImageView
         android:id="@+id/imageLogo"
@@ -52,6 +53,6 @@
         app:layout_constraintHorizontal_bias="0.807"
         app:layout_constraintStart_toStartOf="@+id/toolbar"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/app_logo" />
+        app:srcCompat="@drawable/app_logo"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

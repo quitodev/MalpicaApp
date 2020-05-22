@@ -454,7 +454,7 @@ public class ModificarProveedores extends Fragment {
                 } else {
 
                     // SI INGRESA AL CAMPO, MUESTRA UN DIALOG CON INFORMACIÓN RELEVANTE
-                    Drawable drawable = getResources().getDrawable(R.drawable.ic_help);
+                    Drawable drawable = getResources().getDrawable(R.drawable.ic_info);
                     drawable.setBounds(0, 0, drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight());
                     editCondicion.setError("RI (Resp. Inscripto)\nMT (Resp. Mono.)\nCF (Cons. Final)", drawable);
                 }
@@ -635,7 +635,7 @@ public class ModificarProveedores extends Fragment {
                 } else {
 
                     // SI INGRESA AL CAMPO, MUESTRA UN DIALOG CON INFORMACIÓN RELEVANTE
-                    Drawable drawable = getResources().getDrawable(R.drawable.ic_help);
+                    Drawable drawable = getResources().getDrawable(R.drawable.ic_info);
                     drawable.setBounds(0, 0, drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight());
                     editTipo.setError("FRECUENTE O ESPORÁDICO", drawable);
                 }

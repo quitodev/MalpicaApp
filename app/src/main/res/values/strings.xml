@@ -40,6 +40,7 @@
     <string name="menu_clientes">Clientes</string>
     <string name="menu_proveedores">Proveedores</string>
     <string name="menu_salir">Salir</string>
+    <string name="menu_ayuda">Ayuda</string>
 
     <!-- LOGIN -->
     <string name="login_user">Usuario</string>

@@ -17,7 +17,7 @@
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/app_dialog_error" />
+        app:srcCompat="@drawable/app_dialog_error"/>
 
     <TextView
         android:id="@+id/textError"
@@ -30,6 +30,6 @@
         android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageError" />
+        app:layout_constraintTop_toBottomOf="@+id/imageError"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -5,33 +5,34 @@
     <item
         android:id="@+id/itemInicio"
         android:icon="@drawable/ic_home"
-        android:title="@string/menu_inicio" />
+        android:title="@string/menu_inicio"/>
     <item
         android:id="@+id/itemStock"
         android:icon="@drawable/ic_check_items"
-        android:title="@string/menu_stock" />
+        android:title="@string/menu_stock"/>
     <item
         android:id="@+id/itemCompras"
         android:icon="@drawable/ic_check_items"
-        android:title="@string/menu_compras" />
+        android:title="@string/menu_compras"/>
     <item
         android:id="@+id/itemVentas"
         android:icon="@drawable/ic_check_items"
-        android:title="@string/menu_ventas" />
+        android:title="@string/menu_ventas"/>
     <item
         android:id="@+id/itemGastos"
         android:icon="@drawable/ic_check_items"
-        android:title="@string/menu_gastos" />
+        android:title="@string/menu_gastos"/>
     <item
         android:id="@+id/itemClientes"
         android:icon="@drawable/ic_check_items"
-        android:title="@string/menu_clientes" />
+        android:title="@string/menu_clientes"/>
     <item
         android:id="@+id/itemProveedores"
         android:icon="@drawable/ic_check_items"
-        android:title="@string/menu_proveedores" />
+        android:title="@string/menu_proveedores"/>
     <item
         android:id="@+id/itemSalir"
         android:icon="@drawable/ic_exit"
-        android:title="@string/menu_salir" />
+        android:title="@string/menu_salir"/>
+
 </menu>
