@@ -121,7 +121,7 @@ public class IngresarVentas extends Fragment {
                             editPrecioTotal.setError(null);
 
                             dialogProcesando();
-                            consultarFactura();
+                            consultarClienteBis();
 
                         } else {
 
@@ -143,6 +143,8 @@ public class IngresarVentas extends Fragment {
                             editPrecioUnit.setFocusableInTouchMode(true);
                             editImpuestos.setFocusableInTouchMode(true);
                             editPrecioTotal.setFocusableInTouchMode(true);
+
+                            editPrecioTotal.requestFocusFromTouch();
                         }
                         break;
 
@@ -195,9 +197,9 @@ public class IngresarVentas extends Fragment {
 
                     if (datoNroFactura.length() == 15 && datoNroFactura.contains("-")) {
 
-                        Drawable drawable = getResources().getDrawable(R.drawable.ic_check_green);
-                        drawable.setBounds(0, 0, drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight());
-                        editNroFactura.setError("Datos correctos!", drawable);
+                        // CONSULTA SI LA FACTURA YA FUE INGRESADA
+                        dialogProcesando();
+                        consultarFactura();
 
                     } else {
 
@@ -763,10 +765,66 @@ public class IngresarVentas extends Fragment {
         }, 3000);
     }
 
+    private void consultarFactura() {
+
+        // CONSULTA SI LA FACTURA YA FUE INGRESADA EN LA BASE DE DATOS ANTERIORMENTE
+        String URL = "http://malpica.atwebpages.com/malpica/ventas/ventas_consultar_factura.php?parameter=" + datoNroFactura;
+        jsonObjectRequest = new JsonObjectRequest(Request.Method.GET,URL,null,
+                new Response.Listener<JSONObject>() {
+
+                    @Override
+                    public void onResponse(JSONObject response) {
+
+                        try {
+                            JSONArray jsonArray = response.getJSONArray("data");
+
+                            // RECORRE EL ARRAY DE JSON CON LA CONSULTA Y CON UN SETTER & GETTER MUESTRA LOS RESULTADOS
+                            for (int i = 0; i < jsonArray.length(); i++) {
+
+                                JSONObject jsonObject = jsonArray.getJSONObject(i);
+                                VentasSetters setters = new VentasSetters();
+
+                                setters.setNroFactura(jsonObject.getString("nro_factura"));
+
+                                String nroFactura = setters.getNroFactura();
+
+                                if(nroFactura.equals(datoNroFactura)){
+
+                                    // SI DEVUELVE LA FACTURA, MUESTRA UN ERROR DE FACTURA YA CARGADA
+                                    dialogErrorFactura();
+
+                                    Drawable drawable = getResources().getDrawable(R.drawable.ic_error);
+                                    drawable.setBounds(0, 0, drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight());
+                                    EditText editNroFactura = getView().findViewById(R.id.editNroFactura);
+                                    editNroFactura.setError("Revise los datos!", drawable);
+
+                                } else {
+
+                                    // SI NO DEVUELVE LA FACTURA, VALIDA EL CAMPO
+                                    Drawable drawable = getResources().getDrawable(R.drawable.ic_check_green);
+                                    drawable.setBounds(0, 0, drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight());
+                                    EditText editNroFactura = getView().findViewById(R.id.editNroFactura);
+                                    editNroFactura.setError("Datos correctos!", drawable);
+                                }
+                            }
+
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }, new Response.ErrorListener() {
+
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(getContext(), "Por favor, revise su conexión!", Toast.LENGTH_SHORT).show();
+            }
+        });
+        requestQueue.add(jsonObjectRequest);
+    }
+
     private void consultarCliente() {
 
         // CONSULTA POR CÓDIGO DE CLIENTE SI YA FUE INGRESADO PARA OBTENER EL RESTO DE LOS DATOS
-        String URL = "http://malpicas.heliohost.org/malpica/ventas/ventas_consultar_cliente.php?parameter=" + datoCodigo;
+        String URL = "http://malpica.atwebpages.com/malpica/ventas/ventas_consultar_cliente.php?parameter=" + datoCodigo;
         jsonObjectRequest = new JsonObjectRequest(Request.Method.GET,URL,null,
                 new Response.Listener<JSONObject>() {
 
@@ -824,7 +882,7 @@ public class IngresarVentas extends Fragment {
     private void consultarProducto() {
 
         // CONSULTA POR CÓDIGO DE PRODUCTO SI YA FUE INGRESADO PARA OBTENER EL RESTO DE LOS DATOS
-        String URL = "http://malpicas.heliohost.org/malpica/ventas/ventas_consultar_producto.php?parameter=" + datoCodigoStock;
+        String URL = "http://malpica.atwebpages.com/malpica/ventas/ventas_consultar_producto.php?parameter=" + datoCodigoStock;
         jsonObjectRequest = new JsonObjectRequest(Request.Method.GET,URL,null,
                 new Response.Listener<JSONObject>() {
 
@@ -882,60 +940,10 @@ public class IngresarVentas extends Fragment {
         requestQueue.add(jsonObjectRequest);
     }
 
-    private void consultarFactura() {
-
-        // CONSULTA SI LA FACTURA YA FUE INGRESADA EN LA BASE DE DATOS ANTERIORMENTE
-        String URL = "http://malpicas.heliohost.org/malpica/ventas/ventas_consultar_factura.php?parameter=" + datoNroFactura;
-        jsonObjectRequest = new JsonObjectRequest(Request.Method.GET,URL,null,
-                new Response.Listener<JSONObject>() {
-
-                    @Override
-                    public void onResponse(JSONObject response) {
-
-                        try {
-                            JSONArray jsonArray = response.getJSONArray("data");
-
-                            // RECORRE EL ARRAY DE JSON CON LA CONSULTA Y CON UN SETTER & GETTER MUESTRA LOS RESULTADOS
-                            for (int i = 0; i < jsonArray.length(); i++) {
-
-                                JSONObject jsonObject = jsonArray.getJSONObject(i);
-                                VentasSetters setters = new VentasSetters();
-
-                                setters.setNroFactura(jsonObject.getString("nro_factura"));
-
-                                String nroFactura = setters.getNroFactura();
-
-                                if(nroFactura.equals(datoNroFactura)){
-
-                                    // SI DEVUELVE LA FACTURA, MUESTRA UN ERROR DE FACTURA YA CARGADA
-                                    dialogProcesando();
-                                    dialogErrorFactura();
-
-                                } else {
-
-                                    // SI NO DEVUELVE LA FACTURA, CONTINÚA CON LA CARGA
-                                    dialogProcesando();
-                                    consultarClienteBis();
-                                }
-                            }
-
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                }, new Response.ErrorListener() {
-
-            public void onErrorResponse(VolleyError error) {
-                Toast.makeText(getContext(), "Por favor, revise su conexión!", Toast.LENGTH_SHORT).show();
-            }
-        });
-        requestQueue.add(jsonObjectRequest);
-    }
-
     private void consultarClienteBis() {
 
         // CONSULTA EL CLIENTE DE VUELTA PARA VER SI SE ENCUENTRA O NO EN LA TABLA DE CLIENTES
-        String URL = "http://malpicas.heliohost.org/malpica/ventas/ventas_consultar_cliente.php?parameter=" + datoCodigo;
+        String URL = "http://malpica.atwebpages.com/malpica/ventas/ventas_consultar_cliente.php?parameter=" + datoCodigo;
         jsonObjectRequest = new JsonObjectRequest(Request.Method.GET,URL,null,
                 new Response.Listener<JSONObject>() {
 
@@ -986,7 +994,7 @@ public class IngresarVentas extends Fragment {
     private void registrarCliente() {
 
         // REGISTRA EL CLIENTE EN CASO DE NO HABER SIDO DADO DE ALTA ANTERIORMENTE CON LOS DATOS BÁSICOS
-        String URL = "http://malpicas.heliohost.org/malpica/ventas/ventas_ingresar_cliente.php";
+        String URL = "http://malpica.atwebpages.com/malpica/ventas/ventas_ingresar_cliente.php";
         StringRequest stringRequest = new StringRequest(Request.Method.POST, URL, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
@@ -1029,7 +1037,7 @@ public class IngresarVentas extends Fragment {
     private void consultarProductoBis() {
 
         // CONSULTA EL PRODUCTO DE VUELTA PARA VER SI SE ENCUENTRA O NO EN LA TABLA DE STOCK
-        String URL = "http://malpicas.heliohost.org/malpica/ventas/ventas_consultar_producto.php?parameter=" + datoCodigoStock;
+        String URL = "http://malpica.atwebpages.com/malpica/ventas/ventas_consultar_producto.php?parameter=" + datoCodigoStock;
         jsonObjectRequest = new JsonObjectRequest(Request.Method.GET,URL,null,
                 new Response.Listener<JSONObject>() {
 
@@ -1097,7 +1105,7 @@ public class IngresarVentas extends Fragment {
         // REGISTRA EL PRODUCTO EN CASO DE NO HABER SIDO DADO DE ALTA ANTERIORMENTE
         final String datoMoneda = "ARS";
 
-        String URL = "http://malpicas.heliohost.org/malpica/ventas/ventas_ingresar_producto.php";
+        String URL = "http://malpica.atwebpages.com/malpica/ventas/ventas_ingresar_producto.php";
         StringRequest stringRequest = new StringRequest(Request.Method.POST, URL, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
@@ -1146,7 +1154,7 @@ public class IngresarVentas extends Fragment {
         final String datoCantidadNueva = nuevaCantidad + "";
         final String datoPrecioTotaNuevo = nuevoPrecioTotal + "";
 
-        String URL = "http://malpicas.heliohost.org/malpica/ventas/ventas_actualizar_producto.php";
+        String URL = "http://malpica.atwebpages.com/malpica/ventas/ventas_actualizar_producto.php";
         StringRequest stringRequest = new StringRequest(Request.Method.POST, URL, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
@@ -1190,7 +1198,7 @@ public class IngresarVentas extends Fragment {
         final String datoAnoFactura = arrayFechaFactura[2];
 
         // FINALMENTE REGISTRA LA FACTURA CON LOS DATOS INGRESADOS
-        String URL1 = "http://malpicas.heliohost.org/malpica/ventas/ventas_ingresar_factura.php";
+        String URL1 = "http://malpica.atwebpages.com/malpica/ventas/ventas_ingresar_factura.php";
         StringRequest stringRequest1 = new StringRequest(Request.Method.POST, URL1, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {

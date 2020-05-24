@@ -66,11 +66,23 @@ public class Login extends AppCompatActivity {
                     editUser.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.colorAccent));
                     editUser.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_user_orange, 0, 0, 0);
 
+                    if (editUser.getText().toString().equals("Usuario")) {
+
+                        // SI NO SE MODIFICÓ EL TEXTO, LIMPIA EL CAMPO
+                        editUser.setText("");
+                    }
+
                 } else {
 
                     // SI SALE DEL CAMPO, RECUPERA COLOR DE ÍCONO Y TEXTO
                     editUser.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.colorTextHint));
                     editUser.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_user_grey, 0, 0, 0);
+
+                    if (editUser.getText().toString().isEmpty()) {
+
+                        // SI EL CAMPO QUEDÓ VACÍO, LO VUELVE A COMPLETAR
+                        editUser.setText("Usuario");
+                    }
                 }
             }
         });
@@ -85,11 +97,23 @@ public class Login extends AppCompatActivity {
                     editPass.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.colorAccent));
                     editPass.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_pass_orange, 0, 0, 0);
 
+                    if (editPass.getText().toString().equals("Contraseña")) {
+
+                        // SI NO SE MODIFICÓ EL TEXTO, LIMPIA EL CAMPO
+                        editPass.setText("");
+                    }
+
                 } else {
 
                     // SI SALE DEL CAMPO, RECUPERA COLOR DE ÍCONO Y TEXTO
                     editPass.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.colorTextHint));
                     editPass.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_pass_grey, 0, 0, 0);
+
+                    if (editPass.getText().toString().isEmpty()) {
+
+                        // SI EL CAMPO QUEDÓ VACÍO, LO VUELVE A COMPLETAR
+                        editPass.setText("Contraseña");
+                    }
                 }
             }
         });
@@ -194,7 +218,7 @@ public class Login extends AppCompatActivity {
         }
 
         // CONSULTA EL USUARIO Y LA CLAVE OBTENIDA EN LA BASE DE DATOS
-        String URL = "http://malpicas.heliohost.org/malpica/login/login_consulta.php?usuario="+editUser.getText().toString()
+        String URL = "http://malpica.atwebpages.com/malpica/login/login_consultar.php?usuario="+editUser.getText().toString()
                 +"&clave="+editPass.getText().toString();
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET,URL,null,
                 new Response.Listener<JSONObject>() {

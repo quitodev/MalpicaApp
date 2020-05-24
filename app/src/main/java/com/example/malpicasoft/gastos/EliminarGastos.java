@@ -141,9 +141,9 @@ public class EliminarGastos extends Fragment {
                         buttonEliminar.setTextColor(ContextCompat.getColor(getContext(), R.color.colorTextSelected));
                         buttonEliminar.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_delete_yellow, 0, 0, 0);
 
-                        datoBuscarFactura = editBuscarFactura.getText().toString();
+                        String codigo = editCodigo.getText().toString();
 
-                        if(!datoBuscarFactura.isEmpty()){
+                        if(!codigo.isEmpty()){
 
                             // MUESTRA UN DIALOG DE CONFIRMACIÓN ANTES DE ELIMINAR LA FACTURA
                             dialogEliminar();
@@ -357,7 +357,7 @@ public class EliminarGastos extends Fragment {
     private void consultarFactura() {
 
         // CONSULTA LA FACTURA INGRESADA EN LA BASE DE DATOS
-        String URL = "http://malpicas.heliohost.org/malpica/gastos/gastos_consultar_factura.php?parameter=" + datoBuscarFactura;
+        String URL = "http://malpica.atwebpages.com/malpica/gastos/gastos_consultar_factura.php?parameter=" + datoBuscarFactura;
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, URL, null,
                 new Response.Listener<JSONObject>() {
 
@@ -470,7 +470,7 @@ public class EliminarGastos extends Fragment {
     private void consultarProducto() {
 
         // CONSULTA EL PRODUCTO EN LA BASE DE DATOS
-        String URL = "http://malpicas.heliohost.org/malpica/gastos/gastos_consultar_producto.php?parameter=" + datoCodigoStock;
+        String URL = "http://malpica.atwebpages.com/malpica/gastos/gastos_consultar_producto.php?parameter=" + datoCodigoStock;
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, URL, null,
                 new Response.Listener<JSONObject>() {
 
@@ -530,7 +530,7 @@ public class EliminarGastos extends Fragment {
         final String datoCantidad = nuevaCantidad + "";
         final String datoPrecioTotal = nuevoPrecioTotal + "";
 
-        String URL = "http://malpicas.heliohost.org/malpica/gastos/gastos_actualizar_producto.php";
+        String URL = "http://malpica.atwebpages.com/malpica/gastos/gastos_actualizar_producto.php";
         StringRequest stringRequest = new StringRequest(Request.Method.POST, URL, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
@@ -564,7 +564,7 @@ public class EliminarGastos extends Fragment {
     private void eliminarFactura() {
 
         // ELIMINA LA FACTURA DE LA BASE DE DATOS
-        String URL1 = "http://malpicas.heliohost.org/malpica/gastos/gastos_eliminar_factura.php";
+        String URL1 = "http://malpica.atwebpages.com/malpica/gastos/gastos_eliminar_factura.php";
         StringRequest stringRequest1 = new StringRequest(Request.Method.POST, URL1, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {

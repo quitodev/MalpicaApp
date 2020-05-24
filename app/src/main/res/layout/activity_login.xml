@@ -55,6 +55,7 @@
         android:inputType="textPersonName"
         android:paddingLeft="15dp"
         android:text="@string/login_user"
+        android:textColorHint="#505050"
         android:textColor="@color/colorTextHint"
         android:textSize="20sp"
         tools:ignore="Autofill,RtlHardcoded,RtlSymmetry"/>
@@ -74,6 +75,7 @@
         android:inputType="textPassword"
         android:paddingLeft="15dp"
         android:text="@string/login_pass"
+        android:textColorHint="#505050"
         android:textColor="@color/colorTextHint"
         android:textSize="20sp"
         tools:ignore="Autofill,RtlHardcoded,RtlSymmetry"/>

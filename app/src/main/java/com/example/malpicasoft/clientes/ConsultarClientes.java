@@ -252,7 +252,7 @@ public class ConsultarClientes extends Fragment {
     private void consultarCodigo() {
 
         // CONSULTA POR CÓDIGO SI YA FUE INGRESADO ANTERIORMENTE A LA BASE
-        String URL = "http://malpicas.heliohost.org/malpica/clientes/clientes_consultar_codigo.php?parameter=" + datoBuscarCodigo;
+        String URL = "http://malpica.atwebpages.com/malpica/clientes/clientes_consultar_codigo.php?parameter=" + datoBuscarCodigo;
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, URL, null,
                 new Response.Listener<JSONObject>() {
 
@@ -294,7 +294,7 @@ public class ConsultarClientes extends Fragment {
                                 String contacto = setters.getContacto();
                                 String tipo = setters.getTipo();
 
-                                if (!fechaAlta.equals("No existe")) {
+                                if (!codigo.equals("No existe")) {
 
                                     // SI DEVUELVE VALORES LOS MUESTRA EN LOS CAMPOS
                                     EditText editFechaAlta = getView().findViewById(R.id.editFechaAlta);
@@ -355,7 +355,7 @@ public class ConsultarClientes extends Fragment {
         // CONSULTA POR RAZÓN SOCIAL SI YA FUE INGRESADO ANTERIORMENTE A LA BASE
         String razonSocial = datoBuscarRazon.replace(" ", "%20");
 
-        String URL = "http://malpicas.heliohost.org/malpica/clientes/clientes_consultar_nombre.php?parameter=" + razonSocial;
+        String URL = "http://malpica.atwebpages.com/malpica/clientes/clientes_consultar_nombre.php?parameter=" + razonSocial;
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, URL, null,
                 new Response.Listener<JSONObject>() {
 
@@ -397,7 +397,7 @@ public class ConsultarClientes extends Fragment {
                                 String contacto = setters.getContacto();
                                 String tipo = setters.getTipo();
 
-                                if (!fechaAlta.equals("No existe")) {
+                                if (!codigo.equals("No existe")) {
 
                                     // SI DEVUELVE VALORES LOS MUESTRA EN LOS CAMPOS
                                     EditText editFechaAlta = getView().findViewById(R.id.editFechaAlta);
@@ -456,7 +456,7 @@ public class ConsultarClientes extends Fragment {
     private void consultarCuit() {
 
         // CONSULTA POR CUIT SI YA FUE INGRESADO ANTERIORMENTE A LA BASE
-        String URL = "http://malpicas.heliohost.org/malpica/clientes/clientes_consultar_cuit.php?parameter=" + datoBuscarCuit;
+        String URL = "http://malpica.atwebpages.com/malpica/clientes/clientes_consultar_cuit.php?parameter=" + datoBuscarCuit;
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, URL, null,
                 new Response.Listener<JSONObject>() {
 
@@ -498,7 +498,7 @@ public class ConsultarClientes extends Fragment {
                                 String contacto = setters.getContacto();
                                 String tipo = setters.getTipo();
 
-                                if (!fechaAlta.equals("No existe")) {
+                                if (!codigo.equals("No existe")) {
 
                                     // SI DEVUELVE VALORES LOS MUESTRA EN LOS CAMPOS
                                     EditText editFechaAlta = getView().findViewById(R.id.editFechaAlta);

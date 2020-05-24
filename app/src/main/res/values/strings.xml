@@ -56,6 +56,7 @@
     <string name="usuario_fecha_alta">Fecha de alta</string>
     <string name="usuario_fecha_modif">Fecha de modificación</string>
     <string name="usuario_fecha">01/01/2020</string>
+    <string name="usuario_stock">Stock histórico</string>
     <string name="usuario_balance">Balance del mes</string>
     <string name="usuario_ventas">Ventas del mes</string>
     <string name="usuario_compras">Compras del mes</string>

@@ -212,7 +212,7 @@ public class ConsultarStock extends Fragment {
     private void consultarCodigo() {
 
         // CONSULTA POR CÓDIGO SI YA FUE INGRESADO ANTERIORMENTE A LA BASE
-        String URL = "http://malpicas.heliohost.org/malpica/stock/stock_consultar_codigo.php?parameter=" + datoBuscarCodigo;
+        String URL = "http://malpica.atwebpages.com/malpica/stock/stock_consultar_codigo.php?parameter=" + datoBuscarCodigo;
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, URL, null,
                 new Response.Listener<JSONObject>() {
 
@@ -248,7 +248,7 @@ public class ConsultarStock extends Fragment {
                                 String precioUnit = setters.getPrecioUnit();
                                 String precioTotal = setters.getPrecioTotal();
 
-                                if (!fechaAlta.equals("No existe")) {
+                                if (!codigo.equals("No existe")) {
 
                                     // SI DEVUELVE VALORES LOS MUESTRA EN LOS CAMPOS
                                     EditText editFechaAlta = getView().findViewById(R.id.editFechaAlta);
@@ -293,7 +293,7 @@ public class ConsultarStock extends Fragment {
         // CONSULTA POR DESCRIPCIÓN SI YA FUE INGRESADO ANTERIORMENTE A LA BASE
         String descripcion = datoBuscarDescripcion.replace(" ", "%20");
 
-        String URL = "http://malpicas.heliohost.org/malpica/stock/stock_consultar_descripcion.php?parameter=" + descripcion;
+        String URL = "http://malpica.atwebpages.com/malpica/stock/stock_consultar_descripcion.php?parameter=" + descripcion;
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, URL, null,
                 new Response.Listener<JSONObject>() {
 
@@ -329,7 +329,7 @@ public class ConsultarStock extends Fragment {
                                 String precioUnit = setters.getPrecioUnit();
                                 String precioTotal = setters.getPrecioTotal();
 
-                                if (!fechaAlta.equals("No existe")) {
+                                if (!codigo.equals("No existe")) {
 
                                     // SI DEVUELVE VALORES LOS MUESTRA EN LOS CAMPOS
                                     EditText editFechaAlta = getView().findViewById(R.id.editFechaAlta);

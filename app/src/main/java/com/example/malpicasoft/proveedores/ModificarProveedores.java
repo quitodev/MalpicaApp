@@ -187,6 +187,7 @@ public class ModificarProveedores extends Fragment {
                             Drawable drawable = getResources().getDrawable(R.drawable.ic_check_green);
                             drawable.setBounds(0, 0, drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight());
 
+                            editCodigo.setError("Datos correctos!", drawable);
                             editRazonSocial.setError("Datos correctos!", drawable);
                             editCondicion.setError("Datos correctos!", drawable);
                             editDescripcion.setError("Datos correctos!", drawable);
@@ -206,10 +207,10 @@ public class ModificarProveedores extends Fragment {
                             editContacto.setFocusableInTouchMode(true);
                             editTipo.setFocusableInTouchMode(true);
 
-                            editCodigo.requestFocusFromTouch();
+                            editTipo.requestFocusFromTouch();
 
                             ScrollView scrollView = getView().findViewById(R.id.scroll);
-                            scrollView.setScrollY(0);
+                            scrollView.setScrollY(10000);
                         }
                         break;
 
@@ -290,6 +291,8 @@ public class ModificarProveedores extends Fragment {
                             editLocalidad.setFocusableInTouchMode(true);
                             editContacto.setFocusableInTouchMode(true);
                             editTipo.setFocusableInTouchMode(true);
+
+                            editTipo.requestFocusFromTouch();
                         }
                         break;
 
@@ -741,15 +744,15 @@ public class ModificarProveedores extends Fragment {
                 EditText editContacto = getView().findViewById(R.id.editContacto);
                 EditText editTipo = getView().findViewById(R.id.editTipo);
 
-                editCodigo.setFocusableInTouchMode(true);
-                editRazonSocial.setFocusableInTouchMode(true);
-                editCondicion.setFocusableInTouchMode(true);
-                editDescripcion.setFocusableInTouchMode(true);
-                editCuit.setFocusableInTouchMode(true);
-                editDireccion.setFocusableInTouchMode(true);
-                editLocalidad.setFocusableInTouchMode(true);
-                editContacto.setFocusableInTouchMode(true);
-                editTipo.setFocusableInTouchMode(true);
+                editCodigo.setFocusableInTouchMode(false);
+                editRazonSocial.setFocusableInTouchMode(false);
+                editCondicion.setFocusableInTouchMode(false);
+                editDescripcion.setFocusableInTouchMode(false);
+                editCuit.setFocusableInTouchMode(false);
+                editDireccion.setFocusableInTouchMode(false);
+                editLocalidad.setFocusableInTouchMode(false);
+                editContacto.setFocusableInTouchMode(false);
+                editTipo.setFocusableInTouchMode(false);
 
                 editCodigo.setText("");
                 editRazonSocial.setText("");
@@ -785,7 +788,7 @@ public class ModificarProveedores extends Fragment {
     private void consultarCodigo() {
 
         // CONSULTA POR CÓDIGO SI YA FUE INGRESADO ANTERIORMENTE A LA BASE
-        String URL = "http://malpicas.heliohost.org/malpica/proveedores/proveedores_consultar_codigo.php?parameter=" + datoBuscarCodigo;
+        String URL = "http://malpica.atwebpages.com/malpica/proveedores/proveedores_consultar_codigo.php?parameter=" + datoBuscarCodigo;
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, URL, null,
                 new Response.Listener<JSONObject>() {
 
@@ -868,7 +871,7 @@ public class ModificarProveedores extends Fragment {
         // CONSULTA POR RAZÓN SOCIAL SI YA FUE INGRESADO ANTERIORMENTE A LA BASE
         String razonSocial = datoBuscarRazon.replace(" ", "%20");
 
-        String URL = "http://malpicas.heliohost.org/malpica/proveedores/proveedores_consultar_nombre.php?parameter=" + razonSocial;
+        String URL = "http://malpica.atwebpages.com/malpica/proveedores/proveedores_consultar_nombre.php?parameter=" + razonSocial;
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, URL, null,
                 new Response.Listener<JSONObject>() {
 
@@ -949,7 +952,7 @@ public class ModificarProveedores extends Fragment {
     private void consultarCuit() {
 
         // CONSULTA POR CUIT SI YA FUE INGRESADO ANTERIORMENTE A LA BASE
-        String URL = "http://malpicas.heliohost.org/malpica/proveedores/proveedores_consultar_cuit.php?parameter=" + datoBuscarCuit;
+        String URL = "http://malpica.atwebpages.com/malpica/proveedores/proveedores_consultar_cuit.php?parameter=" + datoBuscarCuit;
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, URL, null,
                 new Response.Listener<JSONObject>() {
 
@@ -1030,7 +1033,7 @@ public class ModificarProveedores extends Fragment {
     private void consultarCodigoBis() {
 
         // CONSULTA POR CÓDIGO SI NO EXISTE OTRO CON EL MISMO CÓDIGO
-        String URL = "http://malpicas.heliohost.org/malpica/proveedores/proveedores_consultar_codigo.php?parameter=" + datoCodigo;
+        String URL = "http://malpica.atwebpages.com/malpica/proveedores/proveedores_consultar_codigo.php?parameter=" + datoCodigo;
         jsonObjectRequest = new JsonObjectRequest(Request.Method.GET,URL,null,
                 new Response.Listener<JSONObject>() {
 
@@ -1087,7 +1090,7 @@ public class ModificarProveedores extends Fragment {
         // CONSULTA POR RAZÓN SOCIAL SI YA FUE INGRESADO ANTERIORMENTE A LA BASE
         String razonSocial = datoRazonSocial.replace(" ","%20");
 
-        String URL = "http://malpicas.heliohost.org/malpica/proveedores/proveedores_consultar_nombre.php?parameter=" + razonSocial;
+        String URL = "http://malpica.atwebpages.com/malpica/proveedores/proveedores_consultar_nombre.php?parameter=" + razonSocial;
         jsonObjectRequest = new JsonObjectRequest(Request.Method.GET,URL,null,
                 new Response.Listener<JSONObject>() {
 
@@ -1142,7 +1145,7 @@ public class ModificarProveedores extends Fragment {
     private void consultarCuitBis() {
 
         // CONSULTA POR CUIT SI YA FUE INGRESADO ANTERIORMENTE A LA BASE
-        String URL = "http://malpicas.heliohost.org/malpica/proveedores/proveedores_consultar_cuit.php?parameter=" + datoCuit;
+        String URL = "http://malpica.atwebpages.com/malpica/proveedores/proveedores_consultar_cuit.php?parameter=" + datoCuit;
         jsonObjectRequest = new JsonObjectRequest(Request.Method.GET,URL,null,
                 new Response.Listener<JSONObject>() {
 
@@ -1197,7 +1200,7 @@ public class ModificarProveedores extends Fragment {
     private void modificarProveedor() {
 
         // FINALMENTE MODIFICA EL PROVEEDOR EN LA BASE
-        String URL = "http://malpicas.heliohost.org/malpica/proveedores/proveedores_actualizar_proveedor.php";
+        String URL = "http://malpica.atwebpages.com/malpica/proveedores/proveedores_actualizar_proveedor.php";
         StringRequest stringRequest = new StringRequest(Request.Method.POST, URL, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {

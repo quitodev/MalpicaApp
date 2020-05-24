@@ -135,14 +135,10 @@ public class EliminarStock extends Fragment {
                         buttonEliminar.setTextColor(ContextCompat.getColor(getContext(), R.color.colorTextSelected));
                         buttonEliminar.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_delete_yellow, 0, 0, 0);
 
+                        String codigo = editCodigo.getText().toString();
+
                         // SI LOS CAMPOS NO ESTÁN VACÍOS, REALIZA LA CONSULTA CORRESPONDIENTE
-                        if (!datoBuscarCodigo.isEmpty()) {
-
-                            // MUESTRA UN DIALOG DE CONFIRMACIÓN ANTES DE ELIMINARLO
-                            dialogEliminar();
-                        }
-
-                        if (!datoBuscarDescripcion.isEmpty()) {
+                        if (!codigo.isEmpty()) {
 
                             // MUESTRA UN DIALOG DE CONFIRMACIÓN ANTES DE ELIMINARLO
                             dialogEliminar();
@@ -360,7 +356,7 @@ public class EliminarStock extends Fragment {
     private void consultarCodigo() {
 
         // CONSULTA POR CÓDIGO SI YA FUE INGRESADO ANTERIORMENTE A LA BASE
-        String URL = "http://malpicas.heliohost.org/malpica/stock/stock_consultar_codigo.php?parameter=" + datoBuscarCodigo;
+        String URL = "http://malpica.atwebpages.com/malpica/stock/stock_consultar_codigo.php?parameter=" + datoBuscarCodigo;
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, URL, null,
                 new Response.Listener<JSONObject>() {
 
@@ -396,7 +392,7 @@ public class EliminarStock extends Fragment {
                                 String precioUnit = setters.getPrecioUnit();
                                 String precioTotal = setters.getPrecioTotal();
 
-                                if (!fechaAlta.equals("No existe")) {
+                                if (!codigo.equals("No existe")) {
 
                                     // SI DEVUELVE VALORES LOS MUESTRA EN LOS CAMPOS
                                     EditText editFechaAlta = getView().findViewById(R.id.editFechaAlta);
@@ -443,7 +439,7 @@ public class EliminarStock extends Fragment {
         // CONSULTA POR DESCRIPCIÓN SI YA FUE INGRESADO ANTERIORMENTE A LA BASE
         String descripcion = datoBuscarDescripcion.replace(" ", "%20");
 
-        String URL = "http://malpicas.heliohost.org/malpica/stock/stock_consultar_descripcion.php?parameter=" + descripcion;
+        String URL = "http://malpica.atwebpages.com/malpica/stock/stock_consultar_descripcion.php?parameter=" + descripcion;
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, URL, null,
                 new Response.Listener<JSONObject>() {
 
@@ -479,7 +475,7 @@ public class EliminarStock extends Fragment {
                                 String precioUnit = setters.getPrecioUnit();
                                 String precioTotal = setters.getPrecioTotal();
 
-                                if (!fechaAlta.equals("No existe")) {
+                                if (!codigo.equals("No existe")) {
 
                                     // SI DEVUELVE VALORES LOS MUESTRA EN LOS CAMPOS
                                     EditText editFechaAlta = getView().findViewById(R.id.editFechaAlta);
@@ -524,7 +520,7 @@ public class EliminarStock extends Fragment {
     private void consultarCompras() {
 
         // CONSULTA EL PRODUCTO EN LA BASE DE COMPRAS POR SU CÓDIGO
-        String URL = "http://malpicas.heliohost.org/malpica/stock/stock_consultar_compras.php?parameter=" + datoCodigo;
+        String URL = "http://malpica.atwebpages.com/malpica/stock/stock_consultar_compras.php?parameter=" + datoCodigo;
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, URL, null,
                 new Response.Listener<JSONObject>() {
 
@@ -573,7 +569,7 @@ public class EliminarStock extends Fragment {
     private void consultarVentas() {
 
         // CONSULTA EL PRODUCTO EN LA BASE DE VENTAS POR SU CÓDIGO
-        String URL = "http://malpicas.heliohost.org/malpica/stock/stock_consultar_ventas.php?parameter=" + datoCodigo;
+        String URL = "http://malpica.atwebpages.com/malpica/stock/stock_consultar_ventas.php?parameter=" + datoCodigo;
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, URL, null,
                 new Response.Listener<JSONObject>() {
 
@@ -622,7 +618,7 @@ public class EliminarStock extends Fragment {
     private void consultarGastos() {
 
         // CONSULTA EL PRODUCTO EN LA BASE DE GASTOS POR SU CÓDIGO
-        String URL = "http://malpicas.heliohost.org/malpica/stock/stock_consultar_gastos.php?parameter=" + datoCodigo;
+        String URL = "http://malpica.atwebpages.com/malpica/stock/stock_consultar_gastos.php?parameter=" + datoCodigo;
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, URL, null,
                 new Response.Listener<JSONObject>() {
 
@@ -671,7 +667,7 @@ public class EliminarStock extends Fragment {
     private void eliminarProducto() {
 
         // ELIMINA AL PRODUCTO DE LA BASE DE DATOS
-        String URL = "http://malpicas.heliohost.org/malpica/stock/stock_eliminar_producto.php";
+        String URL = "http://malpica.atwebpages.com/malpica/stock/stock_eliminar_producto.php";
         StringRequest stringRequest = new StringRequest(Request.Method.POST, URL, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {

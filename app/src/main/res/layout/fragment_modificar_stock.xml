@@ -362,7 +362,7 @@
                 android:focusable="false"
                 android:fontFamily="sans-serif-light"
                 android:hint="@string/muestra_moneda"
-                android:inputType="numberDecimal"
+                android:inputType="textPersonName"
                 android:maxLength="10"
                 android:text=""
                 android:textColorHint="@color/colorTextHint"

@@ -39,7 +39,7 @@
                 android:layout_alignParentRight="true"
                 android:layout_marginStart="30dp"
                 android:layout_marginLeft="30dp"
-                android:layout_marginTop="248dp"
+                android:layout_marginTop="288dp"
                 android:layout_marginEnd="31dp"
                 android:layout_marginRight="31dp"
                 android:background="@color/colorAccent"/>
@@ -55,7 +55,7 @@
                 android:layout_alignParentRight="true"
                 android:layout_marginStart="30dp"
                 android:layout_marginLeft="30dp"
-                android:layout_marginTop="387dp"
+                android:layout_marginTop="427dp"
                 android:layout_marginEnd="31dp"
                 android:layout_marginRight="31dp"
                 android:background="@color/colorAccent"/>
@@ -153,6 +153,21 @@
                 android:textSize="16sp"/>
 
             <TextView
+                android:id="@+id/textFechaAlta"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/textEstado"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentLeft="true"
+                android:layout_marginStart="50dp"
+                android:layout_marginLeft="50dp"
+                android:layout_marginTop="15dp"
+                android:fontFamily="sans-serif-light"
+                android:text="@string/usuario_fecha_alta"
+                android:textColor="@color/colorText"
+                android:textSize="16sp"/>
+
+            <TextView
                 android:id="@+id/textFechaAlta1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -168,19 +183,36 @@
                 android:textSize="16sp"/>
 
             <TextView
-                android:id="@+id/textFechaAlta"
+                android:id="@+id/textStock"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/textEstado"
+                android:layout_below="@+id/textFechaAlta"
                 android:layout_alignParentStart="true"
                 android:layout_alignParentLeft="true"
-                android:layout_marginStart="50dp"
-                android:layout_marginLeft="50dp"
+                android:layout_marginStart="45dp"
+                android:layout_marginLeft="45dp"
                 android:layout_marginTop="15dp"
                 android:fontFamily="sans-serif-light"
-                android:text="@string/usuario_fecha_alta"
+                android:text="@string/usuario_stock"
                 android:textColor="@color/colorText"
                 android:textSize="16sp"/>
+
+            <TextView
+                android:id="@+id/textStock1"
+                android:layout_width="130dp"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/textFechaAlta1"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:layout_marginTop="15dp"
+                android:layout_marginEnd="50dp"
+                android:layout_marginRight="50dp"
+                android:fontFamily="sans-serif-light"
+                android:gravity="right"
+                android:text="@string/usuario_pesos"
+                android:textColor="@color/colorText"
+                android:textSize="16sp"
+                tools:ignore="RtlHardcoded" />
 
             <TextView
                 android:id="@+id/textVentas"
@@ -215,38 +247,6 @@
                 tools:ignore="RtlHardcoded"/>
 
             <TextView
-                android:id="@+id/textGastos"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/textCompras"
-                android:layout_alignParentStart="true"
-                android:layout_alignParentLeft="true"
-                android:layout_marginStart="43dp"
-                android:layout_marginLeft="43dp"
-                android:layout_marginTop="15dp"
-                android:fontFamily="sans-serif-light"
-                android:text="@string/usuario_gastos"
-                android:textColor="@color/colorText"
-                android:textSize="16sp"/>
-
-            <TextView
-                android:id="@+id/textGastos1"
-                android:layout_width="130dp"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/textCompras1"
-                android:layout_alignParentEnd="true"
-                android:layout_alignParentRight="true"
-                android:layout_marginTop="15dp"
-                android:layout_marginEnd="50dp"
-                android:layout_marginRight="50dp"
-                android:fontFamily="sans-serif-light"
-                android:gravity="right"
-                android:text="@string/usuario_pesos"
-                android:textColor="#FF0000"
-                android:textSize="16sp"
-                tools:ignore="RtlHardcoded"/>
-
-            <TextView
                 android:id="@+id/textCompras"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -267,6 +267,38 @@
                 android:layout_width="130dp"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/textVentas1"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:layout_marginTop="15dp"
+                android:layout_marginEnd="50dp"
+                android:layout_marginRight="50dp"
+                android:fontFamily="sans-serif-light"
+                android:gravity="right"
+                android:text="@string/usuario_pesos"
+                android:textColor="#FF0000"
+                android:textSize="16sp"
+                tools:ignore="RtlHardcoded"/>
+
+            <TextView
+                android:id="@+id/textGastos"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/textCompras"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentLeft="true"
+                android:layout_marginStart="43dp"
+                android:layout_marginLeft="43dp"
+                android:layout_marginTop="15dp"
+                android:fontFamily="sans-serif-light"
+                android:text="@string/usuario_gastos"
+                android:textColor="@color/colorText"
+                android:textSize="16sp"/>
+
+            <TextView
+                android:id="@+id/textGastos1"
+                android:layout_width="130dp"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/textCompras1"
                 android:layout_alignParentEnd="true"
                 android:layout_alignParentRight="true"
                 android:layout_marginTop="15dp"

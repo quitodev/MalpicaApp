@@ -368,7 +368,7 @@ public class UsuarioFragment extends Fragment {
         // RECIBE EL USUARIO Y LO CONSULTA EN LA BASE PARA OBTENER SUS DATOS
         datoUsuario = getActivity().getIntent().getStringExtra("user");
 
-        String URL = "http://malpicas.heliohost.org/malpica/usuario/usuario_consultar_datos.php?parameter=" + datoUsuario;
+        String URL = "http://malpica.atwebpages.com/malpica/usuario/usuario_consultar_datos.php?parameter=" + datoUsuario;
         jsonObjectRequest = new JsonObjectRequest(Request.Method.GET,URL,null,
                 new Response.Listener<JSONObject>() {
 
@@ -426,6 +426,66 @@ public class UsuarioFragment extends Fragment {
                                 textEstado.setText(estado);
                                 textFechaAlta.setText(fechaAlta);
 
+                                consultarStock();
+                            }
+
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }, new Response.ErrorListener() {
+
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(getContext(), "Por favor, revise su conexión!", Toast.LENGTH_SHORT).show();
+            }
+        });
+        requestQueue.add(jsonObjectRequest);
+    }
+
+    private void consultarStock(){
+
+        // OBTIENE EL TOTAL HISTÓRICO DEL STOCK REGISTRADO
+        String URL = "http://malpica.atwebpages.com/malpica/usuario/usuario_consultar_stock.php?parameter=" + "ARS";
+        jsonObjectRequest = new JsonObjectRequest(Request.Method.GET,URL,null,
+                new Response.Listener<JSONObject>() {
+
+                    @Override
+                    public void onResponse(JSONObject response) {
+
+                        try {
+                            JSONArray jsonArray = response.getJSONArray("data");
+
+                            // RECORRE EL ARRAY DE JSON CON LA CONSULTA Y CON UN SETTER & GETTER MUESTRA LOS RESULTADOS
+                            for (int i = 0; i < jsonArray.length(); i++) {
+
+                                JSONObject jsonObject = jsonArray.getJSONObject(i);
+                                UsuarioSetters usuarioSetters = new UsuarioSetters();
+
+                                usuarioSetters.setTotalStock(jsonObject.getString("total_historico"));
+
+                                String total = usuarioSetters.getTotalStock();
+
+                                if(total.equals("null")){
+
+                                    // SI DEVUELVE QUE NO EXISTE, MUESTRA UN CERO COMO RESULTADO
+                                    double totalStock = 0;
+
+                                    DecimalFormat decimalFormat = new DecimalFormat("######0.00");
+                                    String stock = "$ " + decimalFormat.format(totalStock).replace(".",",");
+                                    TextView textStock = getView().findViewById(R.id.textStock1);
+                                    textStock.setText(stock);
+
+                                } else {
+
+                                    // SI DEVUELVE QUE EXISTE, MUESTRA EL RESULTADO OBTENIDO
+                                    double totalStock = Double.parseDouble(total);
+
+                                    DecimalFormat decimalFormat = new DecimalFormat("######0.00");
+                                    String stock = "$ " + decimalFormat.format(totalStock).replace(".",",");
+                                    TextView textStock = getView().findViewById(R.id.textStock1);
+                                    textStock.setText(stock);
+                                }
+
                                 consultarVentas();
                             }
 
@@ -445,7 +505,7 @@ public class UsuarioFragment extends Fragment {
     private void consultarVentas(){
 
         // OBTIENE EL TOTAL DE VENTAS REGISTRADAS EN EL MES ACTUAL
-        String URL = "http://malpicas.heliohost.org/malpica/usuario/usuario_consultar_ventas.php?parameter=" + datoMes;
+        String URL = "http://malpica.atwebpages.com/malpica/usuario/usuario_consultar_ventas.php?parameter=" + datoMes;
         jsonObjectRequest = new JsonObjectRequest(Request.Method.GET,URL,null,
                 new Response.Listener<JSONObject>() {
 
@@ -505,7 +565,7 @@ public class UsuarioFragment extends Fragment {
     private void consultarCompras(){
 
         // OBTIENE EL TOTAL DE COMPRAS REGISTRADAS EN EL MES ACTUAL
-        String URL = "http://malpicas.heliohost.org/malpica/usuario/usuario_consultar_compras.php?parameter=" + datoMes;
+        String URL = "http://malpica.atwebpages.com/malpica/usuario/usuario_consultar_compras.php?parameter=" + datoMes;
         jsonObjectRequest = new JsonObjectRequest(Request.Method.GET,URL,null,
                 new Response.Listener<JSONObject>() {
 
@@ -565,7 +625,7 @@ public class UsuarioFragment extends Fragment {
     private void consultarGastos(){
 
         // OBTIENE EL TOTAL DE GASTOS REGISTRADOS EN EL MES ACTUAL
-        String URL = "http://malpicas.heliohost.org/malpica/usuario/usuario_consultar_gastos.php?parameter=" + datoMes;
+        String URL = "http://malpica.atwebpages.com/malpica/usuario/usuario_consultar_gastos.php?parameter=" + datoMes;
         jsonObjectRequest = new JsonObjectRequest(Request.Method.GET,URL,null,
                 new Response.Listener<JSONObject>() {
 
@@ -654,7 +714,7 @@ public class UsuarioFragment extends Fragment {
                 !editEmail.getText().toString().isEmpty() && !editTelefono.getText().toString().isEmpty()) {
 
             // SI SE INGRESAN LOS DATOS CORRECTAMENTE REALIZA LA MODIFICACIÓN
-            String URL = "http://malpicas.heliohost.org/malpica/usuario/usuario_actualizar_datos.php";
+            String URL = "http://malpica.atwebpages.com/malpica/usuario/usuario_actualizar_datos.php";
             StringRequest stringRequest = new StringRequest(Request.Method.POST, URL, new Response.Listener<String>() {
                 @Override
                 public void onResponse(String response) {
@@ -699,7 +759,7 @@ public class UsuarioFragment extends Fragment {
     private void actualizarIngreso(){
 
         // MODIFICA EL DÍA Y LA HORA DE INGRESO EN LA BASE
-        String URL = "http://malpicas.heliohost.org/malpica/usuario/usuario_actualizar_ingreso.php";
+        String URL = "http://malpica.atwebpages.com/malpica/usuario/usuario_actualizar_ingreso.php";
         StringRequest stringRequest = new StringRequest(Request.Method.POST, URL, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {

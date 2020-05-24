@@ -428,7 +428,7 @@
                 android:fontFamily="sans-serif-light"
                 android:hint="@string/ingresar_tipo"
                 android:inputType="textPersonName"
-                android:maxLength="10"
+                android:maxLength="20"
                 android:text=""
                 android:textColorHint="@color/colorTextHint"
                 android:textColor="@color/colorText"

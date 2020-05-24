@@ -119,6 +119,8 @@ public class IngresarStock extends Fragment {
                             editMoneda.setFocusableInTouchMode(true);
                             editPrecioUnit.setFocusableInTouchMode(true);
                             editPrecioTotal.setFocusableInTouchMode(true);
+
+                            editPrecioTotal.requestFocusFromTouch();
                         }
                         break;
 
@@ -260,6 +262,7 @@ public class IngresarStock extends Fragment {
                         editMoneda.setError("Datos correctos!", drawable);
 
                         editMoneda.setText("ARS");
+                        datoMoneda = editMoneda.getText().toString();
                     }
 
                 } else {
@@ -518,10 +521,10 @@ public class IngresarStock extends Fragment {
 
                 editCodigo.setText("");
                 editDescripcion.setText("");
-                editCantidad.setText("");
-                editMoneda.setText("");
-                editPrecioUnit.setText("");
-                editPrecioTotal.setText("");
+                editCantidad.setText("0");
+                editMoneda.setText("ARS");
+                editPrecioUnit.setText("0.00");
+                editPrecioTotal.setText("0.00");
 
                 editCodigo.setError(null);
                 editDescripcion.setError(null);
@@ -532,6 +535,7 @@ public class IngresarStock extends Fragment {
 
                 ScrollView scrollView = getView().findViewById(R.id.scroll);
                 scrollView.setScrollY(0);
+
                 editCodigo.requestFocusFromTouch();
             }
         }, 3000);
@@ -540,7 +544,7 @@ public class IngresarStock extends Fragment {
     private void consultarCodigo() {
 
         // CONSULTA POR CÓDIGO SI YA FUE INGRESADO ANTERIORMENTE A LA BASE
-        String URL = "http://malpicas.heliohost.org/malpica/stock/stock_consultar_codigo.php?parameter=" + datoCodigo;
+        String URL = "http://malpica.atwebpages.com/malpica/stock/stock_consultar_codigo.php?parameter=" + datoCodigo;
         jsonObjectRequest = new JsonObjectRequest(Request.Method.GET,URL,null,
                 new Response.Listener<JSONObject>() {
 
@@ -597,7 +601,7 @@ public class IngresarStock extends Fragment {
         // CONSULTA POR DESCRIPCIÓN SI YA FUE INGRESADO ANTERIORMENTE A LA BASE
         String descripcion = datoDescripcion.replace(" ","%20");
 
-        String URL = "http://malpicas.heliohost.org/malpica/stock/stock_consultar_descripcion.php?parameter=" + descripcion;
+        String URL = "http://malpica.atwebpages.com/malpica/stock/stock_consultar_descripcion.php?parameter=" + descripcion;
         jsonObjectRequest = new JsonObjectRequest(Request.Method.GET,URL,null,
                 new Response.Listener<JSONObject>() {
 
@@ -652,7 +656,7 @@ public class IngresarStock extends Fragment {
     private void registrarProducto() {
 
         // FINALMENTE REGISTRA EL PRODUCTO EN LA BASE
-        String URL = "http://malpicas.heliohost.org/malpica/stock/stock_ingresar_producto.php";
+        String URL = "http://malpica.atwebpages.com/malpica/stock/stock_ingresar_producto.php";
         StringRequest stringRequest = new StringRequest(Request.Method.POST, URL, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {

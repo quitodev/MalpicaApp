@@ -2,8 +2,12 @@ package com.example.malpicasoft.usuario;
 
 class UsuarioSetters {
 
-    private String totalVentas, totalCompras, totalGastos, estado, fechaAlta, local, direccion,
+    private String totalStock, totalVentas, totalCompras, totalGastos, estado, fechaAlta, local, direccion,
             localidad, cuit, condicion, email, telefono;
+
+    String getTotalStock() { return totalStock; }
+
+    void setTotalStock(String totalStock) { this.totalStock = totalStock; }
 
     String getTotalVentas() {
         return totalVentas;

@@ -129,7 +129,6 @@ public class EliminarClientes extends Fragment {
                             dialogProcesando();
                             dialogError();
                         }
-
                         break;
 
                     case MotionEvent.ACTION_UP:
@@ -151,20 +150,10 @@ public class EliminarClientes extends Fragment {
                         buttonEliminar.setTextColor(ContextCompat.getColor(getContext(), R.color.colorTextSelected));
                         buttonEliminar.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_delete_yellow, 0, 0, 0);
 
+                        String codigo = editCodigo.getText().toString();
+
                         // SI LOS CAMPOS NO ESTÁN VACÍOS, REALIZA LA CONSULTA CORRESPONDIENTE
-                        if (!datoBuscarCodigo.isEmpty()) {
-
-                            // MUESTRA UN DIALOG DE CONFIRMACIÓN ANTES DE ELIMINARLO
-                            dialogEliminar();
-                        }
-
-                        if (!datoBuscarRazon.isEmpty()) {
-
-                            // MUESTRA UN DIALOG DE CONFIRMACIÓN ANTES DE ELIMINARLO
-                            dialogEliminar();
-                        }
-
-                        if (!datoBuscarCuit.isEmpty()) {
+                        if (!codigo.isEmpty()) {
 
                             // MUESTRA UN DIALOG DE CONFIRMACIÓN ANTES DE ELIMINARLO
                             dialogEliminar();
@@ -419,7 +408,7 @@ public class EliminarClientes extends Fragment {
     private void consultarCodigo() {
 
         // CONSULTA POR CÓDIGO SI YA FUE INGRESADO ANTERIORMENTE A LA BASE
-        String URL = "http://malpicas.heliohost.org/malpica/clientes/clientes_consultar_codigo.php?parameter=" + datoBuscarCodigo;
+        String URL = "http://malpica.atwebpages.com/malpica/clientes/clientes_consultar_codigo.php?parameter=" + datoBuscarCodigo;
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, URL, null,
                 new Response.Listener<JSONObject>() {
 
@@ -461,7 +450,7 @@ public class EliminarClientes extends Fragment {
                                 String contacto = setters.getContacto();
                                 String tipo = setters.getTipo();
 
-                                if (!fechaAlta.equals("No existe")) {
+                                if (!codigo.equals("No existe")) {
 
                                     // SI DEVUELVE VALORES LOS MUESTRA EN LOS CAMPOS
                                     EditText editFechaAlta = getView().findViewById(R.id.editFechaAlta);
@@ -524,7 +513,7 @@ public class EliminarClientes extends Fragment {
         // CONSULTA POR RAZÓN SOCIAL SI YA FUE INGRESADO ANTERIORMENTE A LA BASE
         String razonSocial = datoBuscarRazon.replace(" ", "%20");
 
-        String URL = "http://malpicas.heliohost.org/malpica/clientes/clientes_consultar_nombre.php?parameter=" + razonSocial;
+        String URL = "http://malpica.atwebpages.com/malpica/clientes/clientes_consultar_nombre.php?parameter=" + razonSocial;
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, URL, null,
                 new Response.Listener<JSONObject>() {
 
@@ -566,7 +555,7 @@ public class EliminarClientes extends Fragment {
                                 String contacto = setters.getContacto();
                                 String tipo = setters.getTipo();
 
-                                if (!fechaAlta.equals("No existe")) {
+                                if (!codigo.equals("No existe")) {
 
                                     // SI DEVUELVE VALORES LOS MUESTRA EN LOS CAMPOS
                                     EditText editFechaAlta = getView().findViewById(R.id.editFechaAlta);
@@ -627,7 +616,7 @@ public class EliminarClientes extends Fragment {
     private void consultarCuit() {
 
         // CONSULTA POR CUIT SI YA FUE INGRESADO ANTERIORMENTE A LA BASE
-        String URL = "http://malpicas.heliohost.org/malpica/clientes/clientes_consultar_cuit.php?parameter=" + datoBuscarCuit;
+        String URL = "http://malpica.atwebpages.com/malpica/clientes/clientes_consultar_cuit.php?parameter=" + datoBuscarCuit;
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, URL, null,
                 new Response.Listener<JSONObject>() {
 
@@ -669,7 +658,7 @@ public class EliminarClientes extends Fragment {
                                 String contacto = setters.getContacto();
                                 String tipo = setters.getTipo();
 
-                                if (!fechaAlta.equals("No existe")) {
+                                if (!codigo.equals("No existe")) {
 
                                     // SI DEVUELVE VALORES LOS MUESTRA EN LOS CAMPOS
                                     EditText editFechaAlta = getView().findViewById(R.id.editFechaAlta);
@@ -730,7 +719,7 @@ public class EliminarClientes extends Fragment {
     private void consultarVentas() {
 
         // CONSULTA EL CLIENTE EN LA BASE DE VENTAS POR SU CÓDIGO
-        String URL = "http://malpicas.heliohost.org/malpica/clientes/clientes_consultar_ventas.php?parameter=" + datoCodigo;
+        String URL = "http://malpica.atwebpages.com/malpica/clientes/clientes_consultar_ventas.php?parameter=" + datoCodigo;
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, URL, null,
                 new Response.Listener<JSONObject>() {
 
@@ -778,7 +767,7 @@ public class EliminarClientes extends Fragment {
     private void eliminarCliente() {
 
         // ELIMINA AL CLIENTE DE LA BASE DE DATOS
-        String URL = "http://malpicas.heliohost.org/malpica/clientes/clientes_eliminar_cliente.php";
+        String URL = "http://malpica.atwebpages.com/malpica/clientes/clientes_eliminar_cliente.php";
         StringRequest stringRequest = new StringRequest(Request.Method.POST, URL, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
