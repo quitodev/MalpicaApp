@@ -408,7 +408,7 @@ public class EliminarProveedores extends Fragment {
     private void consultarCodigo() {
 
         // CONSULTA POR CÓDIGO SI YA FUE INGRESADO ANTERIORMENTE A LA BASE
-        String URL = "http://malpica.atwebpages.com/malpica/proveedores/proveedores_consultar_codigo.php?parameter=" + datoBuscarCodigo;
+        String URL = "http://malpicas.heliohost.org/malpica/proveedores/proveedores_consultar_codigo.php?parameter=" + datoBuscarCodigo;
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, URL, null,
                 new Response.Listener<JSONObject>() {
 
@@ -513,7 +513,7 @@ public class EliminarProveedores extends Fragment {
         // CONSULTA POR RAZÓN SOCIAL SI YA FUE INGRESADO ANTERIORMENTE A LA BASE
         String razonSocial = datoBuscarRazon.replace(" ", "%20");
 
-        String URL = "http://malpica.atwebpages.com/malpica/proveedores/proveedores_consultar_nombre.php?parameter=" + razonSocial;
+        String URL = "http://malpicas.heliohost.org/malpica/proveedores/proveedores_consultar_nombre.php?parameter=" + razonSocial;
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, URL, null,
                 new Response.Listener<JSONObject>() {
 
@@ -616,7 +616,7 @@ public class EliminarProveedores extends Fragment {
     private void consultarCuit() {
 
         // CONSULTA POR CUIT SI YA FUE INGRESADO ANTERIORMENTE A LA BASE
-        String URL = "http://malpica.atwebpages.com/malpica/proveedores/proveedores_consultar_cuit.php?parameter=" + datoBuscarCuit;
+        String URL = "http://malpicas.heliohost.org/malpica/proveedores/proveedores_consultar_cuit.php?parameter=" + datoBuscarCuit;
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, URL, null,
                 new Response.Listener<JSONObject>() {
 
@@ -719,7 +719,7 @@ public class EliminarProveedores extends Fragment {
     private void consultarCompras() {
 
         // CONSULTA EL PROVEEDOR EN LA BASE DE COMPRAS POR SU CÓDIGO
-        String URL = "http://malpica.atwebpages.com/malpica/proveedores/proveedores_consultar_compras.php?parameter=" + datoCodigo;
+        String URL = "http://malpicas.heliohost.org/malpica/proveedores/proveedores_consultar_compras.php?parameter=" + datoCodigo;
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, URL, null,
                 new Response.Listener<JSONObject>() {
 
@@ -767,7 +767,7 @@ public class EliminarProveedores extends Fragment {
     private void consultarGastos() {
 
         // CONSULTA EL PROVEEDOR EN LA BASE DE GASTOS POR SU CÓDIGO
-        String URL = "http://malpica.atwebpages.com/malpica/proveedores/proveedores_consultar_gastos.php?parameter=" + datoCodigo;
+        String URL = "http://malpicas.heliohost.org/malpica/proveedores/proveedores_consultar_gastos.php?parameter=" + datoCodigo;
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, URL, null,
                 new Response.Listener<JSONObject>() {
 
@@ -815,7 +815,7 @@ public class EliminarProveedores extends Fragment {
     private void eliminarProveedor() {
 
         // ELIMINA AL PROVEEDOR DE LA BASE DE DATOS
-        String URL = "http://malpica.atwebpages.com/malpica/proveedores/proveedores_eliminar_proveedor.php";
+        String URL = "http://malpicas.heliohost.org/malpica/proveedores/proveedores_eliminar_proveedor.php";
         StringRequest stringRequest = new StringRequest(Request.Method.POST, URL, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {

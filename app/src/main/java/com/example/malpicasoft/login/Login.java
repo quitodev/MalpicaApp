@@ -218,7 +218,7 @@ public class Login extends AppCompatActivity {
         }
 
         // CONSULTA EL USUARIO Y LA CLAVE OBTENIDA EN LA BASE DE DATOS
-        String URL = "http://malpica.atwebpages.com/malpica/login/login_consultar.php?usuario="+editUser.getText().toString()
+        String URL = "http://malpicas.heliohost.org/malpica/login/login_consultar.php?usuario="+editUser.getText().toString()
                 +"&clave="+editPass.getText().toString();
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET,URL,null,
                 new Response.Listener<JSONObject>() {

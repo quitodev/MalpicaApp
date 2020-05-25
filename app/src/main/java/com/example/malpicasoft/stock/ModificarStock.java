@@ -733,7 +733,7 @@ public class ModificarStock extends Fragment {
     private void consultarCodigo() {
 
         // CONSULTA POR CÓDIGO SI YA FUE INGRESADO ANTERIORMENTE A LA BASE
-        String URL = "http://malpica.atwebpages.com/malpica/stock/stock_consultar_codigo.php?parameter=" + datoBuscarCodigo;
+        String URL = "http://malpicas.heliohost.org/malpica/stock/stock_consultar_codigo.php?parameter=" + datoBuscarCodigo;
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, URL, null,
                 new Response.Listener<JSONObject>() {
 
@@ -804,7 +804,7 @@ public class ModificarStock extends Fragment {
         // CONSULTA POR DESCRIPCIÓN SI YA FUE INGRESADO ANTERIORMENTE A LA BASE
         String descripcion = datoBuscarDescripcion.replace(" ", "%20");
 
-        String URL = "http://malpica.atwebpages.com/malpica/stock/stock_consultar_descripcion.php?parameter=" + descripcion;
+        String URL = "http://malpicas.heliohost.org/malpica/stock/stock_consultar_descripcion.php?parameter=" + descripcion;
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, URL, null,
                 new Response.Listener<JSONObject>() {
 
@@ -873,7 +873,7 @@ public class ModificarStock extends Fragment {
     private void consultarCodigoBis() {
 
         // CONSULTA POR CÓDIGO SI NO EXISTE OTRO CON EL MISMO CÓDIGO
-        String URL = "http://malpica.atwebpages.com/malpica/stock/stock_consultar_codigo.php?parameter=" + datoCodigo;
+        String URL = "http://malpicas.heliohost.org/malpica/stock/stock_consultar_codigo.php?parameter=" + datoCodigo;
         jsonObjectRequest = new JsonObjectRequest(Request.Method.GET,URL,null,
                 new Response.Listener<JSONObject>() {
 
@@ -931,7 +931,7 @@ public class ModificarStock extends Fragment {
         // CONSULTA POR DESCRIPCIÓN SI YA FUE INGRESADO ANTERIORMENTE A LA BASE
         String descripcion = datoDescripcion.replace(" ","%20");
 
-        String URL = "http://malpica.atwebpages.com/malpica/stock/stock_consultar_descripcion.php?parameter=" + descripcion;
+        String URL = "http://malpicas.heliohost.org/malpica/stock/stock_consultar_descripcion.php?parameter=" + descripcion;
         jsonObjectRequest = new JsonObjectRequest(Request.Method.GET,URL,null,
                 new Response.Listener<JSONObject>() {
 
@@ -986,7 +986,7 @@ public class ModificarStock extends Fragment {
     private void modificarProducto() {
 
         // FINALMENTE MODIFICA EL PRODUCTO EN LA BASE
-        String URL = "http://malpica.atwebpages.com/malpica/stock/stock_actualizar_producto.php";
+        String URL = "http://malpicas.heliohost.org/malpica/stock/stock_actualizar_producto.php";
         StringRequest stringRequest = new StringRequest(Request.Method.POST, URL, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {

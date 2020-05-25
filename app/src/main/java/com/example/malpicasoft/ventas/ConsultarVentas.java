@@ -205,7 +205,7 @@ public class ConsultarVentas extends Fragment {
     private void consultarFactura() {
 
         // CONSULTA LA FACTURA INGRESADA EN LA BASE DE DATOS
-        String URL = "http://malpica.atwebpages.com/malpica/ventas/ventas_consultar_factura.php?parameter=" + datoBuscarFactura;
+        String URL = "http://malpicas.heliohost.org/malpica/ventas/ventas_consultar_factura.php?parameter=" + datoBuscarFactura;
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, URL, null,
                 new Response.Listener<JSONObject>() {
 

@@ -408,7 +408,7 @@ public class EliminarClientes extends Fragment {
     private void consultarCodigo() {
 
         // CONSULTA POR CÓDIGO SI YA FUE INGRESADO ANTERIORMENTE A LA BASE
-        String URL = "http://malpica.atwebpages.com/malpica/clientes/clientes_consultar_codigo.php?parameter=" + datoBuscarCodigo;
+        String URL = "http://malpicas.heliohost.org/malpica/clientes/clientes_consultar_codigo.php?parameter=" + datoBuscarCodigo;
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, URL, null,
                 new Response.Listener<JSONObject>() {
 
@@ -513,7 +513,7 @@ public class EliminarClientes extends Fragment {
         // CONSULTA POR RAZÓN SOCIAL SI YA FUE INGRESADO ANTERIORMENTE A LA BASE
         String razonSocial = datoBuscarRazon.replace(" ", "%20");
 
-        String URL = "http://malpica.atwebpages.com/malpica/clientes/clientes_consultar_nombre.php?parameter=" + razonSocial;
+        String URL = "http://malpicas.heliohost.org/malpica/clientes/clientes_consultar_nombre.php?parameter=" + razonSocial;
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, URL, null,
                 new Response.Listener<JSONObject>() {
 
@@ -616,7 +616,7 @@ public class EliminarClientes extends Fragment {
     private void consultarCuit() {
 
         // CONSULTA POR CUIT SI YA FUE INGRESADO ANTERIORMENTE A LA BASE
-        String URL = "http://malpica.atwebpages.com/malpica/clientes/clientes_consultar_cuit.php?parameter=" + datoBuscarCuit;
+        String URL = "http://malpicas.heliohost.org/malpica/clientes/clientes_consultar_cuit.php?parameter=" + datoBuscarCuit;
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, URL, null,
                 new Response.Listener<JSONObject>() {
 
@@ -719,7 +719,7 @@ public class EliminarClientes extends Fragment {
     private void consultarVentas() {
 
         // CONSULTA EL CLIENTE EN LA BASE DE VENTAS POR SU CÓDIGO
-        String URL = "http://malpica.atwebpages.com/malpica/clientes/clientes_consultar_ventas.php?parameter=" + datoCodigo;
+        String URL = "http://malpicas.heliohost.org/malpica/clientes/clientes_consultar_ventas.php?parameter=" + datoCodigo;
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, URL, null,
                 new Response.Listener<JSONObject>() {
 
@@ -767,7 +767,7 @@ public class EliminarClientes extends Fragment {
     private void eliminarCliente() {
 
         // ELIMINA AL CLIENTE DE LA BASE DE DATOS
-        String URL = "http://malpica.atwebpages.com/malpica/clientes/clientes_eliminar_cliente.php";
+        String URL = "http://malpicas.heliohost.org/malpica/clientes/clientes_eliminar_cliente.php";
         StringRequest stringRequest = new StringRequest(Request.Method.POST, URL, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {

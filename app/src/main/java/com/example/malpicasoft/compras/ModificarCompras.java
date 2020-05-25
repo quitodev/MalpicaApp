@@ -986,7 +986,7 @@ public class ModificarCompras extends Fragment {
     private void consultarFactura() {
 
         // CONSULTA LA FACTURA INGRESADA EN LA BASE DE DATOS
-        String URL = "http://malpica.atwebpages.com/malpica/compras/compras_consultar_factura.php?parameter=" + datoBuscarFactura;
+        String URL = "http://malpicas.heliohost.org/malpica/compras/compras_consultar_factura.php?parameter=" + datoBuscarFactura;
         jsonObjectRequest = new JsonObjectRequest(Request.Method.GET,URL,null,
                 new Response.Listener<JSONObject>() {
 
@@ -1118,7 +1118,7 @@ public class ModificarCompras extends Fragment {
     private void consultarFacturaBis() {
 
         // CONSULTA POR FACTURA SI YA FUE INGRESADA ANTERIORMENTE A LA BASE
-        String URL = "http://malpica.atwebpages.com/malpica/compras/compras_consultar_factura.php?parameter=" + datoNroFactura;
+        String URL = "http://malpicas.heliohost.org/malpica/compras/compras_consultar_factura.php?parameter=" + datoNroFactura;
         jsonObjectRequest = new JsonObjectRequest(Request.Method.GET,URL,null,
                 new Response.Listener<JSONObject>() {
 
@@ -1173,7 +1173,7 @@ public class ModificarCompras extends Fragment {
     private void consultarProveedor() {
 
         // CONSULTA POR CÓDIGO DE PROVEEDOR SI YA FUE INGRESADO PARA OBTENER EL RESTO DE LOS DATOS
-        String URL = "http://malpica.atwebpages.com/malpica/compras/compras_consultar_proveedor.php?parameter=" + datoCodigo;
+        String URL = "http://malpicas.heliohost.org/malpica/compras/compras_consultar_proveedor.php?parameter=" + datoCodigo;
         jsonObjectRequest = new JsonObjectRequest(Request.Method.GET,URL,null,
                 new Response.Listener<JSONObject>() {
 
@@ -1231,7 +1231,7 @@ public class ModificarCompras extends Fragment {
     private void consultarProducto() {
 
         // CONSULTA POR CÓDIGO DE PRODUCTO SI YA FUE INGRESADO PARA OBTENER EL RESTO DE LOS DATOS
-        String URL = "http://malpica.atwebpages.com/malpica/compras/compras_consultar_producto.php?parameter=" + datoCodigoStock;
+        String URL = "http://malpicas.heliohost.org/malpica/compras/compras_consultar_producto.php?parameter=" + datoCodigoStock;
         jsonObjectRequest = new JsonObjectRequest(Request.Method.GET,URL,null,
                 new Response.Listener<JSONObject>() {
 
@@ -1292,7 +1292,7 @@ public class ModificarCompras extends Fragment {
     private void consultarProveedorBis() {
 
         // CONSULTA EL PROVEEDOR DE VUELTA PARA VER SI SE ENCUENTRA O NO EN LA TABLA DE PROVEEDORES
-        String URL = "http://malpica.atwebpages.com/malpica/compras/compras_consultar_proveedor.php?parameter=" + datoCodigo;
+        String URL = "http://malpicas.heliohost.org/malpica/compras/compras_consultar_proveedor.php?parameter=" + datoCodigo;
         jsonObjectRequest = new JsonObjectRequest(Request.Method.GET,URL,null,
                 new Response.Listener<JSONObject>() {
 
@@ -1340,7 +1340,7 @@ public class ModificarCompras extends Fragment {
     private void registrarProveedor() {
 
         // REGISTRA EL PROVEEDOR EN CASO DE NO HABER SIDO DADO DE ALTA ANTERIORMENTE CON LOS DATOS BÁSICOS
-        String URL = "http://malpica.atwebpages.com/malpica/compras/compras_ingresar_proveedor.php";
+        String URL = "http://malpicas.heliohost.org/malpica/compras/compras_ingresar_proveedor.php";
         StringRequest stringRequest = new StringRequest(Request.Method.POST, URL, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
@@ -1381,7 +1381,7 @@ public class ModificarCompras extends Fragment {
         if(!datoCodigoStock.equals(codigoFactura)){
 
             // SI EL PRODUCTO CAMBIÓ, TIENE QUE CONSULTAR EN LA BASE SI ESTÁ CREADO O HAY QUE CREARLO
-            String URL = "http://malpica.atwebpages.com/malpica/compras/compras_consultar_producto.php?parameter=" + datoCodigoStock;
+            String URL = "http://malpicas.heliohost.org/malpica/compras/compras_consultar_producto.php?parameter=" + datoCodigoStock;
             jsonObjectRequest = new JsonObjectRequest(Request.Method.GET,URL,null,
                     new Response.Listener<JSONObject>() {
 
@@ -1448,7 +1448,7 @@ public class ModificarCompras extends Fragment {
         } else {
 
             // SI EL PRODUCTO NO CAMBIÓ, TIENE QUE CONSULTAR EN LA BASE LA CANTIDAD Y EL PRECIO UNITARIO PARA ACTUALIZAR STOCK
-            String URL = "http://malpica.atwebpages.com/malpica/compras/compras_consultar_producto.php?parameter=" + datoCodigoStock;
+            String URL = "http://malpicas.heliohost.org/malpica/compras/compras_consultar_producto.php?parameter=" + datoCodigoStock;
             jsonObjectRequest = new JsonObjectRequest(Request.Method.GET,URL,null,
                     new Response.Listener<JSONObject>() {
 
@@ -1508,7 +1508,7 @@ public class ModificarCompras extends Fragment {
         // REGISTRA EL PRODUCTO EN CASO DE NO HABER SIDO DADO DE ALTA ANTERIORMENTE
         final String datoMoneda = "ARS";
 
-        String URL = "http://malpica.atwebpages.com/malpica/compras/compras_ingresar_producto.php";
+        String URL = "http://malpicas.heliohost.org/malpica/compras/compras_ingresar_producto.php";
         StringRequest stringRequest = new StringRequest(Request.Method.POST, URL, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
@@ -1557,7 +1557,7 @@ public class ModificarCompras extends Fragment {
         final String datoCantidadNueva = nuevaCantidad + "";
         final String datoPrecioTotaNuevo = nuevoPrecioTotal + "";
 
-        String URL = "http://malpica.atwebpages.com/malpica/compras/compras_actualizar_producto.php";
+        String URL = "http://malpicas.heliohost.org/malpica/compras/compras_actualizar_producto.php";
         StringRequest stringRequest = new StringRequest(Request.Method.POST, URL, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
@@ -1598,7 +1598,7 @@ public class ModificarCompras extends Fragment {
         final String datoCantidadNueva = nuevaCantidad + "";
         final String datoPrecioTotaNuevo = nuevoPrecioTotal + "";
 
-        String URL = "http://malpica.atwebpages.com/malpica/compras/compras_actualizar_producto.php";
+        String URL = "http://malpicas.heliohost.org/malpica/compras/compras_actualizar_producto.php";
         StringRequest stringRequest = new StringRequest(Request.Method.POST, URL, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
@@ -1636,7 +1636,7 @@ public class ModificarCompras extends Fragment {
     private void consultarProductoAnterior() {
 
         // CONSULTA POR CÓDIGO DE PRODUCTO SI YA FUE INGRESADO PARA OBTENER EL RESTO DE LOS DATOS
-        String URL = "http://malpica.atwebpages.com/malpica/compras/compras_consultar_producto.php?parameter=" + codigoFactura;
+        String URL = "http://malpicas.heliohost.org/malpica/compras/compras_consultar_producto.php?parameter=" + codigoFactura;
         jsonObjectRequest = new JsonObjectRequest(Request.Method.GET,URL,null,
                 new Response.Listener<JSONObject>() {
 
@@ -1698,7 +1698,7 @@ public class ModificarCompras extends Fragment {
         final String datoCantidadNueva = nuevaCantidad + "";
         final String datoPrecioTotaNuevo = nuevoPrecioTotal + "";
 
-        String URL = "http://malpica.atwebpages.com/malpica/compras/compras_actualizar_producto.php";
+        String URL = "http://malpicas.heliohost.org/malpica/compras/compras_actualizar_producto.php";
         StringRequest stringRequest = new StringRequest(Request.Method.POST, URL, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
@@ -1747,7 +1747,7 @@ public class ModificarCompras extends Fragment {
         final String datoAnoIngreso = arrayFechaIngreso[2];
 
         // FINALMENTE MODIFICA LA FACTURA CON LOS DATOS INGRESADOS
-        String URL1 = "http://malpica.atwebpages.com/malpica/compras/compras_actualizar_factura.php";
+        String URL1 = "http://malpicas.heliohost.org/malpica/compras/compras_actualizar_factura.php";
         StringRequest stringRequest1 = new StringRequest(Request.Method.POST, URL1, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {

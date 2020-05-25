@@ -788,7 +788,7 @@ public class ModificarClientes extends Fragment {
     private void consultarCodigo() {
 
         // CONSULTA POR CÓDIGO SI YA FUE INGRESADO ANTERIORMENTE A LA BASE
-        String URL = "http://malpica.atwebpages.com/malpica/clientes/clientes_consultar_codigo.php?parameter=" + datoBuscarCodigo;
+        String URL = "http://malpicas.heliohost.org/malpica/clientes/clientes_consultar_codigo.php?parameter=" + datoBuscarCodigo;
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, URL, null,
                 new Response.Listener<JSONObject>() {
 
@@ -871,7 +871,7 @@ public class ModificarClientes extends Fragment {
         // CONSULTA POR RAZÓN SOCIAL SI YA FUE INGRESADO ANTERIORMENTE A LA BASE
         String razonSocial = datoBuscarRazon.replace(" ", "%20");
 
-        String URL = "http://malpica.atwebpages.com/malpica/clientes/clientes_consultar_nombre.php?parameter=" + razonSocial;
+        String URL = "http://malpicas.heliohost.org/malpica/clientes/clientes_consultar_nombre.php?parameter=" + razonSocial;
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, URL, null,
                 new Response.Listener<JSONObject>() {
 
@@ -952,7 +952,7 @@ public class ModificarClientes extends Fragment {
     private void consultarCuit() {
 
         // CONSULTA POR CUIT SI YA FUE INGRESADO ANTERIORMENTE A LA BASE
-        String URL = "http://malpica.atwebpages.com/malpica/clientes/clientes_consultar_cuit.php?parameter=" + datoBuscarCuit;
+        String URL = "http://malpicas.heliohost.org/malpica/clientes/clientes_consultar_cuit.php?parameter=" + datoBuscarCuit;
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, URL, null,
                 new Response.Listener<JSONObject>() {
 
@@ -1033,7 +1033,7 @@ public class ModificarClientes extends Fragment {
     private void consultarCodigoBis() {
 
         // CONSULTA POR CÓDIGO SI NO EXISTE OTRO CON EL MISMO CÓDIGO
-        String URL = "http://malpica.atwebpages.com/malpica/clientes/clientes_consultar_codigo.php?parameter=" + datoCodigo;
+        String URL = "http://malpicas.heliohost.org/malpica/clientes/clientes_consultar_codigo.php?parameter=" + datoCodigo;
         jsonObjectRequest = new JsonObjectRequest(Request.Method.GET,URL,null,
                 new Response.Listener<JSONObject>() {
 
@@ -1090,7 +1090,7 @@ public class ModificarClientes extends Fragment {
         // CONSULTA POR RAZÓN SOCIAL SI YA FUE INGRESADO ANTERIORMENTE A LA BASE
         String razonSocial = datoRazonSocial.replace(" ","%20");
 
-        String URL = "http://malpica.atwebpages.com/malpica/clientes/clientes_consultar_nombre.php?parameter=" + razonSocial;
+        String URL = "http://malpicas.heliohost.org/malpica/clientes/clientes_consultar_nombre.php?parameter=" + razonSocial;
         jsonObjectRequest = new JsonObjectRequest(Request.Method.GET,URL,null,
                 new Response.Listener<JSONObject>() {
 
@@ -1145,7 +1145,7 @@ public class ModificarClientes extends Fragment {
     private void consultarCuitBis() {
 
         // CONSULTA POR CUIT SI YA FUE INGRESADO ANTERIORMENTE A LA BASE
-        String URL = "http://malpica.atwebpages.com/malpica/clientes/clientes_consultar_cuit.php?parameter=" + datoCuit;
+        String URL = "http://malpicas.heliohost.org/malpica/clientes/clientes_consultar_cuit.php?parameter=" + datoCuit;
         jsonObjectRequest = new JsonObjectRequest(Request.Method.GET,URL,null,
                 new Response.Listener<JSONObject>() {
 
@@ -1200,7 +1200,7 @@ public class ModificarClientes extends Fragment {
     private void modificarCliente() {
 
         // FINALMENTE MODIFICA EL CLIENTE EN LA BASE
-        String URL = "http://malpica.atwebpages.com/malpica/clientes/clientes_actualizar_cliente.php";
+        String URL = "http://malpicas.heliohost.org/malpica/clientes/clientes_actualizar_cliente.php";
         StringRequest stringRequest = new StringRequest(Request.Method.POST, URL, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {

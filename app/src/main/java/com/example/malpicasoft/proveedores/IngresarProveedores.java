@@ -538,7 +538,7 @@ public class IngresarProveedores extends Fragment {
     private void consultarCodigo() {
 
         // CONSULTA POR CÓDIGO SI YA FUE INGRESADO ANTERIORMENTE A LA BASE
-        String URL = "http://malpica.atwebpages.com/malpica/proveedores/proveedores_consultar_codigo.php?parameter=" + datoCodigo;
+        String URL = "http://malpicas.heliohost.org/malpica/proveedores/proveedores_consultar_codigo.php?parameter=" + datoCodigo;
         jsonObjectRequest = new JsonObjectRequest(Request.Method.GET,URL,null,
                 new Response.Listener<JSONObject>() {
 
@@ -595,7 +595,7 @@ public class IngresarProveedores extends Fragment {
         // CONSULTA POR RAZÓN SOCIAL SI YA FUE INGRESADO ANTERIORMENTE A LA BASE
         String razonSocial = datoRazonSocial.replace(" ","%20");
 
-        String URL = "http://malpica.atwebpages.com/malpica/proveedores/proveedores_consultar_nombre.php?parameter=" + razonSocial;
+        String URL = "http://malpicas.heliohost.org/malpica/proveedores/proveedores_consultar_nombre.php?parameter=" + razonSocial;
         jsonObjectRequest = new JsonObjectRequest(Request.Method.GET,URL,null,
                 new Response.Listener<JSONObject>() {
 
@@ -650,7 +650,7 @@ public class IngresarProveedores extends Fragment {
     private void consultarCuit() {
 
         // CONSULTA POR CUIT SI YA FUE INGRESADO ANTERIORMENTE A LA BASE
-        String URL = "http://malpica.atwebpages.com/malpica/proveedores/proveedores_consultar_cuit.php?parameter=" + datoCuit;
+        String URL = "http://malpicas.heliohost.org/malpica/proveedores/proveedores_consultar_cuit.php?parameter=" + datoCuit;
         jsonObjectRequest = new JsonObjectRequest(Request.Method.GET,URL,null,
                 new Response.Listener<JSONObject>() {
 
@@ -705,7 +705,7 @@ public class IngresarProveedores extends Fragment {
     private void registrarProveedor() {
 
         // FINALMENTE REGISTRA EL PROVEEDOR EN LA BASE
-        String URL = "http://malpica.atwebpages.com/malpica/proveedores/proveedores_ingresar_proveedor.php";
+        String URL = "http://malpicas.heliohost.org/malpica/proveedores/proveedores_ingresar_proveedor.php";
         StringRequest stringRequest = new StringRequest(Request.Method.POST, URL, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
