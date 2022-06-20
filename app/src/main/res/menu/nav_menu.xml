@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/itemInicio"
+        android:icon="@drawable/ic_home"
+        android:title="@string/menu_inicio"/>
+    <item
+        android:id="@+id/itemStock"
+        android:icon="@drawable/ic_check_items"
+        android:title="@string/menu_stock"/>
+    <item
+        android:id="@+id/itemCompras"
+        android:icon="@drawable/ic_check_items"
+        android:title="@string/menu_compras"/>
+    <item
+        android:id="@+id/itemVentas"
+        android:icon="@drawable/ic_check_items"
+        android:title="@string/menu_ventas"/>
+    <item
+        android:id="@+id/itemGastos"
+        android:icon="@drawable/ic_check_items"
+        android:title="@string/menu_gastos"/>
+    <item
+        android:id="@+id/itemClientes"
+        android:icon="@drawable/ic_check_items"
+        android:title="@string/menu_clientes"/>
+    <item
+        android:id="@+id/itemProveedores"
+        android:icon="@drawable/ic_check_items"
+        android:title="@string/menu_proveedores"/>
+    <item
+        android:id="@+id/itemSalir"
+        android:icon="@drawable/ic_exit"
+        android:title="@string/menu_salir"/>
+
+</menu>

@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="170dp"
+    android:background="@drawable/app_banner"
+    android:id="@+id/nav_header">
+
+    <ImageView
+        android:id="@+id/imageView2"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="35dp"
+        android:contentDescription="@string/componentes"
+        app:srcCompat="@drawable/app_logo"/>
+
+    <TextView
+        android:id="@+id/textUser"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="15dp"
+        android:layout_marginLeft="15dp"
+        android:layout_marginTop="100dp"
+        android:fontFamily="sans-serif-condensed-light"
+        android:text="@string/nav_header_user"
+        android:textColor="#AEAEAE"
+        android:textSize="20sp"/>
+
+    <TextView
+        android:id="@+id/textHour"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="15dp"
+        android:layout_marginLeft="15dp"
+        android:layout_marginTop="130dp"
+        android:fontFamily="sans-serif-condensed-light"
+        android:text="@string/nav_header_date"
+        android:textColor="#AEAEAE"
+        android:textSize="16sp"/>
+</RelativeLayout>

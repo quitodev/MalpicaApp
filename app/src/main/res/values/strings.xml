@@ -1,0 +1,182 @@
+<resources>
+
+    <!-- GENERALES -->
+    <string name="app_name">Malpica Soft</string>
+    <string name="componentes">Componentes</string>
+    <string name="open">Open</string>
+    <string name="close">Close</string>
+    <string name="vacio"> </string>
+
+    <!-- DIALOGS -->
+    <string name="dialog_procesando">Procesando datos…</string>
+    <string name="dialog_error">Revise los datos ingresados!</string>
+    <string name="dialog_error_factura">La factura ya existe!</string>
+    <string name="dialog_error_cliente">El cliente ya existe!</string>
+    <string name="dialog_error_proveedor">El proveedor ya existe!</string>
+    <string name="dialog_error_producto">El producto ya existe!</string>
+    <string name="dialog_eliminar">¿Confirma la eliminación?</string>
+    <string name="dialog_eliminar1">Se eliminará para siempre!</string>
+    <string name="dialog_operaciones">No se pudo eliminar…</string>
+    <string name="dialog_operaciones1">Registra operaciones!</string>
+    <string name="dialog_ok">Operación realizada!</string>
+    <string name="dialog_button">Continuar</string>
+
+    <!-- BOTONES -->
+    <string name="guardar_datos">Guardar</string>
+    <string name="consultar_datos">Consultar</string>
+    <string name="modificar_datos">Modificar</string>
+    <string name="eliminar_datos">Eliminar</string>
+
+    <!-- NAVIGATION HEADER -->
+    <string name="nav_header_user">Hola user!</string>
+    <string name="nav_header_date">Última conexión: Hoy, 00:00 hs.</string>
+
+    <!-- MENÚ -->
+    <string name="menu_inicio">Inicio</string>
+    <string name="menu_stock">Stock</string>
+    <string name="menu_compras">Compras</string>
+    <string name="menu_gastos">Gastos</string>
+    <string name="menu_ventas">Ventas</string>
+    <string name="menu_clientes">Clientes</string>
+    <string name="menu_proveedores">Proveedores</string>
+    <string name="menu_salir">Salir</string>
+    <string name="menu_ayuda">Ayuda</string>
+
+    <!-- LOGIN -->
+    <string name="login_user">Usuario</string>
+    <string name="login_pass">Contraseña</string>
+    <string name="login_iniciar">Iniciar Sesión</string>
+    <string name="login_ayuda">¿Necesitás ayuda?</string>
+    <string name="login_version">Versión 1.0</string>
+
+    <!-- USUARIO -->
+    <string name="usuario_perfil">Perfil del usuario</string>
+    <string name="usuario_estado">Estado</string>
+    <string name="usuario_estado_activo">Activo</string>
+    <string name="usuario_fecha_alta">Fecha de alta</string>
+    <string name="usuario_fecha_modif">Fecha de modificación</string>
+    <string name="usuario_fecha">01/01/2020</string>
+    <string name="usuario_stock">Stock histórico</string>
+    <string name="usuario_balance">Balance del mes</string>
+    <string name="usuario_ventas">Ventas del mes</string>
+    <string name="usuario_compras">Compras del mes</string>
+    <string name="usuario_gastos">Gastos del mes</string>
+    <string name="usuario_pesos">$ 0,00</string>
+    <string name="usuario_datos">Mis datos</string>
+    <string name="usuario_comercio">Nombre del comercio</string>
+    <string name="usuario_direccion">Dirección</string>
+    <string name="usuario_localidad">Localidad</string>
+    <string name="usuario_cuit">Número de CUIT</string>
+    <string name="usuario_condicion">Condición</string>
+    <string name="usuario_email">Email</string>
+    <string name="usuario_telefono">Teléfono</string>
+
+    <!-- STOCK -->
+    <string name="stock_ingresar">Ingresar productos</string>
+    <string name="stock_consultar">Consultar productos</string>
+    <string name="stock_modificar">Modificar productos</string>
+    <string name="stock_eliminar">Eliminar productos</string>
+
+    <!-- COMPRAS -->
+    <string name="compras_ingresar">Ingresar compras</string>
+    <string name="compras_consultar">Consultar compras</string>
+    <string name="compras_modificar">Modificar compras</string>
+    <string name="compras_eliminar">Eliminar compras</string>
+
+    <!-- VENTAS -->
+    <string name="ventas_ingresar">Ingresar ventas</string>
+    <string name="ventas_consultar">Consultar ventas</string>
+    <string name="ventas_modificar">Modificar ventas</string>
+    <string name="ventas_eliminar">Eliminar ventas</string>
+
+    <!-- GASTOS -->
+    <string name="gastos_ingresar">Ingresar gastos</string>
+    <string name="gastos_consultar">Consultar gastos</string>
+    <string name="gastos_modificar">Modificar gastos</string>
+    <string name="gastos_eliminar">Eliminar gastos</string>
+
+    <!-- CLIENTES -->
+    <string name="clientes_ingresar">Ingresar clientes</string>
+    <string name="clientes_consultar">Consultar clientes</string>
+    <string name="clientes_modificar">Modificar clientes</string>
+    <string name="clientes_eliminar">Eliminar clientes</string>
+
+    <!-- PROVEEDORES -->
+    <string name="proveedores_ingresar">Ingresar proveedores</string>
+    <string name="proveedores_consultar">Consultar proveedores</string>
+    <string name="proveedores_modificar">Modificar proveedores</string>
+    <string name="proveedores_eliminar">Eliminar proveedores</string>
+
+    <!-- TEXT VIEW -->
+    <string name="codigo">Código</string>
+    <string name="descripcion">Descripción</string>
+    <string name="cantidad">Cantidad</string>
+    <string name="moneda">Moneda</string>
+    <string name="precio_unit">Precio Unitario</string>
+    <string name="impuestos">Impuestos / Descuentos</string>
+    <string name="precio_total">Precio Total</string>
+    <string name="fecha_factura">Fecha de la factura</string>
+    <string name="fecha_ingreso">Fecha que se ingresó</string>
+    <string name="fecha_modif">Fecha de modificación</string>
+    <string name="fecha_alta">Fecha de alta</string>
+    <string name="nro_factura">Número de factura</string>
+    <string name="razon_social">Razón social</string>
+    <string name="condicion">Condición impositiva</string>
+    <string name="cuit">CUIT/CUIL</string>
+    <string name="direccion">Dirección fiscal</string>
+    <string name="localidad">Localidad</string>
+    <string name="contacto">Contacto</string>
+    <string name="tipo_cliente">Tipo de cliente</string>
+    <string name="tipo_proveedor">Tipo de proveedor</string>
+
+    <string name="datos_producto">Datos del producto</string>
+    <string name="datos_cliente">Datos del cliente</string>
+    <string name="datos_proveedor">Datos del proveedor</string>
+
+    <string name="buscar_codigo">Buscar por código</string>
+    <string name="buscar_descripcion">Buscar por descripción</string>
+    <string name="buscar_razon_social">Buscar por razón social</string>
+    <string name="buscar_cuit">Buscar por CUIT o CUIL</string>
+    <string name="buscar_factura">Ingrese la factura a buscar</string>
+    <string name="resultados">Resultados de búsqueda</string>
+
+    <!-- EDIT TEXT -->
+    <string name="ingresar_codigo">Ingrese el código</string>
+    <string name="ingresar_descripcion">Ingrese la descripción</string>
+    <string name="ingresar_cantidad">0</string>
+    <string name="ingresar_moneda">ARS</string>
+    <string name="ingresar_precio_unit">0.00</string>
+    <string name="ingresar_impuestos">0.00</string>
+    <string name="ingresar_precio_total">0.00</string>
+    <string name="ingresar_fecha">01/01/2020</string>
+    <string name="ingresar_nro_factura">A–0000–00000000</string>
+    <string name="ingresar_razon_social">Ingrese la razón social</string>
+    <string name="ingresar_condicion">Ingrese la condición</string>
+    <string name="ingresar_cuit">Ingrese la CUIT o CUIL</string>
+    <string name="ingresar_direccion">Ingrese la dirección fiscal</string>
+    <string name="ingresar_localidad">Ingrese la localidad</string>
+    <string name="ingresar_contacto">Ingrese un contacto</string>
+    <string name="ingresar_tipo">Seleccione una opción</string>
+
+    <string name="muestra_codigo">Muestra el código</string>
+    <string name="muestra_descripcion">Muestra la descripción</string>
+    <string name="muestra_cantidad">Muestra la cantidad</string>
+    <string name="muestra_moneda">Muestra la moneda</string>
+    <string name="muestra_precio_unit">Muestra el precio unitario</string>
+    <string name="muestra_impuestos">Muestra impuestos o descuentos</string>
+    <string name="muestra_precio_total">Muestra el precio total</string>
+    <string name="muestra_fecha_factura">Muestra la fecha de factura</string>
+    <string name="muestra_fecha_ingreso">Muestra la fecha que se registró</string>
+    <string name="muestra_fecha_modif">Muestra la fecha de modificación</string>
+    <string name="muestra_fecha_alta">Muestra la fecha de alta</string>
+    <string name="muestra_nro_factura">Muestra el número de factura</string>
+    <string name="muestra_razon_social">Muestra la razón social</string>
+    <string name="muestra_condicion">Muestra la condición impositiva</string>
+    <string name="muestra_cuit">Muestra la CUIT o CUIL</string>
+    <string name="muestra_direccion">Muestra la dirección fiscal</string>
+    <string name="muestra_localidad">Muestra la localidad</string>
+    <string name="muestra_contacto">Muestra el contacto</string>
+    <string name="muestra_tipo_cliente">Muestra tipo de cliente</string>
+    <string name="muestra_tipo_proveedor">Muestra tipo de proveedor</string>
+
+</resources>
